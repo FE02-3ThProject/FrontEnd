@@ -35,6 +35,7 @@ export default Navbar;
 
 const StNav = styled.div`
   position: relative;
+  width: 100vw;
   justify-content: space-between;
   z-index: 10;
   /* width: 100vw; */
