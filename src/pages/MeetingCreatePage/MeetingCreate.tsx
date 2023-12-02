@@ -2,6 +2,19 @@ import { useState, useRef } from "react";
 import styled from "styled-components";
 import Location from "../../components/location/Location";
 import Category from "../../components/category/Category";
+// import { Mutation } from "react-query";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import { useMutation } from "react-query";
+
+// const createMeeting = async (newMeeting) => {
+//   const formData = new FormData();
+//   Object.entries(newMeeting).forEach(([key, value]) => {
+//     formData.append(key, value);
+//   });
+//   const response = await axios.post("api주소", formData);
+//   return response.data;
+// };
 
 const MeetingCreate = () => {
   const date = new Date();
@@ -11,6 +24,8 @@ const MeetingCreate = () => {
   const today = `${year}-${month}-${day}`;
 
   const fileInput = useRef<HTMLInputElement>(null);
+
+  // const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
@@ -30,10 +45,36 @@ const MeetingCreate = () => {
     }
   };
 
+  // const mutation = useMutation(createMeeting, {
+  //   onSuccess: () => {
+  //     setTitle("");
+  //     setImage(null);
+  //     setLocation("");
+  //     setDescription("");
+  //     setMaxMembers(0);
+  //     setCategory("");
+  //     if (fileInput.current) {
+  //       fileInput.current.value = "";
+  //     }
+  //     navigate("/");
+  //   },
+  // });
+
+  // const handleSubmit = (event: ReactDOM.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   mutation.mutate({
+  //     title: title,
+  //     image: image,
+  //     location: location,
+  //     description: description,
+  //     maxMembers: maxMembers,
+  //     createdAt: today,
+  //     category: category,
+  //   });
+  // };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    //리액트 쿼리를 이용한 API통신 로직이 들어갈 자리
 
     console.log({
       title: title,
@@ -54,6 +95,7 @@ const MeetingCreate = () => {
     if (fileInput.current) {
       fileInput.current.value = "";
     }
+    // navigate("/");
   };
 
   return (
