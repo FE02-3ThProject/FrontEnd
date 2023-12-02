@@ -3,11 +3,13 @@ import SideBar from "./sidebar/SideBar";
 import styled from "styled-components";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
+import MainSwiper from "../Swiper/MainSwiper";
 
 const LayOut = () => {
   return (
     <StLayout>
       <Header />
+      <MainSwiper />
       <StMainContents>
         <SideBar />
         <Outlet />
