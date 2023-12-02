@@ -1,6 +1,7 @@
 import { useState } from "react";
 import NavItem from "./NavItem";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
@@ -10,7 +11,9 @@ const Navbar = () => {
   return (
     <StNav>
       <StTop>
-        <StLogo>logo</StLogo>
+        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+          <StLogo>logo</StLogo>
+        </Link>
         <StMenu>
           {menu === false ? (
             <StMenuButton onClick={handleMenu}>+</StMenuButton>
