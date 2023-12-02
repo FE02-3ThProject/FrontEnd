@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import Navbar from "../../Navbar";
 
 const Header = () => {
-  return <StHeader>Header</StHeader>;
+  return (
+    <StHeader>
+      <Navbar />
+    </StHeader>
+  );
 };
 
 export default Header;
