@@ -2,9 +2,9 @@ import { useState, useRef } from "react";
 import styled from "styled-components";
 import Location from "../../components/location/Location";
 import Category from "../../components/category/Category";
+// import { apiToken } from "../../shared/apis/Apis";
 // import { Mutation } from "react-query";
 // import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 // import { useMutation } from "react-query";
 
 // const createMeeting = async (newMeeting) => {
@@ -12,7 +12,7 @@ import Category from "../../components/category/Category";
 //   Object.entries(newMeeting).forEach(([key, value]) => {
 //     formData.append(key, value);
 //   });
-//   const response = await axios.post("api주소", formData);
+//   const response = await apiToken.post("api주소", formData);
 //   return response.data;
 // };
 
