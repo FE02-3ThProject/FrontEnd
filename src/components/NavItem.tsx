@@ -1,13 +1,25 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import MenuItem from "./MenuItem";
 import styled from "styled-components";
 
 const NavItem = () => {
   return (
     <StMenuList>
-      <MenuItem label="Admin" />
-      <MenuItem label="Chat" />
-      <MenuItem label="Logout" />
+      <Link to="mypage/:id" style={{ textDecoration: "none", color: "white" }}>
+        <MenuItem label="Admin" />
+      </Link>
+      <Link
+        to="chating/:roomId"
+        style={{ textDecoration: "none", color: "white" }}
+      >
+        <MenuItem label="Chat" />
+      </Link>
+      <Link to="meeting/:id" style={{ textDecoration: "none", color: "white" }}>
+        <MenuItem label="Meeting" />
+      </Link>
+      <Link to="login" style={{ textDecoration: "none", color: "white" }}>
+        <MenuItem label="Login" />
+      </Link>
     </StMenuList>
   );
 };
