@@ -15,7 +15,8 @@ export default Footer;
 
 const StFooter = styled.div`
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: end;
   padding: 10px 0;
 `;
 

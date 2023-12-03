@@ -12,10 +12,10 @@ const SignUpPage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [email, setEmail] = UseInput(null);
-  const [nickname, setNickname] = UseInput(null);
-  const [password, setPassword] = UseInput(null);
-  const [confirmPassword, setConfirmPassword] = UseInput(null);
+  const [email, setEmail] = UseInput("");
+  const [nickname, setNickname] = UseInput("");
+  const [password, setPassword] = UseInput("");
+  const [confirmPassword, setConfirmPassword] = UseInput("");
 
   const [emailCHK, setEmailCHK] = useState(false);
   const [nicknameCHK, setNicknameCHK] = useState(false);
@@ -101,7 +101,7 @@ const SignUpPage = () => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       });
-      return;
+      return Promise.reject();
     }
     //비밀번호 일치
     if (password !== confirmPassword) {
@@ -111,7 +111,7 @@ const SignUpPage = () => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       });
-      return;
+      return Promise.reject();
     }
 
     const data = await api.post("api주소", {
@@ -150,7 +150,7 @@ const SignUpPage = () => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       });
-      return;
+      return Promise.reject();
     },
   });
 
@@ -163,42 +163,26 @@ const SignUpPage = () => {
         </Title>
 
         <InputBox>
-          {emailAuthCHK ? (
-            <OKEmail>{email}</OKEmail>
-          ) : (
-            <InputWrap>
-              <Input1
-                type="email"
-                id="email"
-                placeholder="이메일 : "
-                value={email || ""}
-                onChange={setEmail}
-              />
-              <SendButton onClick={dupEmail}>인증메일보내기</SendButton>
-            </InputWrap>
-          )}
-          {emailAuthCHK ? null : (
-            <InputWrap>
-              <Input1
-                type="text"
-                id="emailauth"
-                placeholder="인증번호 : "
-                value={emailAuth || ""}
-                onChange={setEmailAuth}
-              />
-              <SendButton onClick={sendEmailAuth}>인증번호확인</SendButton>
-            </InputWrap>
-          )}
+          <InputWrap>
+            <Input1
+              type="email"
+              id="email"
+              placeholder="이메일 : "
+              value={email || ""}
+              onChange={setEmail}
+            />
+            <SendButton onClick={(e) => checkEmail(e)}>
+              이메일중복확인
+            </SendButton>
+          </InputWrap>
           <Input2
             type="text"
-            label="닉네임"
             placeholder="닉네임 :               (영어/한글/숫자 3~15자)"
             value={nickname || ""}
             onChange={setNickname}
-            nicknameCHK={nicknameCHK}
             onBlur={(e) => {
               if (e.currentTarget.value && e.currentTarget === e.target) {
-                dupNick();
+                dupNick(e);
               }
             }}
           />
@@ -210,42 +194,16 @@ const SignUpPage = () => {
             </p>
           )}
           <Input2
-            type="text"
-            label="블로그주소"
-            placeholder="블로그 이름 :     도메인으로 사용할 이름 (영어/숫자 3~15자)"
-            value={blogId || ""}
-            onChange={setBlogId}
-            blogIdCHK={blogIdCHK}
-            onBlur={(e) => {
-              if (e.currentTarget.value && e.currentTarget === e.target) {
-                dupBlogId();
-              }
-            }}
-          />
-          {blogId === null ? null : blogIdCHK ? (
-            <p style={{ color: "green" }}>사용가능한 블로그주소입니다.</p>
-          ) : (
-            <p style={{ color: "red" }}>
-              이미 중복된 블로그주소이거나, 사용불가능한 블로그주소입니다.
-            </p>
-          )}
-          <Input2
             type="password"
-            label="비밀번호"
             value={password || ""}
             placeholder="비밀번호 :           (영어/숫자/특수문자 8자 이상)"
             onChange={setPassword}
-            password={password}
-            confirmPassword={confirmPassword}
           />
           <Input2
             type="password"
-            label="비밀번호 확인"
             value={confirmPassword || ""}
             placeholder="비밀번호 확인 :"
             onChange={setConfirmPassword}
-            password={password}
-            confirmPassword={confirmPassword}
           />
           {confirmPassword === null ? null : password === confirmPassword ? (
             <p style={{ color: "green" }}>비밀번호가 일치합니다.</p>
@@ -254,13 +212,15 @@ const SignUpPage = () => {
           )}
         </InputBox>
 
-        <SignUpButton onClick={onsubmit}>회원가입</SignUpButton>
+        <SignUpButton onClick={() => onsubmit()}>회원가입</SignUpButton>
       </SignUpBox>
     </SignUpContainer>
   );
 };
 
 const SignUpContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -268,7 +228,8 @@ const SignUpContainer = styled.div`
 `;
 
 const SignUpBox = styled.div`
-  width: 386px;
+width: 20%;
+height: 100%;
   margin: 160px auto;
 `;
 
@@ -276,20 +237,7 @@ const Title = styled.div`
   display: flex;
   text-align: center;
   flex-direction: column;
-  width: 100%;
   border-bottom: solid 1px #acacac;
-  margin: 0 auto 32px auto;
-  padding-bottom: 25px;
-  > h2 {
-    font-size: 30px;
-    font-weight: 400;
-    line-height: 45px;
-  }
-  > p {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 30px;
-  }
 `;
 
 const InputBox = styled.div`
@@ -302,7 +250,6 @@ const InputBox = styled.div`
 const InputWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
   background-color: white;
   border-bottom: solid 1px #acacac;
 `;
@@ -312,20 +259,7 @@ const Input1 = styled.input`
   height: 50px;
 `;
 
-const OKEmail = styled.div`
-  width: 100%;
-  height: 50px;
-  padding: 0 10px;
-  background-color: #efefef;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  font-size: 14px;
-  border: 1px solid green;
-`;
-
 const SendButton = styled.button`
-  width: 96px;
   height: 34px;
   background-color: #fffdf7;
   color: black;
@@ -335,14 +269,13 @@ const SendButton = styled.button`
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: 80px;
 `;
 
 const Input2 = styled.input`
   width: 100%;
   height: 50px;
   border-bottom: solid 1px #acacac;
-  border: ${(props) =>
+  /* border: ${(props) =>
     props.confirmPassword && props.password !== props.confirmPassword
       ? "1px solid red"
       : props.confirmPassword && props.password === props.confirmPassword
@@ -353,7 +286,7 @@ const Input2 = styled.input`
   border: ${(props) =>
     props.confirmPassword && props.password === props.confirmPassword
       ? "1px solid green"
-      : ""}!important;
+      : ""}!important; */
 `;
 
 const SignUpButton = styled.button`

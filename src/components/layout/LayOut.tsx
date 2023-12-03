@@ -1,9 +1,8 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
-import Header from "./header/header";
 import SideBar from "./sidebar/SideBar";
-import Footer from "./footer/footer";
 import styled from "styled-components";
+import Header from "./header/Header";
+import Footer from "./footer/Footer";
 
 const LayOut = () => {
   return (
