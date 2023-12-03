@@ -82,6 +82,7 @@ export default Categories;
 
 const StCategory = styled.div`
   display: flex;
+  margin: 0 80px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
