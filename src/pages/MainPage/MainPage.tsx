@@ -35,4 +35,18 @@ const StCardContainer = styled.div`
   justify-content: center;
   width: 100vw;
   height: 900px;
+  flex-wrap: wrap;
+  @media (min-width: 640px) {
+    .sm\:mx-10 {
+      min-width: 640px;
+      margin-left: 2.5rem;
+      margin-right: 2.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .lg\:mx-20 {
+      margin-left: 5rem;
+      margin-right: 5rem;
+    }
+  }
 `;
