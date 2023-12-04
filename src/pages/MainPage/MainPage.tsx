@@ -38,23 +38,20 @@ const StCardContainer = styled.div`
   width: 100vw;
   height: 900px;
   flex-wrap: wrap;
-  @media (min-width: 640px) {
+  /* overflow-x: hidden; */
+
+  /* @media (min-width: 640px) {
     .sm\:mx-10 {
       min-width: 640px;
       margin-left: 2.5rem;
       margin-right: 2.5rem;
     }
-  }
-  @media (min-width: 1024px) {
-    .lg\:mx-20 {
-      margin-left: 5rem;
-      margin-right: 5rem;
-    }
-  }
+  } */
 `;
 
 const StTitle = styled.div`
-  margin: 50px 0 0 170px;
+  margin: 30px 0 0 170px;
   font-weight: bold;
   font-size: 18px;
+  letter-spacing: -1px;
 `;
