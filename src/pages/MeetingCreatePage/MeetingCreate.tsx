@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import styled from "styled-components";
 import Location from "../../components/location/Location";
 import Category from "../../components/category/Category";
+import Swal from "sweetalert2";
 // import { apiToken } from "../../shared/apis/Apis";
 // import { Mutation } from "react-query";
 // import { useNavigate } from "react-router-dom";
@@ -95,67 +96,200 @@ const MeetingCreate = () => {
     if (fileInput.current) {
       fileInput.current.value = "";
     }
+    Swal.fire({
+      text: "등록이 완료되었습니다.",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "확인",
+    });
     // navigate("/");
   };
 
   return (
-    <StContainer onSubmit={handleSubmit}>
-      <h3>모임 생성</h3>
-      <label>모임 이름</label>
-      <input
-        type="text"
-        value={title}
-        onChange={handleInputChange(setTitle)}
-        required
-      />
-      <label>대표 이미지</label>
-      <input
-        type="file"
-        onChange={handleFileChange}
-        accept=".jpg, .jpeg, .png"
-        ref={fileInput}
-        required
-      />
-      <label>활동 지역</label>
-      <Location
-        value={location}
-        onChange={(selectedValue) => setLocation(selectedValue)}
-      />
-      <label>모임 설명</label>
-      <input
-        type="text"
-        value={description}
-        onChange={handleInputChange(setDescription)}
-        required
-      />
-      <label>최대 인원</label>
-      <input
-        type="number"
-        min={0}
-        step={1}
-        value={maxMembers}
-        onChange={handleInputChange(setMaxMembers)}
-        required
-      />
-      <label>카테고리</label>
-      <Category
-        value={category}
-        onChange={(selectedValue) => setCategory(selectedValue)}
-      />
-      <button>모임 생성</button>
-    </StContainer>
+    <StForm>
+      <StContainer onSubmit={handleSubmit}>
+        <StLeftForm>
+          {fileInput.current?.files?.[0] ? (
+            <StPrevImg src={URL.createObjectURL(fileInput.current.files[0])} />
+          ) : (
+            <StNoneImg></StNoneImg>
+          )}
+
+          <StPrevLabel>대표 이미지</StPrevLabel>
+          <StPrevSection>
+            <StPreview
+              value={fileInput.current?.files?.[0]?.name || ""}
+              readOnly
+            />
+            <StUpload htmlFor="previewImg">업로드</StUpload>
+          </StPrevSection>
+          <StNone
+            id="previewImg"
+            type="file"
+            onChange={handleFileChange}
+            accept=".jpg, .jpeg, .png"
+            ref={fileInput}
+            required
+          />
+        </StLeftForm>
+        <StRightForm>
+          <StLabel>모임 이름</StLabel>
+          <StInput
+            type="text"
+            value={title}
+            onChange={handleInputChange(setTitle)}
+            required
+          />
+
+          <StLabel>활동 지역</StLabel>
+          <Location
+            value={location}
+            onChange={(selectedValue) => setLocation(selectedValue)}
+          />
+          <StLabel>모임 설명</StLabel>
+          <StInput
+            type="text"
+            value={description}
+            onChange={handleInputChange(setDescription)}
+            required
+          />
+          <StLabel>최대 인원</StLabel>
+          <StInput
+            type="number"
+            min={0}
+            step={1}
+            value={maxMembers}
+            onChange={handleInputChange(setMaxMembers)}
+            required
+          />
+          <StLabel>카테고리</StLabel>
+          <Category
+            value={category}
+            onChange={(selectedValue) => setCategory(selectedValue)}
+          />
+          <StButton>모임 생성</StButton>
+        </StRightForm>
+      </StContainer>
+    </StForm>
   );
 };
 
 export default MeetingCreate;
 
+const StForm = styled.div`
+  width: 100vw;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const StContainer = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   border: 1px solid lightgray;
   border-radius: 13px;
-  width: 300px;
-  height: 400px;
+  width: 700px;
+  height: auto;
+`;
+
+const StLeftForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+`;
+
+const StRightForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+`;
+
+const StInput = styled.input`
+  width: 321px;
+  padding: 0;
+  height: 30px;
+  font-size: 15px;
+  margin-top: 5px;
+  margin-left: 10px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+`;
+
+const StLabel = styled.label`
+  width: 321px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 10px;
+  display: flex;
+  justify-content: start;
+  margin-top: 15px;
+`;
+
+const StPrevLabel = styled.label`
+  width: 321px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 15px;
+  display: flex;
+  justify-content: start;
+  margin-top: 15px;
+`;
+
+const StUpload = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 30px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-left: 5px;
+  font-weight: bold;
+  background-color: lightgray;
+`;
+
+const StPreview = styled.input`
+  width: 264px;
+  height: 30px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 0;
+  margin-top: 5px;
+  margin-left: 15px;
+`;
+
+const StPrevImg = styled.img`
+  height: 290px;
+  width: 321px;
+  display: flex;
+  margin-left: 15px;
+  border-radius: 5px;
+  overflow: hidden;
+`;
+
+const StNoneImg = styled.div`
+  height: 290px;
+  width: 321px;
+  display: flex;
+  margin-left: 15px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+`;
+
+const StPrevSection = styled.div`
+  display: flex;
+`;
+
+const StNone = styled.input`
+  display: none;
+`;
+
+const StButton = styled.button`
+  width: 92%;
+  margin: 15px 0 15px 10px;
+  background-color: lightgray;
 `;
