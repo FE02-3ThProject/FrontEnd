@@ -2,6 +2,7 @@ import { useState } from "react";
 import NavItem from "./NavItem";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { CiSearch } from "react-icons/ci";
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
@@ -12,8 +13,14 @@ const Navbar = () => {
     <StNav>
       <StTop>
         <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-          <StLogo>logo</StLogo>
+          <StLogo>모임?모임!</StLogo>
         </Link>
+        <StSearch>
+          <StInput type="text" placeholder="어떤 모임을 찾고계신가요?" />
+        </StSearch>
+        <StSearchIcon>
+          <CiSearch />
+        </StSearchIcon>
         <StMenu>
           {menu === false ? (
             <StMenuButton onClick={handleMenu}>+</StMenuButton>
@@ -40,7 +47,7 @@ const StNav = styled.div`
   z-index: 10;
   /* width: 100vw; */
   color: #fff;
-  background-color: #ff8400;
+  background-color: #ffffff;
 `;
 
 const StTop = styled.div`
@@ -68,11 +75,13 @@ const StTop = styled.div`
 const StLogo = styled.div`
   display: flex;
   align-items: center;
-  width: 50px;
+  width: 150px;
   font-size: 1.5rem /* 24px */;
   line-height: 2rem /* 32px */;
   height: 3.5rem /* 56px */;
-  padding-left: 3rem;
+  margin-left: 3rem;
+  color: #0f78ee;
+  font-weight: 900;
 `;
 
 const StMenu = styled.div`
@@ -90,4 +99,27 @@ const StMenu = styled.div`
 const StMenuButton = styled.button`
   background-color: transparent;
   color: #fff;
+`;
+
+const StSearch = styled.div`
+  margin-left: -730px;
+`;
+
+const StInput = styled.input`
+  width: 200px;
+  height: 25px;
+  border-radius: 15px;
+  padding-left: 15px;
+  background-color: #0f78ee;
+  border: 1px solid #0f78ee;
+  color: #fff;
+  outline: none;
+  &::placeholder {
+    color: #fff;
+    opacity: 70%;
+  }
+`;
+
+const StSearchIcon = styled.div`
+  margin-left: -760px;
 `;
