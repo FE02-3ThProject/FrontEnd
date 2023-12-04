@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import styled from "styled-components";
 import Location from "../../components/location/Location";
 import Category from "../../components/category/Category";
+import Swal from "sweetalert2";
 // import { apiToken } from "../../shared/apis/Apis";
 // import { Mutation } from "react-query";
 // import { useNavigate } from "react-router-dom";
@@ -95,6 +96,12 @@ const MeetingCreate = () => {
     if (fileInput.current) {
       fileInput.current.value = "";
     }
+    Swal.fire({
+      text: "등록이 완료되었습니다.",
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "확인",
+    });
     // navigate("/");
   };
 
