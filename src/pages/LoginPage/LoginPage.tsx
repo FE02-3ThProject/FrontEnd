@@ -10,16 +10,16 @@ const LoginPage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [email, setEmail]=UseInput("")
-  const [password, setPassword] = UseInput("")
+  const [email, setEmail] = UseInput("");
+  const [password, setPassword] = UseInput("");
 
   const postLogin = async () => {
-    const data = await api.post("api주소",{
+    const data = await api.post("api주소", {
       email,
       password,
-    })
-    return data
-  }
+    });
+    return data;
+  };
   const { mutate: onsubmit } = useMutation(postLogin, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
@@ -41,9 +41,6 @@ const LoginPage = () => {
       return;
     },
   });
-
-
-
 
   return <div>LoginPage</div>;
 };
