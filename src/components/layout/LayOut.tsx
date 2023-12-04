@@ -17,6 +17,8 @@ export default LayOut;
 
 const StLayout = styled.div`
   display: flex;
+  width: 100vw;
   flex-direction: column;
   height: 100vh;
+  overflow-x: hidden;
 `;

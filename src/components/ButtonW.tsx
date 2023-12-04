@@ -19,9 +19,9 @@ const Button = styled.button<ButtonProps>`
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s;
   width: 100%;
-  background-color: ${({ outline }) => (outline ? "white" : "#0F78EE")};
+  background-color: ${({ outline }) => (outline ? "white" : "#ffffff")};
   border-color: ${({ outline }) => (outline ? "black" : "#0F78EE")};
-  color: ${({ outline }) => (outline ? "black" : "white")};
+  color: ${({ outline }) => (outline ? "black" : "#0F78EE")};
   font-size: ${({ small }) => (small ? "0.875rem" : "1rem")};
   padding: ${({ small }) => (small ? "0.25rem" : "0.75rem")};
   font-weight: ${({ small }) => (small ? "light" : "bold")};
@@ -39,7 +39,7 @@ const Button = styled.button<ButtonProps>`
     `}
 `;
 
-const StButton: React.FC<ButtonProps> = ({
+const StButtonW: React.FC<ButtonProps> = ({
   label,
   onClick,
   disabled,
@@ -80,4 +80,4 @@ const StButton: React.FC<ButtonProps> = ({
   );
 };
 
-export default StButton;
+export default StButtonW;

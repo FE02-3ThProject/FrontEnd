@@ -11,7 +11,7 @@ import styled from "styled-components";
 
 const StCardContainer = styled.div`
   width: 200px;
-  margin: 50px 35px;
+  margin: 20px 35px;
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
