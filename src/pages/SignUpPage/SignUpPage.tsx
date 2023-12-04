@@ -60,8 +60,8 @@ const SignUpPage = () => {
     if (!nicknameCheck(nickname)) {
       return null;
     } else {
-      const data = await api.post("api주소", {
-        nickname,
+      const data: AxiosResponse = await api.post("api주소", {
+        nickname: String(nickname),
       });
       return data;
     }
@@ -163,18 +163,25 @@ const SignUpPage = () => {
         </Title>
 
         <InputBox>
-          <InputWrap>
             <Input1
               type="email"
               id="email"
               placeholder="이메일 : "
               value={email || ""}
               onChange={setEmail}
-            />
-            <SendButton onClick={(e) => checkEmail(e)}>
-              이메일중복확인
-            </SendButton>
-          </InputWrap>
+              onBlur={(e) => {
+                if (e.currentTarget.value && e.currentTarget === e.target) {
+                  checkEmail(e);
+                }
+              }}
+            />           
+            {email === "" ? null : emailCHK ? (
+            <p style={{ color: "green" }}>사용가능한 이메일입니다.</p>
+          ) : (
+            <p style={{ color: "red" }}>
+              이미 중복된 닉네임이거나, 사용불가능한 이메일입니다.
+            </p>
+          )}
           <Input2
             type="text"
             placeholder="닉네임 :               (영어/한글/숫자 3~15자)"
@@ -186,7 +193,7 @@ const SignUpPage = () => {
               }
             }}
           />
-          {nickname === null ? null : nicknameCHK ? (
+          {nickname === "" ? null : nicknameCHK ? (
             <p style={{ color: "green" }}>사용가능한 닉네임입니다.</p>
           ) : (
             <p style={{ color: "red" }}>
@@ -247,46 +254,15 @@ const InputBox = styled.div`
   gap: 16px;
 `;
 
-const InputWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-  background-color: white;
-  border-bottom: solid 1px #acacac;
-`;
-
 const Input1 = styled.input`
   width: 100%;
   height: 50px;
 `;
 
-const SendButton = styled.button`
-  height: 34px;
-  background-color: #fffdf7;
-  color: black;
-  border: 1px solid gray;
-  margin: 8px 8px 8px 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
-
 const Input2 = styled.input`
   width: 100%;
   height: 50px;
-  border-bottom: solid 1px #acacac;
-  /* border: ${(props) =>
-    props.confirmPassword && props.password !== props.confirmPassword
-      ? "1px solid red"
-      : props.confirmPassword && props.password === props.confirmPassword
-      ? "1px solid green"
-      : null}!important;
-  border: ${(props) => (props.nicknameCHK ? "1px solid green" : "")}!important;
-  border: ${(props) => (props.blogIdCHK ? "1px solid green" : "")}!important;
-  border: ${(props) =>
-    props.confirmPassword && props.password === props.confirmPassword
-      ? "1px solid green"
-      : ""}!important; */
+  border-bottom: solid 1px #acacac;  
 `;
 
 const SignUpButton = styled.button`
