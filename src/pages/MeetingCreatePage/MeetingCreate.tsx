@@ -32,12 +32,21 @@ const MeetingCreate = () => {
   const [image, setImage] = useState<File | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [maxMembers, setMaxMembers] = useState<number>(0);
+  const [maxMembers, setMaxMembers] = useState<number>(1);
   const [category, setCategory] = useState<string>("");
 
+  // const handleInputChange =
+  //   (setter: Function) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     setter(event.target.value);
+  //   };
+
   const handleInputChange =
-    (setter: Function) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setter(event.target.value);
+    <T extends string | number>(
+      setter: React.Dispatch<React.SetStateAction<T>>
+    ) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      setter(value as unknown as T);
     };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,11 +61,17 @@ const MeetingCreate = () => {
   //     setImage(null);
   //     setLocation("");
   //     setDescription("");
-  //     setMaxMembers(0);
+  //     setMaxMembers(1);
   //     setCategory("");
   //     if (fileInput.current) {
   //       fileInput.current.value = "";
   //     }
+  // Swal.fire({
+  //   text: "등록이 완료되었습니다.",
+  //   icon: "success",
+  //   confirmButtonColor: "#3085d6",
+  //   confirmButtonText: "확인",
+  // });
   //     navigate("/");
   //   },
   // });
@@ -65,12 +80,12 @@ const MeetingCreate = () => {
   //   event.preventDefault();
   //   mutation.mutate({
   //     title: title,
-  //     image: image,
-  //     location: location,
-  //     description: description,
-  //     maxMembers: maxMembers,
-  //     createdAt: today,
-  //     category: category,
+  // image: image,
+  // location: Number(location),
+  // description: description,
+  // maxMembers: Number(maxMembers),
+  // createdAt: today,
+  // category: Number(category),
   //   });
   // };
 
@@ -80,18 +95,18 @@ const MeetingCreate = () => {
     console.log({
       title: title,
       image: image,
-      location: location,
+      location: Number(location),
       description: description,
-      maxMembers: maxMembers,
+      maxMembers: Number(maxMembers),
       createdAt: today,
-      category: category,
+      category: Number(category),
     });
 
     setTitle("");
     setImage(null);
     setLocation("");
     setDescription("");
-    setMaxMembers(0);
+    setMaxMembers(1);
     setCategory("");
     if (fileInput.current) {
       fileInput.current.value = "";
@@ -156,7 +171,7 @@ const MeetingCreate = () => {
           <StLabel>최대 인원</StLabel>
           <StInput
             type="number"
-            min={0}
+            min={1}
             step={1}
             value={maxMembers}
             onChange={handleInputChange(setMaxMembers)}
@@ -189,7 +204,7 @@ const StContainer = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid lightgray;
+  border: 2px solid #7ff1cb;
   border-radius: 13px;
   width: 700px;
   height: auto;
