@@ -38,7 +38,7 @@ const StCardContainer = styled.div`
   width: 100vw;
   height: 900px;
   flex-wrap: wrap;
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
 
   /* @media (min-width: 640px) {
     .sm\:mx-10 {

@@ -30,10 +30,12 @@ const Button = styled.button<ButtonProps>`
   &:hover {
     opacity: 0.8;
     border: 2px solid #0f78ee;
+    outline: transparent;
   }
-
+  &:focus,
   &:active {
-    border: 1px solid #0f78ee;
+    border: 2px solid #0f78ee;
+    outline: transparent;
   }
   ${({ isLoading }) =>
     isLoading &&

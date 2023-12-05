@@ -29,6 +29,12 @@ const Button = styled.button<ButtonProps>`
 
   &:hover {
     opacity: 0.8;
+    outline: transparent;
+  }
+  &:focus,
+  &:active {
+    border: 2px solid #0f78ee;
+    outline: transparent;
   }
 
   ${({ isLoading }) =>
