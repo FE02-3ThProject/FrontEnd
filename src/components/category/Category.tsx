@@ -14,9 +14,16 @@ export const Category: FC<CategoryProps> = ({ value, onChange }) => {
   return (
     <StInput value={value} onChange={handleCategoryChange} required>
       <option value="">카테고리를 선택해 주세요</option>
-      <option value="스포츠">스포츠</option>
-      <option value="예술">예술</option>
-      <option value="음악">음악</option>
+      <option value="1">게임</option>
+      <option value="2">여행</option>
+      <option value="3">운동</option>
+      <option value="4">책</option>
+      <option value="5">직무</option>
+      <option value="6">언어</option>
+      <option value="7">공연</option>
+      <option value="8">음악</option>
+      <option value="9">공예</option>
+      <option value="10">댄스</option>
     </StInput>
   );
 };
@@ -31,4 +38,8 @@ const StInput = styled.select`
   margin-left: 10px;
   border: 1px solid lightgray;
   border-radius: 5px;
+  outline: none;
+  &:focus {
+    border: 1px solid #1981f9;
+  }
 `;
