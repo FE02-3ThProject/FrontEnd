@@ -9,6 +9,7 @@ const MainPage = () => {
     <StContainer>
       <MainSwiper />
       <Categories />
+      <StTitle>추천 모임</StTitle>
       <StCardContainer>
         <MeetingCard />
         <MeetingCard />
@@ -28,6 +29,7 @@ export default MainPage;
 const StContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100vw;
 `;
 
 const StCardContainer = styled.div`
@@ -36,17 +38,19 @@ const StCardContainer = styled.div`
   width: 100vw;
   height: 900px;
   flex-wrap: wrap;
-  @media (min-width: 640px) {
+
+  /* @media (min-width: 640px) {
     .sm\:mx-10 {
       min-width: 640px;
       margin-left: 2.5rem;
       margin-right: 2.5rem;
     }
-  }
-  @media (min-width: 1024px) {
-    .lg\:mx-20 {
-      margin-left: 5rem;
-      margin-right: 5rem;
-    }
-  }
+  } */
+`;
+
+const StTitle = styled.div`
+  margin: 30px 0 0 170px;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: -1px;
 `;

@@ -1,26 +1,25 @@
-import { useState } from "react";
 import NavItem from "./NavItem";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { CiSearch } from "react-icons/ci";
 
 const Navbar = () => {
-  const [menu, setMenu] = useState(false);
-  const handleMenu = () => {
-    setMenu(!menu);
-  };
   return (
     <StNav>
       <StTop>
-        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-          <StLogo>logo</StLogo>
-        </Link>
-        <StMenu>
-          {menu === false ? (
-            <StMenuButton onClick={handleMenu}>+</StMenuButton>
-          ) : (
-            <StMenuButton onClick={handleMenu}>-</StMenuButton>
-          )}
-        </StMenu>
+        <StTopSection>
+          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+            <StLogo>
+              모임?<span>모임!</span>
+            </StLogo>
+          </Link>
+          <StSearch>
+            <StInput type="text" placeholder="어떤 모임을 찾고계신가요?" />
+          </StSearch>
+          <StSearchIcon>
+            <CiSearch />
+          </StSearchIcon>
+        </StTopSection>
 
         {/* nav-items large screen*/}
         <div>
@@ -36,11 +35,13 @@ export default Navbar;
 const StNav = styled.div`
   position: relative;
   width: 100vw;
+  height: 62px;
+  margin-top: 8px;
   justify-content: space-between;
   z-index: 10;
-  /* width: 100vw; */
   color: #fff;
-  background-color: #ff8400;
+  background-color: #ffffff;
+  box-shadow: 0 3px 5px gray 80%;
 `;
 
 const StTop = styled.div`
@@ -64,30 +65,49 @@ const StTop = styled.div`
   }
   */
 `;
-
+const StTopSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 80px;
+`;
 const StLogo = styled.div`
   display: flex;
   align-items: center;
-  width: 50px;
-  font-size: 1.5rem /* 24px */;
+  width: 150px;
+  font-size: 1.6rem /* 24px */;
   line-height: 2rem /* 32px */;
   height: 3.5rem /* 56px */;
-  padding-left: 3rem;
-`;
-
-const StMenu = styled.div`
-  font-size: 1.5rem /* 24px */;
-  line-height: 2rem /* 32px */;
-  width: 50px;
-  @media (min-width: 640px) {
-    .sm\:hidden {
-      display: none;
-    }
+  margin-left: 3rem;
+  color: #1981f9;
+  font-weight: 300;
+  letter-spacing: -2px;
+  span {
+    font-size: 40px;
+    font-weight: 300;
   }
-  background-color: transparent;
 `;
 
-const StMenuButton = styled.button`
-  background-color: transparent;
-  color: #fff;
+const StSearch = styled.div``;
+
+const StInput = styled.input`
+  width: 200px;
+  height: 25px;
+  border-radius: 15px;
+  padding-left: 15px;
+  margin-left: 10px;
+  background-color: #fff;
+  border: 1px solid #0f78ee;
+  color: #0f78ee;
+  outline: none;
+  &::placeholder {
+    color: #0f78ee;
+  }
+`;
+
+const StSearchIcon = styled.div`
+  color: #0f78ee;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: -30px;
 `;

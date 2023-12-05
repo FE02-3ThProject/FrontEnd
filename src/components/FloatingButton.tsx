@@ -13,7 +13,7 @@ const StLink = styled(Link)`
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  background-color: #f97316;
+  background-color: #0f78ee;
   border: none;
   border-radius: 50%;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
@@ -26,7 +26,7 @@ const StLink = styled(Link)`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #ea580c;
+    background-color: #0f52ee;
     color: #ffffff;
   }
 `;
