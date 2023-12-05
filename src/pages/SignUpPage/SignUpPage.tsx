@@ -171,7 +171,7 @@ const SignUpPage = () => {
               onChange={setEmail}
               onBlur={(e) => {
                 if (e.currentTarget.value && e.currentTarget === e.target) {
-                  checkEmail(e);
+                  checkEmail(e.currentTarget.value);
                 }
               }}
             />           
@@ -189,7 +189,7 @@ const SignUpPage = () => {
             onChange={setNickname}
             onBlur={(e) => {
               if (e.currentTarget.value && e.currentTarget === e.target) {
-                dupNick(e);
+                dupNick(e.currentTarget.value);
               }
             }}
           />
@@ -231,7 +231,6 @@ const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fffdf7;
 `;
 
 const SignUpBox = styled.div`
