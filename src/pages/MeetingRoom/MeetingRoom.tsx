@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { apiToken } from "../../shared/apis/Apis";
 
 const fetchMeeting = async (meetingId: number) => {
-  const response = await apiToken.get(`/api주소/${meetingId}`); // 실제 API 주소를 사용하세요.
+  const response = await apiToken.get(`/api/group/${meetingId}`); // 실제 API 주소를 사용하세요.
   return response.data;
 };
 

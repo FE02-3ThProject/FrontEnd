@@ -45,4 +45,8 @@ const StInput = styled.select`
   margin-left: 10px;
   border: 1px solid lightgray;
   border-radius: 5px;
+  outline: none;
+  &:focus {
+    border: 1px solid #1981f9;
+  }
 `;

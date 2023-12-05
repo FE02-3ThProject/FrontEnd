@@ -35,11 +35,6 @@ const MeetingCreate = () => {
   const [maxMembers, setMaxMembers] = useState<number>(1);
   const [category, setCategory] = useState<string>("");
 
-  // const handleInputChange =
-  //   (setter: Function) => (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     setter(event.target.value);
-  //   };
-
   const handleInputChange =
     <T extends string | number>(
       setter: React.Dispatch<React.SetStateAction<T>>
@@ -71,9 +66,9 @@ const MeetingCreate = () => {
   //   icon: "success",
   //   confirmButtonColor: "#3085d6",
   //   confirmButtonText: "확인",
+  // }).then(() => {
+  // navigate("/");
   // });
-  //     navigate("/");
-  //   },
   // });
 
   // const handleSubmit = (event: ReactDOM.FormEvent<HTMLFormElement>) => {
@@ -116,12 +111,14 @@ const MeetingCreate = () => {
       icon: "success",
       confirmButtonColor: "#3085d6",
       confirmButtonText: "확인",
+    }).then(() => {
+      // navigate("/");
     });
-    // navigate("/");
   };
 
   return (
     <StForm>
+      <StTitle>모임 생성</StTitle>
       <StContainer onSubmit={handleSubmit}>
         <StLeftForm>
           {fileInput.current?.files?.[0] ? (
@@ -135,6 +132,7 @@ const MeetingCreate = () => {
             <StPreview
               value={fileInput.current?.files?.[0]?.name || ""}
               readOnly
+              disabled
             />
             <StUpload htmlFor="previewImg">업로드</StUpload>
           </StPrevSection>
@@ -155,7 +153,6 @@ const MeetingCreate = () => {
             onChange={handleInputChange(setTitle)}
             required
           />
-
           <StLabel>활동 지역</StLabel>
           <Location
             value={location}
@@ -198,13 +195,26 @@ const StForm = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+`;
+
+const StTitle = styled.h3`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 60px;
+  color: #1981f9;
+  margin-bottom: 40px;
+  padding-bottom: 10px;
+  width: 700px;
+  border-bottom: 2px solid #1981f9;
 `;
 
 const StContainer = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #7ff1cb;
+  border: 2px solid #1981f9;
   border-radius: 13px;
   width: 700px;
   height: auto;
@@ -231,6 +241,10 @@ const StInput = styled.input`
   margin-left: 10px;
   border: 1px solid lightgray;
   border-radius: 5px;
+  outline: none;
+  &:focus {
+    border: 1px solid #1981f9;
+  }
 `;
 
 const StLabel = styled.label`
@@ -259,12 +273,20 @@ const StUpload = styled.label`
   align-items: center;
   width: 50px;
   height: 30px;
-  border: 1px solid lightgray;
+  border: 1px solid #1981f9;
+  background-color: #1981f9;
   border-radius: 5px;
   margin-top: 5px;
   margin-left: 5px;
+  font-size: 15px;
   font-weight: bold;
-  background-color: lightgray;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    border: 1px solid #007aee;
+    background-color: #007aee;
+    color: white;
+    font-weight: bold;
+  }
 `;
 
 const StPreview = styled.input`
@@ -306,5 +328,16 @@ const StNone = styled.input`
 const StButton = styled.button`
   width: 92%;
   margin: 15px 0 15px 10px;
-  background-color: lightgray;
+  background-color: #1981f9;
+  border: 1px solid #1981f9;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  &:hover,
+  &:focus {
+    outline: none;
+    border: 1px solid #007aee;
+    background-color: #007aee;
+    color: white;
+    font-weight: bold;
+  }
 `;
