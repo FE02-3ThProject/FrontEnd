@@ -19,9 +19,9 @@ const Button = styled.button<ButtonProps>`
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: all 0.2s;
   width: 100%;
-  background-color: ${({ outline }) => (outline ? "white" : "#0F78EE")};
-  border-color: ${({ outline }) => (outline ? "#0F78EE" : "#0F78EE")};
-  color: ${({ outline }) => (outline ? "#0F78EE" : "white")};
+  background-color: ${({ outline }) => (outline ? "white" : "#ffffff")};
+  border-color: ${({ outline }) => (outline ? "black" : "#0F78EE")};
+  color: ${({ outline }) => (outline ? "black" : "#0F78EE")};
   font-size: ${({ small }) => (small ? "0.875rem" : "1rem")};
   padding: ${({ small }) => (small ? "0.25rem" : "0.75rem")};
   font-weight: ${({ small }) => (small ? "light" : "bold")};
@@ -29,7 +29,6 @@ const Button = styled.button<ButtonProps>`
 
   &:hover {
     opacity: 0.8;
-    border: 2px solid #0f78ee;
     outline: transparent;
   }
   &:focus,
@@ -37,15 +36,16 @@ const Button = styled.button<ButtonProps>`
     border: 2px solid #0f78ee;
     outline: transparent;
   }
+
   ${({ isLoading }) =>
     isLoading &&
     css`
       display: flex;
       justify-content: center;
-    `};
+    `}
 `;
 
-const StButton: React.FC<ButtonProps> = ({
+const StButtonW: React.FC<ButtonProps> = ({
   label,
   onClick,
   disabled,
@@ -86,4 +86,4 @@ const StButton: React.FC<ButtonProps> = ({
   );
 };
 
-export default StButton;
+export default StButtonW;
