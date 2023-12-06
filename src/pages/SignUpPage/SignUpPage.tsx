@@ -266,7 +266,7 @@ const InputBox = styled.div`
 `;
 
 const Input1 = styled.input`
-  width: 415px;
+  width: auto;
   padding-left: 10px;
   height: 50px;
   font-size: 15px;
@@ -281,7 +281,7 @@ const Input1 = styled.input`
 `;
 
 const Input2 = styled.input`
-  width: 415px;
+  width: auto;
   padding-left: 10px;
   height: 50px;
   font-size: 15px;
