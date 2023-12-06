@@ -117,9 +117,6 @@ const InputBox = styled.div`
 `;
 
 const Input2 = styled.input`
-  /* width: 100%;
-  height: 50px;
-  border-bottom: solid 1px #acacac; */
   width: 372px;
   padding-left: 10px;
   height: 50px;
@@ -141,7 +138,6 @@ const LoginButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* text-align: center; */
   color: #ffffff;
   font-size: 16px;
   font-weight: bold;

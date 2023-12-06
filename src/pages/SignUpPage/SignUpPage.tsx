@@ -240,10 +240,6 @@ const SignUpBox = styled.div`
 `;
 
 const Title = styled.div`
-  /* display: flex;
-  text-align: center;
-  flex-direction: column;
-  border-bottom: solid 1px #acacac; */
   display: flex;
   text-align: center;
   flex-direction: column;
@@ -270,8 +266,6 @@ const InputBox = styled.div`
 `;
 
 const Input1 = styled.input`
-  /* width: 100%;
-  height: 50px; */
   width: 415px;
   padding-left: 10px;
   height: 50px;
@@ -287,9 +281,6 @@ const Input1 = styled.input`
 `;
 
 const Input2 = styled.input`
-  /* width: 100%;
-  height: 50px;
-  border-bottom: solid 1px #acacac; */
   width: 415px;
   padding-left: 10px;
   height: 50px;
