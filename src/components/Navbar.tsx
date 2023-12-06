@@ -1,7 +1,7 @@
 import NavItem from "./NavItem";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { CiSearch } from "react-icons/ci";
+import Search from "./Search";
 
 const Navbar = () => {
   return (
@@ -14,11 +14,8 @@ const Navbar = () => {
             </StLogo>
           </Link>
           <StSearch>
-            <StInput type="text" placeholder="어떤 모임을 찾고계신가요?" />
+            <Search />
           </StSearch>
-          <StSearchIcon>
-            <CiSearch />
-          </StSearchIcon>
         </StTopSection>
 
         {/* nav-items large screen*/}
@@ -88,26 +85,9 @@ const StLogo = styled.div`
   }
 `;
 
-const StSearch = styled.div``;
-
-const StInput = styled.input`
-  width: 200px;
-  height: 25px;
-  border-radius: 15px;
-  padding-left: 15px;
-  margin-left: 10px;
-  background-color: #fff;
-  border: 1px solid #0f78ee;
-  color: #0f78ee;
-  outline: none;
-  &::placeholder {
-    color: #0f78ee;
-  }
-`;
-
-const StSearchIcon = styled.div`
-  color: #0f78ee;
-  font-size: 20px;
-  font-weight: bold;
-  margin-left: -30px;
+const StSearch = styled.div`
+  display: flex;
+  height: 30px;
+  /* margin-top: 20px; */
+  align-items: center;
 `;
