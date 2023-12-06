@@ -117,24 +117,32 @@ const InputBox = styled.div`
 `;
 
 const Input2 = styled.input`
-  width: 100%;
+  width: 372px;
+  padding-left: 10px;
   height: 50px;
-  border-bottom: solid 1px #acacac;
+  font-size: 15px;
+  margin-top: 5px;
+  margin-left: 0;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  outline: none;
+  &:focus {
+    border: 1px solid #1981f9;
+  }
 `;
 
 const LoginButton = styled.button`
   width: 100%;
   height: 50px;
-  background-color: black;
+  background-color: #3085d6;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* text-align: center; */
   color: #ffffff;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: bold;
   line-height: 16px;
-  margin-top: 41px;
+  margin-top: 25px;
   font-family: "Gmarket Sans Light";
 `;
 

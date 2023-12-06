@@ -163,19 +163,19 @@ const SignUpPage = () => {
         </Title>
 
         <InputBox>
-            <Input1
-              type="email"
-              id="email"
-              placeholder="이메일 : "
-              value={email || ""}
-              onChange={setEmail}
-              onBlur={(e) => {
-                if (e.currentTarget.value && e.currentTarget === e.target) {
-                  checkEmail(e.currentTarget.value);
-                }
-              }}
-            />           
-            {email === "" ? null : emailCHK ? (
+          <Input1
+            type="email"
+            id="email"
+            placeholder="이메일 : "
+            value={email || ""}
+            onChange={setEmail}
+            onBlur={(e) => {
+              if (e.currentTarget.value && e.currentTarget === e.target) {
+                checkEmail(e.currentTarget.value);
+              }
+            }}
+          />
+          {email === "" ? null : emailCHK ? (
             <p style={{ color: "green" }}>사용가능한 이메일입니다.</p>
           ) : (
             <p style={{ color: "red" }}>
@@ -213,7 +213,7 @@ const SignUpPage = () => {
             onChange={setConfirmPassword}
           />
           {confirmPassword === null ? null : password === confirmPassword ? (
-            <p style={{ color: "green" }}>비밀번호가 일치합니다.</p>
+            <p style={{ color: "#1981f9" }}>비밀번호가 일치합니다.</p>
           ) : (
             <p style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</p>
           )}
@@ -234,8 +234,8 @@ const SignUpContainer = styled.div`
 `;
 
 const SignUpBox = styled.div`
-width: 20%;
-height: 100%;
+  width: 20%;
+  height: 100%;
   margin: 160px auto;
 `;
 
@@ -243,7 +243,19 @@ const Title = styled.div`
   display: flex;
   text-align: center;
   flex-direction: column;
+  width: 100%;
   border-bottom: solid 1px #acacac;
+  padding-bottom: 25px;
+  > h2 {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 45px;
+  }
+  > p {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 30px;
+  }
 `;
 
 const InputBox = styled.div`
@@ -254,29 +266,50 @@ const InputBox = styled.div`
 `;
 
 const Input1 = styled.input`
-  width: 100%;
+  width: 415px;
+  padding-left: 10px;
   height: 50px;
+  font-size: 15px;
+  margin-top: 20px;
+  margin-left: 0;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  outline: none;
+  &:focus {
+    border: 1px solid #1981f9;
+  }
 `;
 
 const Input2 = styled.input`
-  width: 100%;
+  width: 415px;
+  padding-left: 10px;
   height: 50px;
-  border-bottom: solid 1px #acacac;  
+  font-size: 15px;
+  margin-top: 5px;
+  margin-left: 0;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  outline: none;
+  &:focus {
+    border: 1px solid #1981f9;
+  }
 `;
 
 const SignUpButton = styled.button`
   width: 100%;
   height: 50px;
-  background-color: black;
+  background-color: #3085d6;
   display: flex;
   justify-content: center;
   text-align: center;
+  align-items: center;
+  font-weight: bold;
   color: white;
   font-size: 16px;
   font-weight: 400;
   line-height: 50px;
   letter-spacing: 0em;
-  margin-top: 41px;
+  margin-top: 25px;
 `;
 
 export default SignUpPage;
