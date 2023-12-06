@@ -198,7 +198,7 @@ const StForm = styled.div`
   flex-direction: column;
 `;
 
-const StTitle = styled.h3`
+const StTitle = styled.h4`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -207,6 +207,7 @@ const StTitle = styled.h3`
   margin-bottom: 40px;
   padding-bottom: 10px;
   width: 700px;
+  font-weight: 200;
   border-bottom: 2px solid #1981f9;
 `;
 
@@ -278,8 +279,9 @@ const StUpload = styled.label`
   border-radius: 5px;
   margin-top: 5px;
   margin-left: 5px;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: bold;
+  color: #fff;
   transition: all 0.3s ease-in-out;
   &:hover {
     border: 1px solid #007aee;
@@ -331,6 +333,7 @@ const StButton = styled.button`
   background-color: #1981f9;
   border: 1px solid #1981f9;
   font-weight: bold;
+  color: #fff;
   transition: all 0.3s ease-in-out;
   &:hover,
   &:focus {
