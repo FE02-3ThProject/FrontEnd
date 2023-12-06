@@ -4,25 +4,34 @@ import Location from "../../components/location/Location";
 import Category from "../../components/category/Category";
 import Swal from "sweetalert2";
 // import { apiToken } from "../../shared/apis/Apis";
-// import { Mutation } from "react-query";
 // import { useNavigate } from "react-router-dom";
 // import { useMutation } from "react-query";
+// // import { Mutation } from "react-query";
 
-// const createMeeting = async (newMeeting) => {
+// interface Meeting {
+//   title: string;
+//   image: File | null;
+//   location: number;
+//   description: string;
+//   maxMembers: number;
+//   category: number;
+// }
+
+// const createMeeting = async (newMeeting: Meeting) => {
 //   const formData = new FormData();
 //   Object.entries(newMeeting).forEach(([key, value]) => {
 //     formData.append(key, value);
 //   });
-//   const response = await apiToken.post("api주소", formData);
+//   const response = await apiToken.post("/api/group/register", formData);
 //   return response.data;
 // };
 
 const MeetingCreate = () => {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const today = `${year}-${month}-${day}`;
+  // const date = new Date();
+  // const year = date.getFullYear();
+  // const month = String(date.getMonth() + 1).padStart(2, "0");
+  // const day = String(date.getDate()).padStart(2, "0");
+  // const today = `${year}-${month}-${day}`;
 
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -61,26 +70,26 @@ const MeetingCreate = () => {
   //     if (fileInput.current) {
   //       fileInput.current.value = "";
   //     }
-  // Swal.fire({
-  //   text: "등록이 완료되었습니다.",
-  //   icon: "success",
-  //   confirmButtonColor: "#3085d6",
-  //   confirmButtonText: "확인",
-  // }).then(() => {
-  // navigate("/");
-  // });
+  //     Swal.fire({
+  //       text: "등록이 완료되었습니다.",
+  //       icon: "success",
+  //       confirmButtonColor: "#3085d6",
+  //       confirmButtonText: "확인",
+  //     }).then(() => {
+  //       navigate("/");
+  //     });
+  //   },
   // });
 
-  // const handleSubmit = (event: ReactDOM.FormEvent<HTMLFormElement>) => {
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
   //   mutation.mutate({
   //     title: title,
-  // image: image,
-  // location: Number(location),
-  // description: description,
-  // maxMembers: Number(maxMembers),
-  // createdAt: today,
-  // category: Number(category),
+  //     image: image,
+  //     location: Number(location),
+  //     description: description,
+  //     maxMembers: Number(maxMembers),
+  //     category: Number(category),
   //   });
   // };
 
@@ -90,11 +99,10 @@ const MeetingCreate = () => {
     console.log({
       title: title,
       image: image,
-      location: Number(location),
+      locationId: Number(location),
       description: description,
       maxMembers: Number(maxMembers),
-      createdAt: today,
-      category: Number(category),
+      categoryIds: Number(category),
     });
 
     setTitle("");
