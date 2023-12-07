@@ -7,6 +7,8 @@ import { api } from "../../shared/apis/Apis";
 import { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
 import styled from "styled-components";
+import Category from "../../components/category/Category";
+import Location from "../../components/location/Location";
 
 const SignUpPage = () => {
   const queryClient = useQueryClient();
@@ -19,6 +21,9 @@ const SignUpPage = () => {
 
   const [emailCHK, setEmailCHK] = useState(false);
   const [nicknameCHK, setNicknameCHK] = useState(false);
+
+  const [location, setLocation] = useState<string>("")
+  const [category, setCategory] = useState<string>("");
 
   //이메일 중복체크
   const postDupEmail = async (
@@ -119,6 +124,8 @@ const SignUpPage = () => {
       nickname,
       password,
       confirmPassword,
+      location,
+      category,
     });
     return data;
   };
@@ -218,6 +225,17 @@ const SignUpPage = () => {
             <p style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</p>
           )}
         </InputBox>
+        <InputBox>
+        
+        <Location
+        value={location}
+        onChange={(selectedValue)=> setLocation(selectedValue)}
+        />
+        <Category
+        value={category}
+        onChange={(selectedValue)=>setCategory(selectedValue)}/>
+        </InputBox>
+       
 
         <SignUpButton onClick={() => onsubmit()}>회원가입</SignUpButton>
       </SignUpBox>
