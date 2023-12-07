@@ -2,7 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import HeartButton from "../HeartButton";
+import HeartButton from "../common/HeartButton";
 
 interface MeetingCardProps {
   groupId: string; // group의 id
