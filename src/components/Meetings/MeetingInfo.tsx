@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { IconType } from "react-icons";
 // import { TUser } from "@/types";
-import Avatar from "../Avatar";
+import Avatar from "../common/Avatar";
 // import { formatTime } from "@/helpers/dayjs";
 import MeetingCategory from "./MeetingCategory";
-import { FormatTime } from "../FormatTime";
+import { FormatTime } from "../common/FormatTime";
 
 interface ProductInfoProps {
   // user: TUser;
