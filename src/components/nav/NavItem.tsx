@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 // import MenuItem from "./MenuItem";
 import styled from "styled-components";
-import StButton from "./Button";
-import StButtonW from "./ButtonW";
+import StButton from "../common/Button";
+import StButtonW from "../common/ButtonW";
 
 const NavItem = () => {
   return (

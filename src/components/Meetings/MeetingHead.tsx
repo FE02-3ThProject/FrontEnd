@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Heading from "../Heading";
-import HeartButton from "../HeartButton";
+import Heading from "../common/Heading";
+import HeartButton from "../common/HeartButton";
 
 interface ProductHeadProps {
   title: string;

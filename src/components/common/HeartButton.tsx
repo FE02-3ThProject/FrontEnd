@@ -2,7 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import useFavorite from "../hooks/useFavorite";
+import useFavorite from "../../hooks/useFavorite";
 
 interface HeartButtonProps {
   groupId: string;
