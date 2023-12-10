@@ -32,18 +32,17 @@ const Footer = () => {
 export default Footer;
 
 const StFooter = styled.div`
-  width: 1920px;
+  width: 100vw;
   height: 329px;
   background-color: #283646;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 1750px;
   flex-direction: column;
 `;
 
 const StLogo = styled.img`
+padding-top: 40px;
   width: 180px;
   margin-bottom: 50px;
 `;
@@ -63,12 +62,13 @@ const StIcons = styled.div`
 `;
 
 const StCopyright = styled.div`
-  width: 1700px;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   margin-top: 60px;
+  margin-bottom: 18px;
   padding-top: 20px;
   border-top: 1px solid white;
 `;

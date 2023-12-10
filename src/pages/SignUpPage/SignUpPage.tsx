@@ -10,6 +10,9 @@ import styled from "styled-components";
 import Category from "../../components/category/Category";
 import Location from "../../components/location/Location";
 
+import LoginBg from "../../images/login_bg.png";
+
+
 const SignUpPage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -247,14 +250,23 @@ const SignUpContainer = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: flex-start;
+  background-image: url(${LoginBg});
+  background-size: cover;
+  background-position: center;
 `;
 
 const SignUpBox = styled.div`
-  width: 20%;
-  height: 100%;
-  margin: 160px auto;
+  width: 885px;
+  height: 662px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 20%;
+  margin-top: 85px;
+  border-radius: 20px;
+  background-color: #0a0a0a;
+  opacity: 0.7;
 `;
 
 const Title = styled.div`
