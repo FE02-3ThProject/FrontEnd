@@ -8,6 +8,9 @@ import Swal from "sweetalert2";
 // import { useMutation } from "react-query";
 // // import { Mutation } from "react-query";
 
+//img Import
+import login_bg from "../../../public/images/login_bg.png";
+
 // interface Meeting {
 //   title: string;
 //   image: File | null;
@@ -126,6 +129,11 @@ const MeetingCreate = () => {
 
   return (
     <StForm>
+      <StTopImage src={login_bg} />
+      <StTopContainer>
+        <StTopContent>대한민국 모든 동네의 이웃이 모인 곳에</StTopContent>
+        <StTopContent>새로운 모임을 알리세요!</StTopContent>
+      </StTopContainer>
       <StContainer onSubmit={handleSubmit}>
         <StLeftForm>
           <StPrevLabel>대표 이미지</StPrevLabel>
@@ -204,19 +212,25 @@ const StForm = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: relative;
 `;
 
-const StTitle = styled.h4`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 60px;
-  color: #1981f9;
-  margin-bottom: 40px;
-  padding-bottom: 10px;
-  width: 700px;
-  font-weight: 200;
-  border-bottom: 2px solid #1981f9;
+const StTopImage = styled.img`
+  margin-top: 60px;
+  margin-bottom: 50px;
+  width: 1920px;
+  height: 400px;
+`;
+
+const StTopContainer = styled.div`
+  width: 651px;
+  position: absolute;
+  top: 231px;
+  left: 144px;
+`;
+
+const StTopContent = styled.p`
+  font-size: 40px;
 `;
 
 const StContainer = styled.form`
