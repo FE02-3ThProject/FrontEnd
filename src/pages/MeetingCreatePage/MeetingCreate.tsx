@@ -10,6 +10,10 @@ import Swal from "sweetalert2";
 
 //img Import
 import login_bg from "../../../public/images/login_bg.png";
+import friends from "../../../public/images/friends.png";
+import Vector from "../../../public/images/pngegg.png";
+import Friends2 from "../../../public/images/friends2.png";
+import Footer from "../../components/layout/footer/Footer";
 
 // interface Meeting {
 //   title: string;
@@ -129,11 +133,34 @@ const MeetingCreate = () => {
 
   return (
     <StForm>
-      <StTopImage src={login_bg} />
-      <StTopContainer>
-        <StTopContent>대한민국 모든 동네의 이웃이 모인 곳에</StTopContent>
-        <StTopContent>새로운 모임을 알리세요!</StTopContent>
-      </StTopContainer>
+      <div>
+        <StBannerImage src={login_bg} />
+        <StTopContainer>
+          <StTopContent>대한민국 모든 동네의 이웃이 모인 곳에</StTopContent>
+          <StTopContent>새로운 모임을 알리세요!</StTopContent>
+        </StTopContainer>
+        <StFriendsImg src={friends} />
+      </div>
+      <StInfomation>
+        <StInfoForm>
+          <StVector src={Vector} />
+          <StInfo>
+            <StInfoTitle>원하는 동네만 쏙쏙</StInfoTitle>
+            <StInfoContent>
+              모이고 싶은 동네를 직접 선택할 수 있어요.
+            </StInfoContent>
+          </StInfo>
+        </StInfoForm>
+        <StInfoForm>
+          <StVector src={Vector} />
+          <StInfo>
+            <StInfoTitle>모모에서 보여주는 내 취미</StInfoTitle>
+            <StInfoContent>
+              모모에 내 모임을 등록하고, 손 쉽게 알려보세요.
+            </StInfoContent>
+          </StInfo>
+        </StInfoForm>
+      </StInfomation>
       <StContainer onSubmit={handleSubmit}>
         <StLeftForm>
           <StPrevLabel>대표 이미지</StPrevLabel>
@@ -168,6 +195,7 @@ const MeetingCreate = () => {
             value={title}
             onChange={handleInputChange(setTitle)}
             required
+            placeholder="이름을 입력해주세요"
           />
           <StLabel>활동 지역</StLabel>
           <Location
@@ -180,6 +208,7 @@ const MeetingCreate = () => {
             value={description}
             onChange={handleInputChange(setDescription)}
             required
+            placeholder="설명을 입력해주세요"
           />
           <StLabel>최대 인원</StLabel>
           <StInput
@@ -198,6 +227,14 @@ const MeetingCreate = () => {
           <StButton>Continue</StButton>
         </StRightForm>
       </StContainer>
+      <StBottom>
+        <StBottomTitle>다양한 모임을 볼 수 있어요</StBottomTitle>
+        <StBottomContent>
+          모임?모임!에서 자기개발과 취미생활, 정보 공유까지 한번에 누려보세요
+        </StBottomContent>
+        <StBottomImage src={Friends2} />
+      </StBottom>
+      <Footer />
     </StForm>
   );
 };
@@ -215,9 +252,10 @@ const StForm = styled.div`
   position: relative;
 `;
 
-const StTopImage = styled.img`
-  margin-top: 60px;
-  margin-bottom: 50px;
+const StBannerImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 1920px;
   height: 400px;
 `;
@@ -225,12 +263,61 @@ const StTopImage = styled.img`
 const StTopContainer = styled.div`
   width: 651px;
   position: absolute;
-  top: 231px;
-  left: 144px;
+  top: 150px;
+  left: 100px;
 `;
 
 const StTopContent = styled.p`
-  font-size: 40px;
+  font-size: 30px;
+  color: white;
+  font-weight: 400;
+  line-height: 69px;
+`;
+
+const StFriendsImg = styled.img`
+  width: 750px;
+  height: 500px;
+  position: absolute;
+  top: 70px;
+  left: 1109px;
+`;
+
+const StVector = styled.img`
+  width: 55px;
+  height: 55px;
+`;
+
+const StInfomation = styled.div`
+  display: flex;
+  justify-content: start;
+  width: 1920px;
+  margin-left: 187px;
+  margin-bottom: 50px;
+  position: absolute;
+  top: 455px;
+`;
+
+const StInfoForm = styled.div`
+  display: flex;
+`;
+
+const StInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 460px;
+  height: 88px;
+  margin-left: 30px;
+`;
+
+const StInfoTitle = styled.p`
+  font-weight: 400;
+  font-size: 34px;
+`;
+
+const StInfoContent = styled.p`
+  font-weight: 400;
+  font-size: 20px;
+  margin-top: 10px;
 `;
 
 const StContainer = styled.form`
@@ -241,6 +328,9 @@ const StContainer = styled.form`
   border-radius: 20px;
   width: 1720px;
   height: 691px;
+  box-shadow: 11px 13px 4px 0px #0000001a;
+  position: absolute;
+  top: 570px;
 `;
 
 const StLeftForm = styled.div`
@@ -266,6 +356,7 @@ const StInput = styled.input`
   margin-top: 5px;
   margin-left: 10px;
   border: 1px solid #909090;
+  color: black;
   outline: none;
   &:focus {
     border: 1px solid #1981f9;
@@ -316,15 +407,14 @@ const StPreview = styled.input`
   height: 65px;
   font-size: 28px;
   border: 2px solid #c0edfc;
-  // border-radius: 5px;
-  text-indent: 40%;
+  text-indent: 15px;
   padding: 0;
   margin-top: 5px;
 `;
 
 const StPrevImg = styled.img`
-  height: 553px;
-  width: 461px;
+  height: 461px;
+  width: 553px;
   display: flex;
   margin-bottom: 15px;
   border: 1px solid #909090;
@@ -365,4 +455,36 @@ const StButton = styled.button`
     border: 1px solid #ea2a2a;
     background-color: #ea2a2a;
   }
+`;
+
+const StBottom = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  top: 1300px;
+`;
+
+const StBottomTitle = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  font-weight: 400;
+  margin-top: 50px;
+`;
+
+const StBottomContent = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 400;
+  margin-top: 10px;
+`;
+
+const StBottomImage = styled.img`
+  width: 439px;
+  height: 293px;
 `;
