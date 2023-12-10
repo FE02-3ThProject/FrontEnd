@@ -9,10 +9,10 @@ import Swal from "sweetalert2";
 // // import { Mutation } from "react-query";
 
 //img Import
-import Banner from "../../../public/images/banner.png";
-import Friends from "../../../public/images/friends.png";
-import Vector from "../../../public/images/pngegg.png";
-import Friends2 from "../../../public/images/friends2.png";
+import Banner from "../../images/sub_3.png";
+import Friends from "../..//images/friends.png";
+import Vector from "../../images/pngegg.png";
+import Friends2 from "../../images/friends2.png";
 
 // interface Meeting {
 //   title: string;

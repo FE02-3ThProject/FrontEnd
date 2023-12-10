@@ -4,15 +4,24 @@ import styled from "styled-components";
 interface CategoryProps {
   value: string;
   onChange: (value: string) => void;
+  width?: string;
+  height?: string;
+  fontSize?: string;
 }
 
-export const Category: FC<CategoryProps> = ({ value, onChange }) => {
+interface StInputProps {
+  width?: string;
+  height?: string;
+  fontSize?: string;
+}
+
+export const Category: FC<CategoryProps> = ({ value, onChange, width, height, fontSize }) => {
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value);
   };
 
   return (
-    <StInput value={value} onChange={handleCategoryChange} required>
+    <StInput width={width} height={height} fontSize={fontSize} value={value} onChange={handleCategoryChange} required>
       <option value="">카테고리를 선택해 주세요</option>
       <option value="1">게임</option>
       <option value="2">여행</option>
@@ -30,10 +39,10 @@ export const Category: FC<CategoryProps> = ({ value, onChange }) => {
 
 export default Category;
 
-const StInput = styled.select`
-  width: 554px;
-  height: 61px;
-  font-size: 26px;
+const StInput = styled.select<StInputProps>`
+  width: ${(props) => props.width || "554px"};
+  height: ${(props) => props.height || "61px"};
+  font-size: ${(props) => props.fontSize || "26px"};
   margin-top: 5px;
   margin-left: 10px;
   border: 1px solid #909090;
