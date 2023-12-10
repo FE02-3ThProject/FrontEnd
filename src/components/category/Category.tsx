@@ -38,6 +38,7 @@ const StInput = styled.select`
   margin-left: 10px;
   border: 1px solid #909090;
   outline: none;
+  text-indent: 15px;
   &:focus {
     border: 1px solid #1981f9;
   }

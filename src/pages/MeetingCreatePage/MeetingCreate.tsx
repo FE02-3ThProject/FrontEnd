@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 // // import { Mutation } from "react-query";
 
 //img Import
-import login_bg from "../../../public/images/login_bg.png";
+import Banner from "../../../public/images/banner.png";
 import friends from "../../../public/images/friends.png";
 import Vector from "../../../public/images/pngegg.png";
 import Friends2 from "../../../public/images/friends2.png";
@@ -48,7 +48,7 @@ const MeetingCreate = () => {
   const [image, setImage] = useState<File | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [maxMembers, setMaxMembers] = useState<number>(1);
+  const [maxMembers, setMaxMembers] = useState<number | string>("");
   const [category, setCategory] = useState<string>("");
 
   const handleInputChange =
@@ -134,7 +134,7 @@ const MeetingCreate = () => {
   return (
     <StForm>
       <div>
-        <StBannerImage src={login_bg} />
+        <StBannerImage src={Banner} />
         <StTopContainer>
           <StTopContent>대한민국 모든 동네의 이웃이 모인 곳에</StTopContent>
           <StTopContent>새로운 모임을 알리세요!</StTopContent>
@@ -214,9 +214,11 @@ const MeetingCreate = () => {
           <StInput
             type="number"
             min={1}
+            max={300}
             step={1}
             value={maxMembers}
             onChange={handleInputChange(setMaxMembers)}
+            placeholder="1~300까지의 인원을 입력해주세요"
             required
           />
           <StLabel>카테고리</StLabel>
@@ -358,6 +360,11 @@ const StInput = styled.input`
   border: 1px solid #909090;
   color: black;
   outline: none;
+
+  &::placeholder {
+    color: black;
+  }
+
   &:focus {
     border: 1px solid #1981f9;
   }
@@ -444,7 +451,7 @@ const StButton = styled.button`
   width: 553px;
   height: 65px;
   font-size: 28px;
-  margin: 15px 0 15px 10px;
+  margin: 21px 0 15px 10px;
   background-color: #ea2a2a;
   border: 1px solid #ea2a2a;
   color: #fff;

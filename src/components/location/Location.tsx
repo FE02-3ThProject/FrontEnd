@@ -44,6 +44,7 @@ const StInput = styled.select`
   margin-top: 5px;
   margin-left: 10px;
   border: 1px solid #909090;
+  text-indent: 15px;
   outline: none;
   &:focus {
     border: 1px solid #1981f9;
