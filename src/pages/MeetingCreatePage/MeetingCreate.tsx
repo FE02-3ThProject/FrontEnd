@@ -126,21 +126,21 @@ const MeetingCreate = () => {
 
   return (
     <StForm>
-      <StTitle>모임 생성</StTitle>
       <StContainer onSubmit={handleSubmit}>
         <StLeftForm>
+          <StPrevLabel>대표 이미지</StPrevLabel>
           {fileInput.current?.files?.[0] ? (
             <StPrevImg src={URL.createObjectURL(fileInput.current.files[0])} />
           ) : (
             <StNoneImg></StNoneImg>
           )}
 
-          <StPrevLabel>대표 이미지</StPrevLabel>
           <StPrevSection>
             <StPreview
               value={fileInput.current?.files?.[0]?.name || ""}
               readOnly
               disabled
+              placeholder="파일 업로드"
             />
             <StUpload htmlFor="previewImg">업로드</StUpload>
           </StPrevSection>
@@ -187,7 +187,7 @@ const MeetingCreate = () => {
             value={category}
             onChange={(selectedValue) => setCategory(selectedValue)}
           />
-          <StButton>모임 생성</StButton>
+          <StButton>Continue</StButton>
         </StRightForm>
       </StContainer>
     </StForm>
@@ -223,33 +223,35 @@ const StContainer = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #1981f9;
-  border-radius: 13px;
-  width: 700px;
-  height: auto;
+  border: 2px solid #afafaf;
+  border-radius: 20px;
+  width: 1720px;
+  height: 691px;
 `;
 
 const StLeftForm = styled.div`
   display: flex;
   flex-direction: column;
-  width: 350px;
+  width: 554px;
+  margin-right: 15px;
 `;
 
 const StRightForm = styled.div`
   display: flex;
   flex-direction: column;
-  width: 350px;
+  width: 554px;
+  margin-left: 15px;
 `;
 
 const StInput = styled.input`
-  width: 321px;
+  width: 554px;
   padding: 0;
-  height: 30px;
-  font-size: 15px;
+  height: 61px;
+  font-size: 26px;
+  text-indent: 15px;
   margin-top: 5px;
   margin-left: 10px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
+  border: 1px solid #909090;
   outline: none;
   &:focus {
     border: 1px solid #1981f9;
@@ -257,8 +259,8 @@ const StInput = styled.input`
 `;
 
 const StLabel = styled.label`
-  width: 321px;
-  font-size: 12px;
+  width: 554px;
+  font-size: 19px;
   font-weight: bold;
   margin-left: 10px;
   display: flex;
@@ -267,64 +269,60 @@ const StLabel = styled.label`
 `;
 
 const StPrevLabel = styled.label`
-  width: 321px;
-  font-size: 12px;
+  width: 554px;
+  font-size: 19px;
   font-weight: bold;
-  margin-left: 15px;
   display: flex;
   justify-content: start;
-  margin-top: 15px;
+  margin-bottom: 5px;
 `;
 
 const StUpload = styled.label`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 30px;
-  border: 1px solid #1981f9;
-  background-color: #1981f9;
+  width: 147px;
+  height: 65px;
+  border: 1px solid #01b7f2;
+  background-color: #01b7f2;
   border-radius: 5px;
   margin-top: 5px;
-  margin-left: 5px;
-  font-size: 12px;
-  font-weight: bold;
+  margin-left: 12px;
+  font-size: 28px;
   color: #fff;
   transition: all 0.3s ease-in-out;
   &:hover {
     border: 1px solid #007aee;
     background-color: #007aee;
-    color: white;
-    font-weight: bold;
   }
 `;
 
 const StPreview = styled.input`
-  width: 264px;
-  height: 30px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
+  width: 394px;
+  height: 65px;
+  font-size: 28px;
+  border: 2px solid #c0edfc;
+  // border-radius: 5px;
+  text-indent: 40%;
   padding: 0;
   margin-top: 5px;
-  margin-left: 15px;
 `;
 
 const StPrevImg = styled.img`
-  height: 290px;
-  width: 321px;
+  height: 553px;
+  width: 461px;
   display: flex;
-  margin-left: 15px;
-  border-radius: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #909090;
   overflow: hidden;
 `;
 
 const StNoneImg = styled.div`
-  height: 290px;
-  width: 321px;
+  height: 461px;
+  width: 553px;
   display: flex;
-  margin-left: 15px;
-  border-radius: 5px;
-  border: 1px solid lightgray;
+  margin-bottom: 15px;
+  border: 1px solid #909090;
 `;
 
 const StPrevSection = styled.div`
@@ -336,19 +334,21 @@ const StNone = styled.input`
 `;
 
 const StButton = styled.button`
-  width: 92%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 553px;
+  height: 65px;
+  font-size: 28px;
   margin: 15px 0 15px 10px;
-  background-color: #1981f9;
-  border: 1px solid #1981f9;
-  font-weight: bold;
+  background-color: #ea2a2a;
+  border: 1px solid #ea2a2a;
   color: #fff;
   transition: all 0.3s ease-in-out;
   &:hover,
   &:focus {
     outline: none;
-    border: 1px solid #007aee;
-    background-color: #007aee;
-    color: white;
-    font-weight: bold;
+    border: 1px solid #ea2a2a;
+    background-color: #ea2a2a;
   }
 `;
