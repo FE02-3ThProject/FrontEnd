@@ -9,7 +9,7 @@ import { api, apiToken } from "../../shared/apis/Apis";
 import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
 import { useRef } from "react";
 import styled from "styled-components";
-import chgImg from "../../../public/images/chgImg.svg";
+import chgImg from "../../images/chgImg.svg";
 import Swal from "sweetalert2";
 import { AxiosResponse } from "axios";
 

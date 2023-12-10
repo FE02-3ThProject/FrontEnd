@@ -104,7 +104,7 @@ const StLoginBox = styled.div`
   margin-top: 85px;
   border-radius: 20px;
   background-color: #0a0a0a;
-  opacity: 0.7;
+  background-color: rgba(10, 10, 10, 0.7);
 `;
 
 const StTitle = styled.div`

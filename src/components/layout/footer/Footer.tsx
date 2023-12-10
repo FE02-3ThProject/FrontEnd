@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-import Logo from "../../../../public/images/W_momo_logo_kr.png";
-import Instagram from "../../../../public/images/Instagram.png";
-import Facebook from "../../../../public/images/Facebook.png";
-import Youtube from "../../../../public/images/youtube.png";
-import KakaoTalk from "../../../../public/images/kakaotalk.png";
+import Logo from "../../../images/W_momo_logo_kr.png";
+import Instagram from "../../../images/Instagram.png";
+import Facebook from "../../../images/Facebook.png";
+import Youtube from "../../../images/youtube.png";
+import KakaoTalk from "../../../images/kakaotalk.png";
 
 const Footer = () => {
   return (
@@ -44,7 +44,8 @@ const StFooter = styled.div`
 const StLogo = styled.img`
 padding-top: 40px;
   width: 180px;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
+  margin-top: 25px;
 `;
 
 const StContent = styled.div`
@@ -62,13 +63,13 @@ const StIcons = styled.div`
 `;
 
 const StCopyright = styled.div`
-  width: 100vw;
+  width: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   margin-top: 60px;
-  margin-bottom: 18px;
+  margin-bottom: 40px;
   padding-top: 20px;
-  border-top: 1px solid white;
+  border-top: 1px solid #76AEFF;
 `;
