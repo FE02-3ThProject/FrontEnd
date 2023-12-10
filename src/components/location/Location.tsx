@@ -38,13 +38,13 @@ export const Location: FC<LocationProps> = ({ value, onChange }) => {
 export default Location;
 
 const StInput = styled.select`
-  width: 92%;
-  height: 32px;
-  font-size: 15px;
+  width: 100%;
+  height: 61px;
+  font-size: 26px;
   margin-top: 5px;
   margin-left: 10px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
+  border: 1px solid #909090;
+  text-indent: 15px;
   outline: none;
   &:focus {
     border: 1px solid #1981f9;
