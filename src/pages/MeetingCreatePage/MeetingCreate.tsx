@@ -133,14 +133,14 @@ const MeetingCreate = () => {
 
   return (
     <StForm>
-      <div>
+      <StBanner>
         <StBannerImage src={Banner} />
         <StTopContainer>
           <StTopContent>대한민국 모든 동네의 이웃이 모인 곳에</StTopContent>
           <StTopContent>새로운 모임을 알리세요!</StTopContent>
         </StTopContainer>
         <StFriendsImg src={friends} />
-      </div>
+      </StBanner>
       <StInfomation>
         <StInfoForm>
           <StVector src={Vector} />
@@ -248,17 +248,21 @@ const StForm = styled.div`
   height: 100vh;
   margin: 0 auto;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   flex-direction: column;
   position: relative;
 `;
 
+const StBanner = styled.div`
+  width: 100vw;
+  height: 400px;
+  display: flex;
+  align-items: start;
+`;
+
 const StBannerImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1920px;
+  width: 100vw;
   height: 400px;
 `;
 
@@ -292,11 +296,11 @@ const StVector = styled.img`
 const StInfomation = styled.div`
   display: flex;
   justify-content: start;
-  width: 1920px;
+  align-items: start;
+  width: 100vw;
+  margin-top: 50px;
   margin-left: 187px;
   margin-bottom: 50px;
-  position: absolute;
-  top: 455px;
 `;
 
 const StInfoForm = styled.div`
@@ -331,8 +335,6 @@ const StContainer = styled.form`
   width: 1720px;
   height: 691px;
   box-shadow: 11px 13px 4px 0px #0000001a;
-  position: absolute;
-  top: 570px;
 `;
 
 const StLeftForm = styled.div`
@@ -469,8 +471,6 @@ const StBottom = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  position: absolute;
-  top: 1300px;
 `;
 
 const StBottomTitle = styled.p`

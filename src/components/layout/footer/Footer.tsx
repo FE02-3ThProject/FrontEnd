@@ -45,7 +45,8 @@ const StFooter = styled.div`
 
 const StLogo = styled.img`
   width: 180px;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
+  margin-top: 25px;
 `;
 
 const StContent = styled.div`
