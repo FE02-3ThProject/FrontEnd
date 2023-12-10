@@ -10,10 +10,9 @@ import Swal from "sweetalert2";
 
 //img Import
 import Banner from "../../../public/images/banner.png";
-import friends from "../../../public/images/friends.png";
+import Friends from "../../../public/images/friends.png";
 import Vector from "../../../public/images/pngegg.png";
 import Friends2 from "../../../public/images/friends2.png";
-import Footer from "../../components/layout/footer/Footer";
 
 // interface Meeting {
 //   title: string;
@@ -139,7 +138,7 @@ const MeetingCreate = () => {
           <StTopContent>대한민국 모든 동네의 이웃이 모인 곳에</StTopContent>
           <StTopContent>새로운 모임을 알리세요!</StTopContent>
         </StTopContainer>
-        <StFriendsImg src={friends} />
+        <StFriendsImg src={Friends} />
       </StBanner>
       <StInfomation>
         <StInfoForm>
@@ -236,7 +235,6 @@ const MeetingCreate = () => {
         </StBottomContent>
         <StBottomImage src={Friends2} />
       </StBottom>
-      <Footer />
     </StForm>
   );
 };
@@ -245,7 +243,7 @@ export default MeetingCreate;
 
 const StForm = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: auto;
   margin: 0 auto;
   display: flex;
   justify-content: start;
@@ -494,4 +492,6 @@ const StBottomContent = styled.p`
 const StBottomImage = styled.img`
   width: 439px;
   height: 293px;
+  margin-top: 20px;
+  margin-bottom: 50px;
 `;
