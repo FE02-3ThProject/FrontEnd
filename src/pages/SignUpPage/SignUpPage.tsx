@@ -267,6 +267,7 @@ const SignUpContainer = styled.div`
   background-image: url(${LoginBg});
   background-size: cover;
   background-position: center;
+  color: #fff;
 `;
 
 const SignUpBox = styled.div`
@@ -345,6 +346,7 @@ const Input1 = styled.input`
   &:focus {
     border: 1px solid #1981f9;
   }
+  background-color: #3b3b3b;
 `;
 
 const Input2 = styled.input`
@@ -360,6 +362,7 @@ const Input2 = styled.input`
   &:focus {
     border: 1px solid #1981f9;
   }
+  background-color: #3b3b3b;
 `;
 
 const SignUpButton = styled.button`
@@ -380,7 +383,7 @@ const SignUpButton = styled.button`
 `;
 
 const StLogin = styled.div`
-margin-bottom: 20px;
+  margin-bottom: 20px;
   font-size: 18px;
   font-weight: 400;
   line-height: 22px;
