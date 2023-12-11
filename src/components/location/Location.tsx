@@ -4,15 +4,23 @@ import styled from "styled-components";
 interface LocationProps {
   value: string;
   onChange: (value: string) => void;
+  width?: string;
+  height?: string;
+  fontSize?: string;
+}
+interface StInputProps {
+  width?: string;
+  height?: string;
+  fontSize?: string;
 }
 
-export const Location: FC<LocationProps> = ({ value, onChange }) => {
+export const Location: FC<LocationProps> = ({ value, onChange, width, height, fontSize }) => {
   const handleLocationChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value);
   };
 
   return (
-    <StInput value={value} onChange={handleLocationChange} required>
+    <StInput width={width} height={height} fontSize={fontSize} value={value} onChange={handleLocationChange} required>
       <option value="">지역을 선택해 주세요</option>
       <option value="1">서울</option>
       <option value="2">경기도</option>
@@ -37,10 +45,10 @@ export const Location: FC<LocationProps> = ({ value, onChange }) => {
 
 export default Location;
 
-const StInput = styled.select`
-  width: 100%;
-  height: 61px;
-  font-size: 26px;
+const StInput = styled.select<StInputProps>`
+  width: ${(props) => props.width || "554px"};
+  height: ${(props) => props.height || "61px"};
+  font-size: ${(props) => props.fontSize || "26px"};
   margin-top: 5px;
   margin-left: 10px;
   border: 1px solid #909090;

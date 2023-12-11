@@ -1,11 +1,14 @@
-import React from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UseInput from "../../hooks/UseInput";
 import { api } from "../../shared/apis/Apis";
 import { setCookie } from "../../shared/Cookie";
 import Swal from "sweetalert2";
 import styled from "styled-components";
+
+import LoginBg from "../../images/login_bg.png";
+import Naver from "../../images/naver.png"
+import Kakao from "../../images/kakao.png"
 
 const LoginPage = () => {
   const queryClient = useQueryClient();
@@ -43,20 +46,17 @@ const LoginPage = () => {
   });
 
   return (
-    <LoginContainer>
-      <LoginBox>
-        <Title>
-          <h2>로그인</h2>
-          <p>Login</p>
-        </Title>
-        <InputBox>
-          <Input2
+    <StLoginContainer>
+      <StLoginBox>
+        <StTitle>Welcome</StTitle>
+        <StInputBox>
+          <StInput2
             type="email"
             placeholder="이메일"
             value={email || ""}
             onChange={setEmail}
           />
-          <Input2
+          <StInput2
             type="password"
             value={password || ""}
             placeholder="비밀번호"
@@ -68,82 +68,119 @@ const LoginPage = () => {
               }
             }}
           />
-        </InputBox>
-
-        <LoginButton onClick={() => onsubmit()}>로그인하기</LoginButton>
-      </LoginBox>
-    </LoginContainer>
+        </StInputBox>
+        <StLoginButton onClick={() => onsubmit()}>Login</StLoginButton>
+        <StSoCialTitle>Or login with</StSoCialTitle>
+        <StSocailBtnBox>
+          <StSocialLoginBtnKaKao/>
+          <StSocialLoginBtnGoogle/>
+        </StSocailBtnBox>
+        <StSingup>
+          Don’t have account? 
+          <Link to="/signup"> Sign up Now</Link>
+        </StSingup>
+      </StLoginBox>
+    </StLoginContainer>
   );
 };
 
-const LoginContainer = styled.div`
+const StLoginContainer = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: flex-start;
+  background-image: url(${LoginBg});
+  background-size: cover;
+  background-position: center;
 `;
 
-const LoginBox = styled.div`
-  width: 386px;
-  margin: 160px auto;
-`;
-
-const Title = styled.div`
+const StLoginBox = styled.div`
+  width: 471px;
+  height: 662px;
   display: flex;
-  text-align: center;
+  align-items: center;
   flex-direction: column;
-  width: 100%;
-  border-bottom: solid 1px #acacac;
-  margin: 0 auto 32px auto;
-  padding-bottom: 25px;
-  > h2 {
-    font-size: 30px;
-    font-weight: 400;
-    line-height: 45px;
-  }
-  > p {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 30px;
-  }
+  margin-left: 20%;
+  margin-top: 85px;
+  border-radius: 20px;
+  background-color: #0a0a0a;
+  background-color: rgba(10, 10, 10, 0.7);
 `;
 
-const InputBox = styled.div`
+const StTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 76px 0 53px 0;
+  font-weight: 400;
+  font-size: 44px;
+`;
+
+const StInputBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 16px;
+  align-items: center;
+  gap: 40px;
 `;
 
-const Input2 = styled.input`
-  width: 372px;
-  padding-left: 10px;
-  height: 50px;
-  font-size: 15px;
+const StInput2 = styled.input`
+  width: 366px;
+  height: 61px;
+  padding-left: 14px;
+  font-size: 18px;
   margin-top: 5px;
   margin-left: 0;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  outline: none;
   &:focus {
-    border: 1px solid #1981f9;
+    border: 1px solid red;
   }
 `;
 
-const LoginButton = styled.button`
-  width: 100%;
-  height: 50px;
-  background-color: #3085d6;
+const StLoginButton = styled.button`
+  width: 384px;
+  height: 65px;
+  background-color: #ea2a2a;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #ffffff;
   font-size: 16px;
   font-weight: bold;
-  line-height: 16px;
-  margin-top: 25px;
-  font-family: "Gmarket Sans Light";
+  margin-top: 46px;
+`;
+
+const StSoCialTitle = styled.div`
+  width: 159px;
+  height: 31px;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  margin: 20px;
+`;
+
+const StSocailBtnBox = styled.div`
+  display: flex;
+  gap: 51px;
+`;
+
+const StSocialLoginBtnKaKao = styled.button`
+background-image: url(${Kakao});
+  width: 165px;
+  height: 42px;
+`;
+
+const StSocialLoginBtnGoogle = styled.button`
+background-image: url(${Naver});
+  width: 165px;
+  height: 42px;
+`;
+
+const StSingup = styled.div`
+  margin-top: 27px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: center;
 `;
 
 export default LoginPage;

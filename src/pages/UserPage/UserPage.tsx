@@ -3,7 +3,7 @@ import { apiToken } from "../../shared/apis/Apis";
 import { useQuery } from "react-query";
 import MyProfileModal from "../../components/user/MyProfileModal";
 import styled from "styled-components";
-import defaultUserImage from "../../../public/images/default_profile.png";
+import defaultUserImage from "../../images/default_profile.png";
 
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,7 +69,7 @@ const UserPage = () => {
         </ProfileButton>
       </ProfileBox>
 
-      {isModalOpen === true ? (
+      {isModalOpen ? (
         <MyProfileModal
           open={isModalOpen}
           close={closeModal}
