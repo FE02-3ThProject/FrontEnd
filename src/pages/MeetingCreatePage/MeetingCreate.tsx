@@ -265,16 +265,17 @@ const StBannerImage = styled.img`
 `;
 
 const StTopContainer = styled.div`
-  width: 651px;
+  width: 680px;
   position: absolute;
   top: 150px;
-  left: 100px;
+  left: 180px;
+  font-weight: 200;
 `;
 
 const StTopContent = styled.p`
-  font-size: 30px;
+  font-size: 38px;
   color: white;
-  font-weight: 400;
+  font-weight: 200;
   line-height: 69px;
 `;
 
