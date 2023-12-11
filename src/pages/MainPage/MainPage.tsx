@@ -3,6 +3,8 @@ import MeetingCard from "../../components/Meetings/MeetingCard";
 import MainSwiper from "../../components/Swiper/MainSwiper";
 import Categories from "../../components/categories/Categories";
 import styled from "styled-components";
+import Mainbanner from "../../components/banner/Mainbanner";
+import MainBottomBanner from "../../components/banner/MainBottomBanner";
 
 const MainPage = () => {
   return (
@@ -19,6 +21,12 @@ const MainPage = () => {
         <MeetingCard />
         <MeetingCard />
       </StCardContainer>
+      <StBannerContainer>
+        <Mainbanner />
+      </StBannerContainer>
+      <StBBannerContainer>
+        <MainBottomBanner />
+      </StBBannerContainer>
       <FloatingButton href="additional">+</FloatingButton>
     </StContainer>
   );
@@ -36,7 +44,6 @@ const StCardContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  height: 900px;
   flex-wrap: wrap;
 
   /* @media (min-width: 640px) {
@@ -53,4 +60,15 @@ const StTitle = styled.div`
   font-weight: bold;
   font-size: 18px;
   letter-spacing: -1px;
+`;
+
+const StBannerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 100px 0 0 0;
+`;
+const StBBannerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 70px 0;
 `;

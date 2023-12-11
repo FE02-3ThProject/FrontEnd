@@ -57,18 +57,17 @@ const StInput = styled.input`
   border-radius: 15px;
   padding-left: 15px;
   margin-left: 10px;
-  background-color: #fff;
-  border: 1px solid #0f78ee;
-  color: #0f78ee;
+  background-color: #333;
+  color: #fff;
   outline: none;
   &::placeholder {
-    color: #0f78ee;
+    color: #fff;
   }
 `;
 
 const StSearchIcon = styled.div`
   position: absolute;
-  color: #0f78ee;
+  color: #fff;
   font-size: 20px;
   font-weight: bold;
   top: 17px;
