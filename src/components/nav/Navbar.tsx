@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Search from "./Search";
 
+import logo from "../../images/main/momo_logo_kr.png";
 const Navbar = () => {
   return (
     <StNav>
@@ -10,7 +11,7 @@ const Navbar = () => {
         <StTopSection>
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
             <StLogo>
-              <img src="/assets/momo_logo_kr.png" alt="모임?모임!" />
+              <img src={logo} alt="모임?모임!" />
             </StLogo>
           </Link>
           <StSearch>
