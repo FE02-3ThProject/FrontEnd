@@ -380,7 +380,7 @@ const SignUpButton = styled.button`
 `;
 
 const StLogin = styled.div`
-margin-bottom: 20px;
+  margin-bottom: 20px;
   font-size: 18px;
   font-weight: 400;
   line-height: 22px;
