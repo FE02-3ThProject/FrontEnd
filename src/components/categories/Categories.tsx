@@ -1,62 +1,77 @@
 import { useParams } from "react-router-dom";
-import { TbPool } from "react-icons/tb";
+import { GrWorkshop } from "react-icons/gr";
 import { SiDuckduckgo } from "react-icons/si";
-import { BiSolidShoppingBags } from "react-icons/bi";
-import { GiBoatFishing, GiWindmill } from "react-icons/gi";
+import { FaBookTanakh } from "react-icons/fa6";
+import { SiThemoviedatabase } from "react-icons/si";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
-import { FaCar } from "react-icons/fa";
-import { TbBuildingEstate } from "react-icons/tb";
+import { SiTourbox } from "react-icons/si";
+import { SiBytedance } from "react-icons/si";
+import { MdSportsHandball } from "react-icons/md";
 import CategoryBox from "./CategoryBox";
 import styled from "styled-components";
+import { SiYoutubemusic } from "react-icons/si";
+import { FaHands } from "react-icons/fa";
 
 export const categories = [
   {
-    label: "오리게임 만들자",
-    path: "duck",
+    label: "게임 프로젝트",
+    path: "game",
     icon: SiDuckduckgo,
-    description: "오리게임프로젝트 입니다.",
+    description: "게임프로젝트 입니다.",
   },
   {
-    label: "안드로이드개발",
-    path: "appliances",
-    icon: GiWindmill,
-    description: "안드로이드개발 프로젝트입니다.",
+    label: "여행 프로젝트",
+    path: "tour",
+    icon: SiTourbox,
+    description: "여행 프로젝트입니다.",
   },
   {
-    label: "부동산앱개발",
-    path: "interior",
-    icon: TbBuildingEstate,
-    description: "부동산앱개발 프로젝트입니다.",
+    label: "운동 프로젝트",
+    path: "sports",
+    icon: MdSportsHandball,
+    description: "운동 프로젝트입니다.",
   },
   {
-    label: "쇼핑몰",
-    path: "shopping",
-    icon: BiSolidShoppingBags,
-    description: "쇼핑몰 프로젝트입니다.",
+    label: "책 프로젝트",
+    path: "book",
+    icon: FaBookTanakh,
+    description: "책 프로젝트입니다.",
   },
   {
-    label: "인테리어 프로젝트",
-    path: "men-fashion",
-    icon: TbPool,
-    description: "인테리어 프로젝트입니다.",
+    label: "직무 프로젝트",
+    path: "work",
+    icon: GrWorkshop,
+    description: "직무 프로젝트입니다.",
   },
   {
-    label: "영어앱 프로젝트",
+    label: "언어 프로젝트",
     path: "english",
     icon: LiaChalkboardTeacherSolid,
-    description: "영어앱 프로젝트입니다.",
+    description: "언어 프로젝트입니다.",
   },
   {
-    label: "여기서만나 프로젝트",
-    path: "sports",
-    icon: GiBoatFishing,
-    description: "여기서만나 프로젝트입니다.",
+    label: "공연 프로젝트",
+    path: "concert",
+    icon: SiThemoviedatabase,
+    description: "공연 프로젝트입니다.",
   },
   {
-    label: "자동차 프로젝트",
-    path: "car",
-    icon: FaCar,
-    description: "자동차 프로젝트입니다.",
+    label: "음악 프로젝트",
+    path: "music",
+    icon: SiYoutubemusic,
+    description: "음악 프로젝트입니다.",
+  },
+  {
+    label: "공예 프로젝트",
+    path: "handicraft",
+    icon: FaHands,
+    description: "공예 프로젝트입니다.",
+  },
+  {
+    label: "댄스 프로젝트",
+    path: "dance",
+    icon: SiBytedance,
+    description: "댄스 프로젝트입니다.",
   },
 ];
 

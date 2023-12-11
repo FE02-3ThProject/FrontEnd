@@ -10,7 +10,7 @@ const Navbar = () => {
         <StTopSection>
           <Link to="/" style={{ textDecoration: "none", color: "white" }}>
             <StLogo>
-              모임?<span>모임!</span>
+              <img src="/assets/momo_logo_kr.png" alt="모임?모임!" />
             </StLogo>
           </Link>
           <StSearch>
@@ -82,6 +82,9 @@ const StLogo = styled.div`
   span {
     font-size: 40px;
     font-weight: 300;
+  }
+  img {
+    width: 125px;
   }
 `;
 
