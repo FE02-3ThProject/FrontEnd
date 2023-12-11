@@ -8,7 +8,8 @@ import styled from "styled-components";
 
 import LoginBg from "../../images/login_bg.png";
 import Naver from "../../images/naver.png";
-import Kakao from "../../images/kakao.png";
+
+import { useGoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
   const queryClient = useQueryClient();
@@ -45,6 +46,18 @@ const LoginPage = () => {
     },
   });
 
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (res) => {
+      console.log(res.access_token);
+      await api
+        .post("api주소", { access_token: res.access_token })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => console.log(e));
+    },
+  });
+
   return (
     <StLoginContainer>
       <StLoginBox>
@@ -70,10 +83,9 @@ const LoginPage = () => {
           />
         </StInputBox>
         <StLoginButton onClick={() => onsubmit()}>Login</StLoginButton>
-        <StSoCialTitle>Or login with</StSoCialTitle>
+        <StSoCialTitle>Login with Google</StSoCialTitle>
         <StSocailBtnBox>
-          <StSocialLoginBtnKaKao />
-          <StSocialLoginBtnGoogle />
+          <StSocialLoginBtnGoogle onClick={() => googleLogin()} />
         </StSocailBtnBox>
         <StSingup>
           Don’t have account?
@@ -161,12 +173,6 @@ const StSoCialTitle = styled.div`
 const StSocailBtnBox = styled.div`
   display: flex;
   gap: 51px;
-`;
-
-const StSocialLoginBtnKaKao = styled.button`
-  background-image: url(${Kakao});
-  width: 165px;
-  height: 42px;
 `;
 
 const StSocialLoginBtnGoogle = styled.button`
