@@ -270,7 +270,6 @@ const SignUpContainer = styled.div`
 `;
 
 const SignUpBox = styled.div`
-  position: relative;
   width: 885px;
   height: auto;
   display: flex;
@@ -364,10 +363,9 @@ const Input2 = styled.input`
 `;
 
 const SignUpButton = styled.button`
-  position: absolute;
-  bottom: 81px;
   width: 95%;
   height: 65px;
+  margin: 80px 0 10px 0;
   background-color: #ea2a2a;
   display: flex;
   justify-content: center;
@@ -382,8 +380,7 @@ const SignUpButton = styled.button`
 `;
 
 const StLogin = styled.div`
-  position: absolute;
-  bottom: 36px;
+margin-bottom: 20px;
   font-size: 18px;
   font-weight: 400;
   line-height: 22px;
