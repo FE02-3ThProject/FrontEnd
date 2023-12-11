@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 import Logo from "../../../../public/images/W_momo_logo_kr.png";
@@ -62,13 +61,13 @@ const StIcons = styled.div`
 `;
 
 const StCopyright = styled.div`
-  width: 1700px;
+  width: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   margin-top: 60px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   padding-top: 20px;
   border-top: 1px solid white;
 `;
