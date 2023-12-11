@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+const clientId: string = import.meta.env.VITE_APP_GOOGLE_AUTH_CLIENT_ID!;
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,9 +17,11 @@ const queryClient = new QueryClient({
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </QueryClientProvider>
+  <GoogleOAuthProvider clientId={clientId}>
+    <QueryClientProvider client={queryClient}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </QueryClientProvider>
+  </GoogleOAuthProvider>
 );
