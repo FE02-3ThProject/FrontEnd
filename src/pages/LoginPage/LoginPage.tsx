@@ -7,8 +7,8 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 
 import LoginBg from "../../images/login_bg.png";
-import Naver from "../../images/naver.png"
-import Kakao from "../../images/kakao.png"
+import Naver from "../../images/naver.png";
+import Kakao from "../../images/kakao.png";
 
 const LoginPage = () => {
   const queryClient = useQueryClient();
@@ -72,11 +72,11 @@ const LoginPage = () => {
         <StLoginButton onClick={() => onsubmit()}>Login</StLoginButton>
         <StSoCialTitle>Or login with</StSoCialTitle>
         <StSocailBtnBox>
-          <StSocialLoginBtnKaKao/>
-          <StSocialLoginBtnGoogle/>
+          <StSocialLoginBtnKaKao />
+          <StSocialLoginBtnGoogle />
         </StSocailBtnBox>
         <StSingup>
-          Don’t have account? 
+          Don’t have account?
           <Link to="/signup"> Sign up Now</Link>
         </StSingup>
       </StLoginBox>
@@ -164,13 +164,13 @@ const StSocailBtnBox = styled.div`
 `;
 
 const StSocialLoginBtnKaKao = styled.button`
-background-image: url(${Kakao});
+  background-image: url(${Kakao});
   width: 165px;
   height: 42px;
 `;
 
 const StSocialLoginBtnGoogle = styled.button`
-background-image: url(${Naver});
+  background-image: url(${Naver});
   width: 165px;
   height: 42px;
 `;
