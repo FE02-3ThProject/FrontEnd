@@ -92,6 +92,7 @@ const StLoginContainer = styled.div`
   background-image: url(${LoginBg});
   background-size: cover;
   background-position: center;
+  color: #fff;
 `;
 
 const StLoginBox = styled.div`
@@ -100,8 +101,7 @@ const StLoginBox = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-left: 20%;
-  margin-top: 85px;
+  margin: 85px 0 85px 20%;
   border-radius: 20px;
   background-color: #0a0a0a;
   background-color: rgba(10, 10, 10, 0.7);
@@ -122,6 +122,7 @@ const StInputBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 40px;
+  border-radius: 5px;
 `;
 
 const StInput2 = styled.input`
@@ -134,6 +135,8 @@ const StInput2 = styled.input`
   &:focus {
     border: 1px solid red;
   }
+  border-radius: 5px;
+  background-color: #3b3b3b;
 `;
 
 const StLoginButton = styled.button`
