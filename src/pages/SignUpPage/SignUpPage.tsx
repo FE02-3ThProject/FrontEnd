@@ -35,7 +35,7 @@ const SignUpPage = () => {
     if (!emailCheck(email)) {
       return null;
     } else {
-      const data: AxiosResponse = await api.post("api주소", {
+      const data: AxiosResponse = await api.post(`/api/user/${email}/existsEmail`, {
         email: String(email),
       });
       return data;
@@ -68,7 +68,7 @@ const SignUpPage = () => {
     if (!nicknameCheck(nickname)) {
       return null;
     } else {
-      const data: AxiosResponse = await api.post("api주소", {
+      const data: AxiosResponse = await api.post(`/api/user/${nickname}/existsNickname`, {
         nickname: String(nickname),
       });
       return data;
@@ -122,7 +122,7 @@ const SignUpPage = () => {
       return Promise.reject();
     }
 
-    const data = await api.post("api주소", {
+    const data = await api.post("/api/user/signup", {
       email,
       nickname,
       password,
@@ -165,13 +165,13 @@ const SignUpPage = () => {
   });
 
   return (
-    <SignUpContainer>
-      <SignUpBox>
-        <FormContainer>
-          <SignUpTap>
-            <Title>Sign up</Title>
-            <InputBox>
-              <Input1
+    <StSignUpContainer>
+      <StSignUpBox>
+        <StFormContainer>
+          <StSignUpTap>
+            <StTitle>Sign up</StTitle>
+            <StInputBox>
+              <StInput1
                 type="email"
                 id="email"
                 placeholder="이메일 : "
@@ -190,7 +190,7 @@ const SignUpPage = () => {
                   이미 중복된 닉네임이거나, 사용불가능한 이메일입니다.
                 </p>
               )}
-              <Input2
+              <StInput2
                 type="text"
                 placeholder="닉네임 :               (영어/한글/숫자 3~15자)"
                 value={nickname || ""}
@@ -208,13 +208,13 @@ const SignUpPage = () => {
                   이미 중복된 닉네임이거나, 사용불가능한 닉네임입니다.
                 </p>
               )}
-              <Input2
+              <StInput2
                 type="password"
                 value={password || ""}
                 placeholder="비밀번호 :           (영어/숫자/특수문자 8자 이상)"
                 onChange={setPassword}
               />
-              <Input2
+              <StInput2
                 type="password"
                 value={confirmPassword || ""}
                 placeholder="비밀번호 확인 :"
@@ -226,11 +226,11 @@ const SignUpPage = () => {
               ) : (
                 <p style={{ color: "red" }}>비밀번호가 일치하지 않습니다.</p>
               )}
-            </InputBox>
-          </SignUpTap>
-          <SelectTap>
-            <MoMoLogo />
-            <InputBox2>
+            </StInputBox>
+          </StSignUpTap>
+          <StSelectTap>
+            <StMoMoLogo />
+            <StInputBox2>
               <Location
                 width="387px"
                 height="61px"
@@ -245,21 +245,21 @@ const SignUpPage = () => {
                 value={category}
                 onChange={(selectedValue) => setCategory(selectedValue)}
               />
-            </InputBox2>
-          </SelectTap>
-        </FormContainer>
+            </StInputBox2>
+          </StSelectTap>
+        </StFormContainer>
 
-        <SignUpButton onClick={() => onsubmit()}>회원가입</SignUpButton>
+        <StSignUpButton onClick={() => onsubmit()}>회원가입</StSignUpButton>
         <StLogin>
           Already have an account?
           <Link to="/login"> Login</Link>
         </StLogin>
-      </SignUpBox>
-    </SignUpContainer>
+      </StSignUpBox>
+    </StSignUpContainer>
   );
 };
 
-const SignUpContainer = styled.div`
+const StSignUpContainer = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -270,7 +270,7 @@ const SignUpContainer = styled.div`
   color: #fff;
 `;
 
-const SignUpBox = styled.div`
+const StSignUpBox = styled.div`
   width: 885px;
   height: auto;
   display: flex;
@@ -283,16 +283,16 @@ const SignUpBox = styled.div`
   background-color: rgba(10, 10, 10, 0.7);
 `;
 
-const FormContainer = styled.div`
+const StFormContainer = styled.div`
   display: flex;
   gap: 31px;
 `;
-const SignUpTap = styled.div`
+const StSignUpTap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
 `;
-const SelectTap = styled.div`
+const StSelectTap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -301,7 +301,7 @@ const SelectTap = styled.div`
   gap: 32px;
 `;
 
-const MoMoLogo = styled.div`
+const StMoMoLogo = styled.div`
   width: 251px;
   height: 194px;
   background-image: url(${MoMo});
@@ -309,7 +309,7 @@ const MoMoLogo = styled.div`
   background-position: center;
 `;
 
-const Title = styled.div`
+const StTitle = styled.div`
   display: flex;
   margin-top: 55px;
   text-align: center;
@@ -319,21 +319,21 @@ const Title = styled.div`
   line-height: 53px;
 `;
 
-const InputBox = styled.div`
+const StInputBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 16px;
 `;
 
-const InputBox2 = styled.div`
+const StInputBox2 = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 20px;
 `;
 
-const Input1 = styled.input`
+const StInput1 = styled.input`
   width: 387px;
   height: 61px;
   padding-left: 10px;
@@ -349,7 +349,7 @@ const Input1 = styled.input`
   background-color: #3b3b3b;
 `;
 
-const Input2 = styled.input`
+const StInput2 = styled.input`
   width: 387px;
   height: 61px;
   padding-left: 10px;
@@ -365,7 +365,7 @@ const Input2 = styled.input`
   background-color: #3b3b3b;
 `;
 
-const SignUpButton = styled.button`
+const StSignUpButton = styled.button`
   width: 95%;
   height: 65px;
   margin: 80px 0 10px 0;
