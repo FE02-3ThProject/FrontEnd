@@ -24,8 +24,8 @@ const PostPage = () => {
   return (
     <StContainer>
       <StForm>
-        <StTitle>개시글 타이틀</StTitle>
-        <StContent>개시글 내용</StContent>
+        <StTitle>게시글 타이틀</StTitle>
+        <StContent>게시글 내용</StContent>
         <StButtonForm>
           <Link to={`/meeting/${meetingId}/${postId}/modification`}>
             <StButton>수정</StButton>
