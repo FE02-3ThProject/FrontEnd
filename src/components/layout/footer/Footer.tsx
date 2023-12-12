@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 import Logo from "../../../images/W_momo_logo_kr.png";

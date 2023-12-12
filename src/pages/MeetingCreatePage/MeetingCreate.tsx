@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 // import { useMutation } from "react-query";
 // // import { Mutation } from "react-query";
 
-//img Import
+// Image Import
 import Banner from "../../images/sub_3.png";
 import Friends from "../..//images/friends.png";
 import Vector from "../../images/pngegg.png";
