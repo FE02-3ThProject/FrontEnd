@@ -7,10 +7,10 @@ import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import MeetingCreate from "./pages/MeetingCreatePage/MeetingCreate";
 import MeetingPage from "./pages/MeetingRoom/MeetingRoom";
 import ChatingRoom from "./pages/ChatingRoom/ChatingRoom";
-import MeetingDetail from "./pages/MeetingDetail/MeetingDetail";
 import UserPage from "./pages/UserPage/UserPage";
 import ModificationPage from "./pages/ModificationPage/ModificationPage";
 import PostPage from "./pages/PostPage/PostPage";
+import CreatePostPage from "./pages/CreatePostPage/CreatePostPage";
 
 function App() {
   return (
@@ -23,13 +23,16 @@ function App() {
           <Route path="additional" element={<MeetingCreate />} />
           <Route path="meeting/:meetingId" element={<MeetingPage />} />{" "}
           <Route path="chating/:roomId" element={<ChatingRoom />} />
-          <Route path="meeting/:roomId" element={<MeetingDetail />} />
           <Route path="mypage/:id" element={<UserPage />} />
           <Route
             path="meeting/:meetingId/:postId/modification"
             element={<ModificationPage />}
           />
           <Route path="meeting/:meetingId/:postId" element={<PostPage />} />
+          <Route
+            path="meeting/:meetingId/createpost"
+            element={<CreatePostPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

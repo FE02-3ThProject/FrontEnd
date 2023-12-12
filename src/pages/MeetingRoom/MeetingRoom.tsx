@@ -1,6 +1,6 @@
 // import { useQuery } from "react-query";
 // import { apiToken } from "../../shared/apis/Apis";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import Post from "../../components/post/Post";
 import Notice from "../../components/post/Notice";
@@ -13,6 +13,7 @@ import MeetingImage from "../../images/MeetingRoom.jpg";
 //Icons Import
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 //모임정보 불러오기
 // const fetchMeeting = async (meetingId: string | undefined) => {
@@ -55,6 +56,12 @@ import { FaHeart } from "react-icons/fa";
 //   return response.data;
 // };
 
+//가입한 모임 목록 불러오기
+// const fetchJoin = async () => {
+//   const response = await apiToken.get(`/api/user/mygroup`);
+//   return response.data;
+// };
+
 //개시글 불러오기
 // const fetchPost = async (meetingId: string | undefined) => {
 //   if (!meetingId) {
@@ -68,7 +75,8 @@ const MeetingRoom = () => {
   const [favorite, setFavorite] = useState(false);
   const [join, setJoin] = useState(false);
 
-  // const meetingId = useParams();
+  const meetingId = useParams().meetingId as string;
+
   // console.log(meetingId);
   // const {
   //   data: meeting,
@@ -143,9 +151,11 @@ const MeetingRoom = () => {
             <Post />
             <Post />
           </StPost>
-          <StPostButton>
-            <StButton>게시글 작성</StButton>
-          </StPostButton>
+          <StPostButtonSec>
+            <Link to={`/meeting/${parseInt(meetingId)}/createpost`}>
+              <StPostButton>게시글 작성</StPostButton>
+            </Link>
+          </StPostButtonSec>
         </StRightForm>
       </StForm>
     </StContainer>
@@ -253,6 +263,16 @@ const StButton = styled.button`
   justify-content: start;
 `;
 
+const StPostButton = styled.button`
+  width: 150px;
+  height: 35px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+`;
+
 const StRightForm = styled.div`
   width: 640px;
   height: 630px;
@@ -283,7 +303,7 @@ const StPost = styled.div`
   margin-top: 10px;
 `;
 
-const StPostButton = styled.div`
+const StPostButtonSec = styled.div`
   width: 100%;
   display: flex;
   justify-content: end;
