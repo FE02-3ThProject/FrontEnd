@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { apiToken } from "../../shared/apis/Apis";
 import { Link, useParams } from "react-router-dom";
@@ -11,7 +10,7 @@ const deletePost = async (
     throw new Error("Meeting ID or Post ID is not provided.");
   }
   const response = await apiToken.delete(
-    `/api/group/${parseInt(meetingId)}/post/${parseInt(postId)}`
+    `/api/group/${meetingId}/post/${postId}`
   );
   return response.data;
 };
@@ -24,13 +23,12 @@ const PostPage = () => {
   return (
     <StContainer>
       <StForm>
-        <StTitle>개시글 타이틀</StTitle>
-        <StContent>개시글 내용</StContent>
+        <StTitle>게시글 타이틀</StTitle>
+        <StContent>게시글 내용</StContent>
         <StButtonForm>
           <Link to={`/meeting/${meetingId}/${postId}/modification`}>
             <StButton>수정</StButton>
           </Link>
-
           <StButton onClick={() => deletePost(meetingId, postId)}>
             삭제
           </StButton>

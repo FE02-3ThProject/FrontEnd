@@ -1,4 +1,4 @@
-// import { useQuery } from "react-query";
+// import { useQuery, useMutation, useQueryClient } from "react-query";
 // import { apiToken } from "../../shared/apis/Apis";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -35,7 +35,9 @@ import { Link } from "react-router-dom";
 
 //즐겨찾기 삭제
 // const deleteFavorite = async (meetingId: string | undefined) => {
-//   const response = await apiToken.delete(`/api/bookmark/${parseInt(meetingId)}/cancel`);
+//   const response = await apiToken.delete(
+//     `/api/bookmark/${meetingId}/cancel`
+//   );
 //   return response.data;
 // };
 
@@ -52,6 +54,17 @@ import { Link } from "react-router-dom";
 //   }
 //   const response = await apiToken.post(
 //     `/api/group/${parseInt(meetingId)}/join`
+//   );
+//   return response.data;
+// };
+
+//모임 탈퇴
+// const leaveMeeting = async (meetingId: string | undefined) => {
+//   if (!meetingId) {
+//     throw new Error("Meeting ID is not provided.");
+//   }
+//   const response = await apiToken.delete(
+//     `/api/group/${parseInt(meetingId)}/leave`
 //   );
 //   return response.data;
 // };
@@ -76,21 +89,46 @@ const MeetingRoom = () => {
   const [join, setJoin] = useState(false);
 
   const meetingId = useParams().meetingId as string;
+  // const queryClient = useQueryClient();
 
-  // console.log(meetingId);
-  // const {
-  //   data: meeting,
-  //   isLoading,
-  //   error,
-  // } = useQuery(["meeting", meetingId], () => fetchMeeting(meetingId.meetingId));
+  // const { data: meeting } = useQuery(["meeting", meetingId], () =>
+  //   fetchMeeting(meetingId)
+  // );
+  // const { data: favoriteMeetings } = useQuery(
+  //   "favoriteMeetings",
+  //   fetchFavorite
+  // );
+  // const { data: joinedMeetings } = useQuery("joinedMeetings", fetchJoin);
+  // const { data: posts } = useQuery(["posts", meetingId], () =>
+  //   fetchPost(meetingId)
+  // ); // 게시글 데이터를 불러옵니다.
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  // const addFavoriteMutation = useMutation(favoriteMeeting, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("favoriteMeetings");
+  //   },
+  // });
 
-  // if (error) {
-  //   return <div>An error has occurred: {error.toString()}</div>;
-  // }
+  // const deleteFavoriteMutation = useMutation(deleteFavorite, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("favoriteMeetings");
+  //   },
+  // });
+
+  // const joinMeetingMutation = useMutation(joinMeeting, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("joinedMeetings");
+  //   },
+  // });
+
+  // const leaveMeetingMutation = useMutation(leaveMeeting, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries("joinedMeetings");
+  //   },
+  // });
+
+  // const isFavorite = favoriteMeetings?.includes(meetingId);
+  // const isJoined = joinedMeetings?.includes(meetingId);
 
   return (
     <StContainer>
@@ -133,6 +171,32 @@ const MeetingRoom = () => {
                 </StButton>
               )}
             </StButtonSec>
+            {/* <StButtonSec>
+              {isFavorite ? (
+                <StButton
+                  onClick={() => deleteFavoriteMutation.mutate(meetingId)}
+                >
+                  <FaHeart />
+                  즐겨찾기 해제
+                </StButton>
+              ) : (
+                <StButton onClick={() => addFavoriteMutation.mutate(meetingId)}>
+                  <FaRegHeart />
+                  즐겨찾기
+                </StButton>
+              )}
+              {isJoined ? (
+                <StButton
+                  onClick={() => leaveMeetingMutation.mutate(meetingId)}
+                >
+                  <FaHeart /> 탈퇴하기
+                </StButton>
+              ) : (
+                <StButton onClick={() => joinMeetingMutation.mutate(meetingId)}>
+                  <FaRegHeart /> 참여하기
+                </StButton>
+              )}
+            </StButtonSec> */}
           </StProfileSec>
         </StLeftForm>
         <StRightForm>
@@ -150,6 +214,9 @@ const MeetingRoom = () => {
             <Post />
             <Post />
             <Post />
+            {/* {posts?.slice(0, 10).map((post) => (
+              <Post key={post.id} data={post} />
+            ))} */}
           </StPost>
           <StPostButtonSec>
             <Link to={`/meeting/${parseInt(meetingId)}/createpost`}>
