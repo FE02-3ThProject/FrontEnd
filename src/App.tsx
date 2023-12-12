@@ -10,6 +10,7 @@ import ChatingRoom from "./pages/ChatingRoom/ChatingRoom";
 import MeetingDetail from "./pages/MeetingDetail/MeetingDetail";
 import UserPage from "./pages/UserPage/UserPage";
 import ModificationPage from "./pages/ModificationPage/ModificationPage";
+import PostPage from "./pages/PostPage/PostPage";
 
 function App() {
   return (
@@ -17,21 +18,18 @@ function App() {
       <Routes>
         <Route path="/" element={<LayOut />}>
           <Route index element={<MainPage />} />
-          <Route path="login" element={<LoginPage />} /> {/* 로그인 */}
-          <Route path="signup" element={<SignUpPage />} /> {/* 회원가입 */}
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignUpPage />} />
           <Route path="additional" element={<MeetingCreate />} />
-          {/* 모임생성 */}
-          <Route path="meeting/:id" element={<MeetingPage />} /> {/* 모임방 */}
+          <Route path="meeting/:meetingId" element={<MeetingPage />} />{" "}
           <Route path="chating/:roomId" element={<ChatingRoom />} />
-          {/* 채팅방 */}
           <Route path="meeting/:roomId" element={<MeetingDetail />} />
-          {/* 모임 개시판 */}
-          <Route path="mypage/:id" element={<UserPage />} /> {/* 마이페이지 */}
+          <Route path="mypage/:id" element={<UserPage />} />
           <Route
-            path="mypage/:id/modification"
+            path="meeting/:meetingId/:postId/modification"
             element={<ModificationPage />}
           />
-          {/* 개인정보 수정 */}
+          <Route path="meeting/:meetingId/:postId" element={<PostPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

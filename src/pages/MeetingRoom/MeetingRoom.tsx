@@ -2,11 +2,17 @@
 // import { apiToken } from "../../shared/apis/Apis";
 // import { useParams } from "react-router-dom";
 import { useState } from "react";
+import Post from "../../components/post/Post";
+import Notice from "../../components/post/Notice";
 
 import styled from "styled-components";
 
 //Image Import
 import MeetingImage from "../../images/MeetingRoom.jpg";
+
+//Icons Import
+import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 
 //모임정보 불러오기
 // const fetchMeeting = async (meetingId: string | undefined) => {
@@ -26,6 +32,18 @@ import MeetingImage from "../../images/MeetingRoom.jpg";
 //   return response.data;
 // };
 
+//즐겨찾기 삭제
+// const deleteFavorite = async (meetingId: string | undefined) => {
+//   const response = await apiToken.delete(`/api/bookmark/${parseInt(meetingId)}/cancel`);
+//   return response.data;
+// };
+
+//즐겨찾기 목록 불러오기
+// const fetchFavorite = async () => {
+//   const response = await apiToken.get(`/api/bookmark/group`);
+//   return response.data;
+// };
+
 //모임 가입
 // const joinMeeting = async (meetingId: string | undefined) => {
 //   if (!meetingId) {
@@ -37,16 +55,26 @@ import MeetingImage from "../../images/MeetingRoom.jpg";
 //   return response.data;
 // };
 
-//즐겨찾기 목록 불러오기
+//개시글 불러오기
+// const fetchPost = async (meetingId: string | undefined) => {
+//   if (!meetingId) {
+//     throw new Error("Meeting ID is not provided");
+//   }
+//   const response = await apiToken.get(`/api/group/${parseInt(meetingId)}/post`);
+//   return response.data;
+// };
 
 const MeetingRoom = () => {
   const [favorite, setFavorite] = useState(false);
+  const [join, setJoin] = useState(false);
+
   // const meetingId = useParams();
+  // console.log(meetingId);
   // const {
   //   data: meeting,
   //   isLoading,
   //   error,
-  // } = useQuery(["meeting", meetingId], () => fetchMeeting(meetingId.id));
+  // } = useQuery(["meeting", meetingId], () => fetchMeeting(meetingId.meetingId));
 
   // if (isLoading) {
   //   return <div>Loading...</div>;
@@ -78,17 +106,47 @@ const MeetingRoom = () => {
             <StButtonSec>
               {favorite && favorite === true ? (
                 <StButton onClick={() => setFavorite(false)}>
-                  ♥ 즐겨찾기
+                  <FaHeart />
+                  즐겨찾기
                 </StButton>
               ) : (
                 <StButton onClick={() => setFavorite(true)}>
-                  ♡ 즐겨찾기
+                  <FaRegHeart />
+                  즐겨찾기
                 </StButton>
               )}
-              <StButton>♡ 참여하기</StButton>
+              {join && join === true ? (
+                <StButton onClick={() => setJoin(false)}>
+                  <FaHeart /> 탈퇴하기
+                </StButton>
+              ) : (
+                <StButton onClick={() => setJoin(true)}>
+                  <FaRegHeart /> 참여하기
+                </StButton>
+              )}
             </StButtonSec>
           </StProfileSec>
         </StLeftForm>
+        <StRightForm>
+          <StNotice>
+            <Notice />
+          </StNotice>
+          <StPost>
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+          </StPost>
+          <StPostButton>
+            <StButton>게시글 작성</StButton>
+          </StPostButton>
+        </StRightForm>
       </StForm>
     </StContainer>
   );
@@ -105,6 +163,7 @@ const StContainer = styled.div`
 `;
 
 const StForm = styled.div`
+  display: flex;
   width: 1100px;
   height: 630px;
   border-radius: 30px;
@@ -192,4 +251,42 @@ const StButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: start;
+`;
+
+const StRightForm = styled.div`
+  width: 640px;
+  height: 630px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const StNotice = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 640px;
+  height: 60px;
+  border-bottom: 1px solid gray;
+`;
+
+const StPost = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid lightgray;
+  width: 600px;
+  height: 500px;
+  border-radius: 10px;
+  margin-top: 10px;
+`;
+
+const StPostButton = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-right: 50px;
+  margin-top: 10px;
 `;
