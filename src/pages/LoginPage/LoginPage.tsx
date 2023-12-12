@@ -19,7 +19,7 @@ const LoginPage = () => {
   const [password, setPassword] = UseInput("");
 
   const postLogin = async () => {
-    const data = await api.post("api주소", {
+    const data = await api.post("/api/user/login", {
       email,
       password,
     });
@@ -50,7 +50,7 @@ const LoginPage = () => {
     onSuccess: async (res) => {
       console.log(res.access_token);
       await api
-        .post("api주소", { access_token: res.access_token })
+        .post("/api/user/login/google", { access_token: res.access_token })
         .then((res) => {
           console.log(res);
         })

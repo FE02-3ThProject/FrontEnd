@@ -4,11 +4,51 @@ import { useQuery } from "react-query";
 import MyProfileModal from "../../components/user/MyProfileModal";
 import styled from "styled-components";
 import defaultUserImage from "../../images/default_profile.png";
+import { deleteCookie, getCookie } from "../../shared/Cookie";
+import { useNavigate } from "react-router-dom";
+
+type Meeting = {
+  id: number;
+  title: string;
+  description: string;
+};
 
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+
+  const navigator = useNavigate();
+
   const openModal = () => {
     setIsModalOpen(true);
+  };
+
+  const deleteUser = async () => {
+    const email = getCookie("email");
+    const password = getCookie("password");
+
+    const requestData = {
+      email: email,
+      password: password,
+    };
+    try {
+      const response = await apiToken.put("/api/user/unRegister", requestData);
+      console.log(response.data);
+      setIsDeleted(true);
+      deleteCookie("token");
+      deleteCookie("nickname");
+      deleteCookie("profileimage");
+      deleteCookie("email");
+      deleteCookie("password");
+      deleteCookie("status");
+      deleteCookie("is_login");
+      deleteCookie("address");
+      window.alert("회원 탈퇴에 성공 하셨습니다.");
+      navigator("/");
+    } catch (error) {
+      console.error("회원 탈퇴 오류:", error);
+      // 오류 처리 (예: 오류 메시지 표시 등)
+    }
   };
 
   const closeModal = () => {
@@ -16,18 +56,24 @@ const UserPage = () => {
   };
 
   const getMyProfile = async () => {
-    const res = await apiToken.get("/user/myprofile");
+    const res = await apiToken.get("/api/user/info");
     return res;
   };
-  const { data: res, status } = useQuery("MY_PROFILE", getMyProfile, {
-    staleTime: 0,
-    cacheTime: 0,
-    onSuccess: (data) => {
-      return data;
-    },
-  });
+  const { data: profileData, isLoading: profileLoading } = useQuery(
+    "MY_PROFILE",
+    getMyProfile
+  );
 
-  if (status === "loading") {
+  const getMyMeetingRoom = async () => {
+    const res = await apiToken.get("/api/user/mygroup");
+    return res;
+  };
+  const { data: meetingData, isLoading: meetingLoading } = useQuery(
+    "MY_MEETINGS",
+    getMyMeetingRoom
+  );
+
+  if (profileLoading || meetingLoading) {
     return <div>loading...</div>;
   }
   const S3 = "https://www.snsboom.co.kr/common/img/default_profile.png";
@@ -48,7 +94,7 @@ const UserPage = () => {
           <PointWrap>
             <p>닉네임</p>
             <PointBox>
-              {/* <p>{res?.data.myprofile.nickname}</p> */}
+              {profileData?.data.myprofile.nickname}
               닉네임
             </PointBox>
           </PointWrap>
@@ -67,6 +113,22 @@ const UserPage = () => {
         >
           마이페이지 수정
         </ProfileButton>
+        <DeleteAccountButton>
+          {isDeleted ? (
+            <p>회원 탈퇴가 완료되었습니다.</p>
+          ) : (
+            <>
+              <p>회원 탈퇴하시겠습니까?</p>
+              <button onClick={deleteUser}>회원 탈퇴</button>
+            </>
+          )}
+        </DeleteAccountButton>
+
+        <ul>
+          {meetingData?.data.map((meeting: Meeting) => (
+            <li key={meeting.id}>{meeting.title}</li>
+          ))}
+        </ul>
       </ProfileBox>
 
       {isModalOpen ? (
@@ -185,5 +247,7 @@ const ProfileButton = styled.button`
   text-align: center;
   margin-top: 32px;
 `;
+
+const DeleteAccountButton = styled.button``;
 
 export default UserPage;
