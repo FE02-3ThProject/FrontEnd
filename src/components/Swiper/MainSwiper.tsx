@@ -12,24 +12,16 @@ import "./MainSwiper.css";
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
-const IMAGE_1_URL =
-  "https://images.pexels.com/photos/19235974/pexels-photo-19235974.jpeg?auto=compress&cs=tinysrgb&w=1600";
-const IMAGE_2_URL =
-  "https://images.pexels.com/photos/19143254/pexels-photo-19143254.jpeg?auto=compress&cs=tinysrgb&w=1600";
-const IMAGE_3_URL =
-  "https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=1600";
-const IMAGE_4_URL =
-  "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1600";
-const IMAGE_5_URL =
-  "https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg?auto=compress&cs=tinysrgb&w=1600";
-const IMAGE_6_URL =
-  "https://images.pexels.com/photos/2125075/pexels-photo-2125075.jpeg?auto=compress&cs=tinysrgb&w=1600";
-const IMAGE_7_URL =
-  "https://images.pexels.com/photos/2533092/pexels-photo-2533092.jpeg?auto=compress&cs=tinysrgb&w=1600";
-const IMAGE_8_URL =
-  "https://images.pexels.com/photos/33545/sunrise-phu-quoc-island-ocean.jpg?auto=compress&cs=tinysrgb&w=1600";
-const IMAGE_9_URL =
-  "https://images.pexels.com/photos/2131623/pexels-photo-2131623.jpeg?auto=compress&cs=tinysrgb&w=1600";
+import mainvisual01 from "../../images/main/mainvisual01.png";
+import mainvisual02 from "../../images/main/mainvisual02.png";
+import mainvisual03 from "../../images/main/mainvisual03.png";
+import mainvisual04 from "../../images/main/mainvisual04.png";
+import mainvisual05 from "../../images/main/mainvisual05.png";
+import mainvisual06 from "../../images/main/mainvisual06.png";
+import mainvisual07 from "../../images/main/mainvisual07.png";
+import mainvisual08 from "../../images/main/mainvisual08.png";
+import mainvisual09 from "../../images/main/mainvisual09.png";
+import mainvisual10 from "../../images/main/mainvisual10.png";
 
 const MainSwiper: FC = () => {
   return (
@@ -49,31 +41,34 @@ const MainSwiper: FC = () => {
         className="mySwiper"
       >
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 1" src={IMAGE_1_URL} />
+          <img alt="scenery 1" src={mainvisual01} />
         </SwiperSlide>
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 2" src={IMAGE_2_URL} />
+          <img alt="scenery 2" src={mainvisual02} />
         </SwiperSlide>
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 3" src={IMAGE_3_URL} />
+          <img alt="scenery 3" src={mainvisual03} />
         </SwiperSlide>
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 4" src={IMAGE_4_URL} />
+          <img alt="scenery 4" src={mainvisual04} />
         </SwiperSlide>
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 5" src={IMAGE_5_URL} />
+          <img alt="scenery 5" src={mainvisual05} />
         </SwiperSlide>
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 6" src={IMAGE_6_URL} />
+          <img alt="scenery 6" src={mainvisual06} />
         </SwiperSlide>
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 7" src={IMAGE_7_URL} />
+          <img alt="scenery 7" src={mainvisual07} />
         </SwiperSlide>
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 8" src={IMAGE_8_URL} />
+          <img alt="scenery 8" src={mainvisual08} />
         </SwiperSlide>
         <SwiperSlide className="swiper-slide">
-          <img alt="scenery 9" src={IMAGE_9_URL} />
+          <img alt="scenery 9" src={mainvisual09} />
+        </SwiperSlide>
+        <SwiperSlide className="swiper-slide">
+          <img alt="scenery 10" src={mainvisual10} />
         </SwiperSlide>
       </Swiper>
     </>

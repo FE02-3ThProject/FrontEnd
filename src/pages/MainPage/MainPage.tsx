@@ -56,7 +56,7 @@ const StCardContainer = styled.div`
 `;
 
 const StTitle = styled.div`
-  margin: 30px 0 0 170px;
+  margin: 30px 0 0 70px;
   font-weight: bold;
   font-size: 18px;
   letter-spacing: -1px;
