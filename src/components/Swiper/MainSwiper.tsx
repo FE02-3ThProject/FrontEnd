@@ -30,12 +30,13 @@ const MainSwiper: FC = () => {
         spaceBetween={30}
         centeredSlides={true}
         autoplay={{
-          delay: 2500,
+          delay: 4000,
           disableOnInteraction: false,
         }}
         pagination={{
           clickable: true,
         }}
+        loop={true}
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
