@@ -235,6 +235,7 @@ const SignUpPage = () => {
                 width="387px"
                 height="61px"
                 fontSize="18px"
+                background-color="#333"
                 value={location}
                 onChange={(selectedValue) => setLocation(selectedValue)}
               />

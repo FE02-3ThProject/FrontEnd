@@ -1,30 +1,53 @@
 import { useState } from "react";
-import { apiToken } from "../../shared/apis/Apis";
-import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import Swal from "sweetalert2";
+import { useMutation } from "react-query";
+import { apiToken } from "../../shared/apis/Apis";
 
-const modificationPost = async (
-  meetingId: string | undefined,
-  postId: string | undefined,
-  title: string,
-  content: string
-) => {
-  if (!meetingId || !postId) {
-    throw new Error("Meeting ID or Post ID is not provided.");
+interface data {
+  meetingId: string;
+  title: string;
+  content: string;
+}
+
+const addPost = async (data: data) => {
+  const { meetingId, title, content } = data;
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided.");
   }
-  const response = await apiToken.put(
-    `/api/group/${parseInt(meetingId)}/post/${parseInt(postId)}`,
+  const response = await apiToken.post(
+    `/api/group/${parseInt(meetingId)}/post`,
     { title, content }
   );
   return response.data;
 };
 
-const ModificationPage = () => {
-  const { meetingId, postId } = useParams();
+const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigator = useNavigate();
+  const meetingId = useParams().meetingId as string;
+
+  const mutation = useMutation(addPost, {
+    onSuccess: () => {
+      Swal.fire({
+        text: "게시글이 성공적으로 등록되었습니다.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      });
+      navigator(`/meeting/${meetingId}`);
+    },
+    onError: () => {
+      Swal.fire({
+        text: "게시글 등록에 실패했습니다.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      });
+    },
+  });
 
   const handleUpdate = async () => {
     if (title === "" || content === "") {
@@ -36,23 +59,8 @@ const ModificationPage = () => {
       });
       return;
     }
-    try {
-      await modificationPost(meetingId, postId, title, content);
-      Swal.fire({
-        text: "게시글이 성공적으로 수정되었습니다.",
-        icon: "success",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "확인",
-      });
-      navigator(`/meeting/${meetingId}/${postId}`);
-    } catch (error) {
-      Swal.fire({
-        text: "게시글 수정에 실패했습니다.",
-        icon: "error",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "확인",
-      });
-    }
+
+    mutation.mutate({ meetingId, title, content });
   };
 
   return (
@@ -73,14 +81,14 @@ const ModificationPage = () => {
           onChange={(e) => setContent(e.target.value)}
         />
         <StButtonForm>
-          <StButton onClick={handleUpdate}>수정</StButton>
+          <StButton onClick={handleUpdate}>등록</StButton>
         </StButtonForm>
       </StForm>
     </StContainer>
   );
 };
 
-export default ModificationPage;
+export default CreatePostPage;
 
 const StContainer = styled.div`
   width: 100vw;
