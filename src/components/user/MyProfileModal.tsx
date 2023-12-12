@@ -42,7 +42,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     if (!nicknameCheck(CHGnickname)) {
       return null;
     } else {
-      const data = await api.post("/user/idcheck", {
+      const data = await api.post(`/api/user/${nickname}/existsNickname`, {
         nickname: CHGnickname,
       });
       return data;
@@ -104,7 +104,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     formData.append("nickname", CHGnickname);
     formData.append("image", CHGprofileImg);
 
-    const data = await apiToken.patch("/user/myprofile", formData);
+    const data = await apiToken.patch("/api/user/edit", formData);
 
     return data;
   };
@@ -145,7 +145,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     formData.append("introduction", CHGintroduction);
     formData.append("image", CHGprofileImg);
 
-    const data = await apiToken.patch("/user/myprofile", formData);
+    const data = await apiToken.patch("/api/user/edit", formData);
 
     return data;
   };
