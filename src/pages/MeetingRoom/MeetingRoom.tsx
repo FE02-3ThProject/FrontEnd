@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import Post from "../../components/post/Post";
 import Notice from "../../components/post/Notice";
-
 import styled from "styled-components";
 
 //Image Import
@@ -101,7 +100,7 @@ const MeetingRoom = () => {
   // const { data: joinedMeetings } = useQuery("joinedMeetings", fetchJoin);
   // const { data: posts } = useQuery(["posts", meetingId], () =>
   //   fetchPost(meetingId)
-  // ); // 게시글 데이터를 불러옵니다.
+  // );zzz
 
   // const addFavoriteMutation = useMutation(favoriteMeeting, {
   //   onSuccess: () => {
