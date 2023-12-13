@@ -5,6 +5,7 @@ import { useState } from "react";
 import Post from "../../components/post/Post";
 import Notice from "../../components/post/Notice";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 //Image Import
 import MeetingImage from "../../images/MeetingRoom.jpg";
@@ -12,7 +13,6 @@ import MeetingImage from "../../images/MeetingRoom.jpg";
 //Icons Import
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 //모임정보 불러오기
 // const fetchMeeting = async (meetingId: string | undefined) => {
@@ -35,7 +35,7 @@ import { Link } from "react-router-dom";
 //즐겨찾기 삭제
 // const deleteFavorite = async (meetingId: string | undefined) => {
 //   const response = await apiToken.delete(
-//     `/api/bookmark/${meetingId}/cancel`
+//     `/api/user-group/unbookmark/${meetingId}`
 //   );
 //   return response.data;
 // };
@@ -70,7 +70,7 @@ import { Link } from "react-router-dom";
 
 //가입한 모임 목록 불러오기
 // const fetchJoin = async () => {
-//   const response = await apiToken.get(`/api/user/mygroup`);
+//   const response = await apiToken.get(`/api/user-group/joined`);
 //   return response.data;
 // };
 
