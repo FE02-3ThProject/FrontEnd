@@ -9,7 +9,7 @@ interface ButtonProps {
   outline?: boolean;
   small?: boolean;
   icon?: IconType;
-  isLoading?: boolean;
+  // isLoading?: boolean;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -37,12 +37,12 @@ const Button = styled.button<ButtonProps>`
     border: 2px solid #0f78ee;
     outline: transparent;
   }
-  ${({ isLoading }) =>
+  /* ${({ isLoading }) =>
     isLoading &&
     css`
       display: flex;
       justify-content: center;
-    `};
+    `}; */
 `;
 
 const StButton: React.FC<ButtonProps> = ({
@@ -52,36 +52,53 @@ const StButton: React.FC<ButtonProps> = ({
   outline,
   small,
   icon: Icon,
-  isLoading = false,
+  // isLoading = false,
 }) => {
   return (
+    // <Button
+    //   type="submit"
+    //   disabled={disabled}
+    //   onClick={onClick}
+    //   outline={outline}
+    //   small={small}
+    //   // isLoading={isLoading}
+    // >
+    //   {isLoading ? (
+    //     <RotatingLines
+    //       strokeColor="grey"
+    //       strokeWidth="5"
+    //       animationDuration="0.75"
+    //       width="30"
+    //       visible={true}
+    //     />
+    //   ) : (
+    //     <>
+    //       {Icon && (
+    //         <Icon
+    //           size={24}
+    //           style={{ position: "absolute", left: "1rem", top: "0.75rem" }}
+    //         />
+    //       )}
+    //       {label && <span>{label}</span>}
+    //     </>
+    //   )}
+    // </Button>
     <Button
       type="submit"
       disabled={disabled}
       onClick={onClick}
       outline={outline}
       small={small}
-      isLoading={isLoading}
     >
-      {isLoading ? (
-        <RotatingLines
-          strokeColor="grey"
-          strokeWidth="5"
-          animationDuration="0.75"
-          width="30"
-          visible={true}
-        />
-      ) : (
-        <>
-          {Icon && (
-            <Icon
-              size={24}
-              style={{ position: "absolute", left: "1rem", top: "0.75rem" }}
-            />
-          )}
-          {label && <span>{label}</span>}
-        </>
-      )}
+      <>
+        {Icon && (
+          <Icon
+            size={24}
+            style={{ position: "absolute", left: "1rem", top: "0.75rem" }}
+          />
+        )}
+        {label && <span>{label}</span>}
+      </>
     </Button>
   );
 };
