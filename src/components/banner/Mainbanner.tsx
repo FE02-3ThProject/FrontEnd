@@ -30,7 +30,7 @@ export default Mainbanner;
 const StMainBannerContainer = styled.div`
   display: flex;
   justify-content: center;
-  width: 1024px;
+  width: 100vw;
   gap: 3px;
 `;
 
