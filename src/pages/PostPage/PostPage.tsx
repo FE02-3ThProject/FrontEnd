@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { apiToken } from "../../shared/apis/Apis";
 import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getCookie } from "../../shared/Cookie";
 
 const deletePost = async (
   meetingId: string | undefined,
@@ -15,8 +17,32 @@ const deletePost = async (
   return response.data;
 };
 
+interface Meeting {
+  userId: string;
+  title: string;
+  content: string;
+  createAt: string;
+}
+
 const PostPage = () => {
   const { meetingId, postId } = useParams();
+  const [meeting, setMeeting] = useState<Meeting | null>(null);
+  const userId = getCookie("userId");
+
+  useEffect(() => {
+    const fetchMeetingData = async () => {
+      try {
+        const data = await apiToken.get(
+          `/api/group/${meetingId}/post/${postId}`
+        );
+        setMeeting(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchMeetingData();
+  }, [meetingId]);
 
   console.log("meetingId: ", meetingId);
   console.log("postId: ", postId);
@@ -26,12 +52,16 @@ const PostPage = () => {
         <StTitle>게시글 타이틀</StTitle>
         <StContent>게시글 내용</StContent>
         <StButtonForm>
-          <Link to={`/meeting/${meetingId}/${postId}/modification`}>
-            <StButton>수정</StButton>
-          </Link>
-          <StButton onClick={() => deletePost(meetingId, postId)}>
-            삭제
-          </StButton>
+          {meeting && meeting.userId === userId && (
+            <>
+              <Link to={`/meeting/${meetingId}/${postId}/modification`}>
+                <StButton>수정</StButton>
+              </Link>
+              <StButton onClick={() => deletePost(meetingId, postId)}>
+                삭제
+              </StButton>
+            </>
+          )}
         </StButtonForm>
       </StForm>
     </StContainer>
