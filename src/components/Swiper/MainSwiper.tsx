@@ -38,6 +38,7 @@ const MainSwiper: FC = () => {
         }}
         loop={true}
         navigation={true}
+        
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >

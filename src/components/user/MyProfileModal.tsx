@@ -19,6 +19,8 @@ interface MyProfileModalProps {
   profileImage: string;
   introduction: string;
   nickname: string;
+  category:string;
+  location:string;
 }
 
 const MyProfileModal: React.FC<MyProfileModalProps> = ({
@@ -27,6 +29,8 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   profileImage,
   introduction,
   nickname,
+  category,
+  location
 }) => {
   const queryClient = useQueryClient();
 
@@ -198,7 +202,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
             </header>
 
             <div>
-              <ProfileImg
+              <StProfileImg
                 src={
                   previewImg.split("/")[3] === "null"
                     ? "https://www.snsboom.co.kr/common/img/default_profile.png"
@@ -222,34 +226,34 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                   }
                 }}
               />
-              <ChgProfile>
+              <StChgProfile>
                 <img src={chgImg} alt="img" onClick={onClickImageUpload} />
-              </ChgProfile>
-              <ModifyBox>
-                <Wrap>
+              </StChgProfile>
+              <StModifyBox>
+                <StWrap>
                   <p>닉네임</p>
-                  <InputWrap>
+                  <StInputWrap>
                     <input
                       defaultValue={nickname}
                       onChange={(e) => {
                         setCHGnickname(e.target.value);
                       }}
                     />
-                    <DupButton onClick={handleDupnickClick}>
+                    <StDupButton onClick={handleDupnickClick}>
                       중복 확인
-                    </DupButton>
-                  </InputWrap>
-                </Wrap>
-                <Wrap2>
+                    </StDupButton>
+                  </StInputWrap>
+                </StWrap>
+                <StWrap2>
                   <p>자기소개</p>
-                  <IntroTextBox
+                  <StIntroTextBox
                     defaultValue={introduction}
                     onChange={(e) => {
                       setCHGIntroduction(e.target.value);
                     }}
                   />
-                </Wrap2>
-              </ModifyBox>
+                </StWrap2>
+              </StModifyBox>
             </div>
             <footer>
               <button onClick={close}>취소하기</button>
@@ -266,7 +270,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   );
 };
 
-const ProfileImg = styled.img`
+const StProfileImg = styled.img`
   width: 154px;
   height: 154px;
   border-radius: 154px;
@@ -274,7 +278,7 @@ const ProfileImg = styled.img`
   margin: 0px auto;
 `;
 
-const ChgProfile = styled.div`
+const StChgProfile = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 30px;
@@ -288,7 +292,7 @@ const ChgProfile = styled.div`
   background-color: white;
 `;
 
-const ModifyBox = styled.div`
+const StModifyBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -297,14 +301,14 @@ const ModifyBox = styled.div`
   margin: 0 auto;
 `;
 
-const Wrap = styled.div`
+const StWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 `;
 
-const InputWrap = styled.div`
+const StInputWrap = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: white;
@@ -313,7 +317,7 @@ const InputWrap = styled.div`
   height: 50px;
 `;
 
-const DupButton = styled.button`
+const StDupButton = styled.button`
   width: 96px;
   height: 34px;
   color: black;
@@ -326,7 +330,7 @@ const DupButton = styled.button`
   width: 80px;
 `;
 
-const Wrap2 = styled.div`
+const StWrap2 = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -334,7 +338,7 @@ const Wrap2 = styled.div`
   gap: 8px;
 `;
 
-const IntroTextBox = styled.textarea`
+const StIntroTextBox = styled.textarea`
   width: 400px;
   height: 192px;
   resize: none;

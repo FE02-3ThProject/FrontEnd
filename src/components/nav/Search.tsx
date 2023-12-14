@@ -70,6 +70,6 @@ const StSearchIcon = styled.div`
   color: #fff;
   font-size: 20px;
   font-weight: bold;
-  top: 17px;
+  top: 25px;
   left: 480px;
 `;
