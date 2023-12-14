@@ -3,7 +3,7 @@ import { apiToken } from "../../shared/apis/Apis";
 import MyProfileModal from "../../components/user/MyProfileModal";
 import styled from "styled-components";
 import defaultUserImage from "../../images/default_profile.png";
-import { deleteCookie, getCookie,  } from "../../shared/Cookie";
+import { deleteCookie, getCookie } from "../../shared/Cookie";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 
@@ -15,18 +15,7 @@ const UserPage = () => {
 
   const email = getCookie("email");
 
-
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
   const deleteUser = async () => {
-    // const password = getCookie("password");
-
-    // const requestData = {
-    //   email: email,
-    //   password: password,
-    // };
     try {
       const response = await apiToken.delete("/api/user/userDelete");
       console.log(response.data);
@@ -43,7 +32,6 @@ const UserPage = () => {
       navigator("/");
     } catch (error) {
       console.error("회원 탈퇴 오류:", error);
-      // 오류 처리 (예: 오류 메시지 표시 등)
     }
   };
 
@@ -52,54 +40,71 @@ const UserPage = () => {
   };
 
   const getMyProfile = async () => {
-    const res = await apiToken.get(`api/user/info/${email}`);
+    const res = await apiToken.get(`/api/user/info?email=${email}`);
     return res;
   };
   const { data: profileData, isLoading: profileLoading } = useQuery(
     "MY_PROFILE",
     getMyProfile
   );
-
+  console.log(profileData);
   if (profileLoading) {
     return <div>loading...</div>;
   }
   const S3 = "https://www.snsboom.co.kr/common/img/default_profile.png";
 
   return (
-    <MyProfileContainer>
-      <ProfileBox>
-        <Title>
+    <StMyProfileContainer>
+      <StProfileBox>
+        <StTitle>
           <h2>마이페이지</h2>
           <p>Mypage</p>
-        </Title>
-        <ProfileImg
-          // src={res?.data.myprofile.profileImage ? S3 : defaultUserImage}
-          src={defaultUserImage}
+        </StTitle>
+        <StProfileImg
+          src={
+            profileData?.data.image === null
+              ? defaultUserImage
+              : profileData?.data.image
+          }
           alt="profileImg"
         />
-        <ProfileDetailBox>
-          <PointWrap>
+        <StProfileDetailBox>
+          <StPointWrap>
             <p>닉네임</p>
-            <PointBox>
-              {profileData?.data.myprofile.nickname}
+            <StPointBox>
+              {profileData?.data.nickname}
               닉네임
-            </PointBox>
-          </PointWrap>
-          <IntroBox>
+            </StPointBox>
+          </StPointWrap>
+          <StPointWrap>
+            <p>지역</p>
+            <StPointBox>
+              {profileData?.data.locationId.name}
+              지역
+            </StPointBox>
+          </StPointWrap>
+          <StPointWrap>
+            <p>카테고리</p>
+            <StPointBox>
+              {profileData?.data.categoryId.name}
+              카테고리
+            </StPointBox>
+          </StPointWrap>
+          <StIntroBox>
             <p>자기소개</p>
-            <Intro>
-              {/* <p>{res?.data.myprofile.introduction}</p> */}
+            <StIntro>
+              {profileData?.data.introduction}
               자기소개
-            </Intro>
-          </IntroBox>
-        </ProfileDetailBox>
-        <ProfileButton
+            </StIntro>
+          </StIntroBox>
+        </StProfileDetailBox>
+        <StProfileButton
           onClick={() => {
             setIsModalOpen(true);
           }}
         >
           마이페이지 수정
-        </ProfileButton>
+        </StProfileButton>
         <StOpenJoinde>
           <button
             onClick={() => {
@@ -109,7 +114,7 @@ const UserPage = () => {
             내가 가입한 모임 열기
           </button>
         </StOpenJoinde>
-        <DeleteAccountButton>
+        <StDeleteAccountButton>
           {isDeleted ? (
             <p>회원 탈퇴가 완료되었습니다.</p>
           ) : (
@@ -118,25 +123,25 @@ const UserPage = () => {
               <button onClick={deleteUser}>회원 탈퇴</button>
             </>
           )}
-        </DeleteAccountButton>
-      </ProfileBox>
+        </StDeleteAccountButton>
+      </StProfileBox>
 
       {isModalOpen ? (
         <MyProfileModal
           open={isModalOpen}
           close={closeModal}
           profileImage={S3}
-          // introduction={res?.data.myprofile.introduction}
-          // nickname={res?.data.myprofile.nickname}
-          introduction={"몰라"}
-          nickname={"오리"}
+          introduction={profileData?.data.introduction}
+          nickname={profileData?.data.nickname}
+          category={profileData?.data.categoryId}
+          location={profileData?.data.locationId}
         />
       ) : null}
-    </MyProfileContainer>
+    </StMyProfileContainer>
   );
 };
 
-const MyProfileContainer = styled.div`
+const StMyProfileContainer = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -144,12 +149,12 @@ const MyProfileContainer = styled.div`
   align-items: center;
 `;
 
-const ProfileBox = styled.div`
+const StProfileBox = styled.div`
   width: 386px;
   margin: 160px auto;
 `;
 
-const Title = styled.div`
+const StTitle = styled.div`
   display: flex;
   text-align: center;
   flex-direction: column;
@@ -169,7 +174,7 @@ const Title = styled.div`
   }
 `;
 
-const ProfileImg = styled.img`
+const StProfileImg = styled.img`
   width: 154px;
   height: 154px;
   border-radius: 154px;
@@ -178,14 +183,14 @@ const ProfileImg = styled.img`
   cursor: default;
 `;
 
-const ProfileDetailBox = styled.div`
+const StProfileDetailBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 16px;
 `;
 
-const PointWrap = styled.div`
+const StPointWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -194,7 +199,7 @@ const PointWrap = styled.div`
   line-height: 20.3px;
 `;
 
-const PointBox = styled.div`
+const StPointBox = styled.div`
   background-color: white;
   width: 272px;
   height: 50px;
@@ -207,7 +212,7 @@ const PointBox = styled.div`
   border-bottom: solid 1px #acacac;
 `;
 
-const IntroBox = styled.div`
+const StIntroBox = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 14px;
@@ -215,7 +220,7 @@ const IntroBox = styled.div`
   line-height: 20.3px;
 `;
 
-const Intro = styled.div`
+const StIntro = styled.div`
   background-color: white;
   height: 102px;
   padding: 10px;
@@ -223,7 +228,7 @@ const Intro = styled.div`
   border-bottom: solid 1px #acacac;
 `;
 
-const ProfileButton = styled.button`
+const StProfileButton = styled.button`
   width: 100%;
   height: 50px;
   background-color: black;
@@ -238,7 +243,7 @@ const ProfileButton = styled.button`
   margin-top: 32px;
 `;
 
-const DeleteAccountButton = styled.div``;
+const StDeleteAccountButton = styled.div``;
 
 const StOpenJoinde = styled.div``;
 
