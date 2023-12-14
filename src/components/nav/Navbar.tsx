@@ -34,7 +34,7 @@ const StNav = styled.div`
   position: relative;
   width: 100vw;
   height: 62px;
-  margin-top: 8px;
+  padding-top: 8px;
   justify-content: space-between;
   z-index: 10;
   color: #fff;
