@@ -72,7 +72,7 @@ const StTitle = styled.h3`
 `;
 
 const StContent = styled.p`
-  width: 100%
+  width: 100%;
   height: auto;
   display: flex;
   justify-content: start;

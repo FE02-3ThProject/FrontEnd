@@ -28,10 +28,13 @@ const LoginPage = () => {
   const { mutate: onsubmit } = useMutation(postLogin, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      setCookie("token", data.data.token, 2);
+      const token = data.headers.authorization.split(" ")[1];
+      setCookie("token", token, 2);
       setCookie("nickname", data.data.nickname, 2);
-      setCookie("userId", data.data.userId, 2);
-      setCookie("profileimage", data.data.profileImage, 2);
+      setCookie("email", data.data.email, 2);
+      setCookie("profileimage", data.data.image, 2);
+      setCookie("location", data.data.location, 2);
+      setCookie("userRole", data.data.userRole, 2);
 
       navigate("/");
     },

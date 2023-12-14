@@ -25,8 +25,8 @@ const SignUpPage = () => {
   const [emailCHK, setEmailCHK] = useState(false);
   const [nicknameCHK, setNicknameCHK] = useState(false);
 
-  const [location, setLocation] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
+  const [locationId, setLocation] = useState<string>("");
+  const [categoryId, setCategory] = useState<string>("");
 
   //이메일 중복체크
   const postDupEmail = async (
@@ -35,9 +35,7 @@ const SignUpPage = () => {
     if (!emailCheck(email)) {
       return null;
     } else {
-      const data: AxiosResponse = await api.post(`/api/user/${email}/existsEmail`, {
-        email: String(email),
-      });
+      const data: AxiosResponse = await api.get(`/api/user/${email}/existsEmail`);
       return data;
     }
   };
@@ -68,9 +66,7 @@ const SignUpPage = () => {
     if (!nicknameCheck(nickname)) {
       return null;
     } else {
-      const data: AxiosResponse = await api.post(`/api/user/${nickname}/existsNickname`, {
-        nickname: String(nickname),
-      });
+      const data: AxiosResponse = await api.get(`/api/user/${nickname}/existsNickname`);
       return data;
     }
   };
@@ -101,7 +97,9 @@ const SignUpPage = () => {
       email === "" ||
       nickname === "" ||
       password === "" ||
-      confirmPassword === ""
+      confirmPassword === "" ||
+      locationId === "" ||
+      categoryId === "" 
     ) {
       Swal.fire({
         text: "이메일, 닉네임, 블로그아이디, 비밀번호를 입력해주세요",
@@ -127,8 +125,8 @@ const SignUpPage = () => {
       nickname,
       password,
       confirmPassword,
-      location,
-      category,
+      locationId,
+      categoryId,
     });
     return data;
   };
@@ -136,7 +134,8 @@ const SignUpPage = () => {
   const { mutate: onsubmit } = useMutation(postSignUp, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      if (data?.data.result === true) {
+      console.log(data)
+      if (data?.request.status === 200) {
         Swal.fire({
           text: "가입이 완료되었습니다.",
           icon: "success",
@@ -146,7 +145,7 @@ const SignUpPage = () => {
         navigate("/login");
       } else {
         Swal.fire({
-          text: "중복된 값이 있습니다.",
+          text: "양식이 지켜서 작성해 주세요.",
           icon: "error",
           confirmButtonColor: "#3085d6",
           confirmButtonText: "확인",
@@ -155,7 +154,7 @@ const SignUpPage = () => {
     },
     onError: () => {
       Swal.fire({
-        text: "블로그아이디, 닉네임, 비밀번호를 모두 기입해주세요.",
+        text: "블로그아이디, 닉네임, 비밀번호 및 지역과 카데고리를 선택해 주세요.",
         icon: "error",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
@@ -236,14 +235,14 @@ const SignUpPage = () => {
                 height="61px"
                 fontSize="18px"
                 background-color="#333"
-                value={location}
+                value={locationId}
                 onChange={(selectedValue) => setLocation(selectedValue)}
               />
               <Category
                 width="387px"
                 height="61px"
                 fontSize="18px"
-                value={category}
+                value={categoryId}
                 onChange={(selectedValue) => setCategory(selectedValue)}
               />
             </StInputBox2>
