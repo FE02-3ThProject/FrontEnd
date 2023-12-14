@@ -35,7 +35,9 @@ const SignUpPage = () => {
     if (!emailCheck(email)) {
       return null;
     } else {
-      const data: AxiosResponse = await api.get(`/api/user/${email}/existsEmail`);
+      const data: AxiosResponse = await api.get(
+        `/api/user/${email}/existsEmail`
+      );
       return data;
     }
   };
@@ -50,8 +52,16 @@ const SignUpPage = () => {
           confirmButtonColor: "#3085d6",
           confirmButtonText: "확인",
         });
-      } else {
+      } else if (data.data === true) {
         setEmailCHK(true);
+      } else {
+        setEmailCHK(false);
+        Swal.fire({
+          text: "중복된 이메일 입니다.",
+          icon: "warning",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "확인",
+        });
       }
     },
     onError: () => {
@@ -66,7 +76,9 @@ const SignUpPage = () => {
     if (!nicknameCheck(nickname)) {
       return null;
     } else {
-      const data: AxiosResponse = await api.get(`/api/user/${nickname}/existsNickname`);
+      const data: AxiosResponse = await api.get(
+        `/api/user/${nickname}/existsNickname`
+      );
       return data;
     }
   };
@@ -81,8 +93,16 @@ const SignUpPage = () => {
           confirmButtonColor: "#3085d6",
           confirmButtonText: "확인",
         });
-      } else {
+      } else if (data.data === true) {
         setNicknameCHK(true);
+      } else {
+        setNicknameCHK(false);
+        Swal.fire({
+          text: "중복된 닉네임 입니다.",
+          icon: "warning",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "확인",
+        });
       }
     },
     onError: () => {
@@ -99,7 +119,7 @@ const SignUpPage = () => {
       password === "" ||
       confirmPassword === "" ||
       locationId === "" ||
-      categoryId === "" 
+      categoryId === ""
     ) {
       Swal.fire({
         text: "이메일, 닉네임, 블로그아이디, 비밀번호를 입력해주세요",
@@ -134,7 +154,7 @@ const SignUpPage = () => {
   const { mutate: onsubmit } = useMutation(postSignUp, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      console.log(data)
+      console.log(data);
       if (data?.request.status === 200) {
         Swal.fire({
           text: "가입이 완료되었습니다.",

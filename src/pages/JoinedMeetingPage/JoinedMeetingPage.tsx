@@ -1,3 +1,4 @@
+import { getCookie } from "../../shared/Cookie";
 import { apiToken } from "../../shared/apis/Apis";
 import { useQuery } from "react-query";
 
@@ -13,6 +14,9 @@ type Bookmark ={
 }
 
 const JoinedMeetingPage = () => {
+
+  const userId=getCookie("email")
+
   const getMyMeetingRoom = async () => {
     const res = await apiToken.get("/api/user-group/joined");
     return res;
@@ -23,7 +27,7 @@ const JoinedMeetingPage = () => {
   );
 
   const getBookmark = async () => {
-    const res = await apiToken.get(`/api/user-group/bookmark/{userId}`)
+    const res = await apiToken.get(`/api/user-group/bookmark/${userId}`)
     return res;
   }
   const {data:bookmarkData, isLoading: bookmarkLoading} = useQuery(
