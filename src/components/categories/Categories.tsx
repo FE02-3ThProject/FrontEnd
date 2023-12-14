@@ -103,4 +103,5 @@ const StCategory = styled.div`
   justify-content: space-between;
   padding-top: 4px;
   overflow: hidden;
+  flex-wrap: wrap;
 `;
