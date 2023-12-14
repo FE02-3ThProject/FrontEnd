@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import StButton from "../common/Button";
 import StButtonW from "../common/ButtonW";
-import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
+import { deleteCookie, getCookie } from "../../shared/Cookie";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { apiToken } from "../../shared/apis/Apis";
@@ -31,7 +31,9 @@ const NavItem = () => {
       deleteCookie("token");
       deleteCookie("nickname");
       deleteCookie("userId");
-      deleteCookie("blogId");
+      deleteCookie("email");
+      deleteCookie("profileimage");
+      deleteCookie("location");
       deleteCookie("profileimage");
       setCookie(false);
 
@@ -60,7 +62,7 @@ const NavItem = () => {
     if (cookie !== undefined) {
       return setCookie(true);
     }
-  }, []);
+  }, [cookie]);
 
   return (
     <StMenuList>
