@@ -5,7 +5,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import useFavorite from "../../hooks/useFavorite";
 
 interface HeartButtonProps {
-  meetingId: string;
+  groupId: string;
   userId?: string;
 }
 
@@ -37,7 +37,7 @@ const HeartFill = styled(AiFillHeart)<{ favorite: boolean }>`
   fill: ${(props) => (props.favorite ? "#F43F5E" : "#9CA3AF70")};
 `;
 
-const HeartButton = ({ meetingId, userId }: HeartButtonProps) => {
+const HeartButton = ({ groupId, userId }: HeartButtonProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const HeartButton = ({ meetingId, userId }: HeartButtonProps) => {
   console.log(currentUser);
 
   const { hasFavorite, toggleFavorite } = useFavorite({
-    meetingId,
+    groupId,
     currentUser: userId, // userId를 currentUser로 전달
   });
 

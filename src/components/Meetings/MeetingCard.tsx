@@ -1,13 +1,54 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import HeartButton from "../common/HeartButton";
-import { apiToken } from "../../shared/apis/Apis";
 
-interface MeetingCardProps {
-  meetingId: string; // group의 id
-  userId?: string; // User의 id
+interface Group {
+  groupId: string;
+  locationName: string;
+  categoryName: string;
+  title: string;
+  description: string;
+  image: string;
+  maxMembers: number;
+  createdAt: string;
+  userId: string;
 }
+interface MeetingCardProps {
+  group: Group;
+}
+
+const MeetingCard = ({ group }: MeetingCardProps) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`meeting/${group.groupId}`);
+  }, [group, navigate]);
+
+  return (
+    <StCardContainer onClick={() => navigate(`meeting/${group.groupId}`)}>
+      <StContainer>
+        <StImageContainer>
+          <StyledImage src={group.image} alt="group" />
+          <StTopRightButton>
+            <HeartButton groupId={group.groupId} userId={group.userId} />
+          </StTopRightButton>
+        </StImageContainer>
+
+        <StTitle>{group.title}</StTitle>
+        <StCategory>{group.categoryName}</StCategory>
+        <div>
+          <div>
+            {group.maxMembers} <span className="font-light ">명</span>
+          </div>
+          <div>{group.createdAt}</div>
+        </div>
+      </StContainer>
+    </StCardContainer>
+  );
+};
+
+export default MeetingCard;
 
 const StCardContainer = styled.div`
   cursor: pointer;
@@ -57,58 +98,3 @@ const StCategory = styled.div`
   color: #9ca3af;
   font-weight: 300;
 `;
-
-const MeetingCard = ({ meetingId, userId }: MeetingCardProps) => {
-  const navigate = useNavigate();
-
-  const [group, setGroup] = useState(null);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchGroup = async () => {
-      const response = await apiToken.get(`/api/groups/${meetingId}`);
-      setGroup(response.data);
-    };
-
-    const fetchUser = async () => {
-      const response = await apiToken.get(`/api/users/${userId}`);
-      setUser(response.data);
-    };
-
-    fetchGroup();
-    fetchUser();
-  }, [meetingId, userId]);
-
-  if (!group || !user) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <StCardContainer onClick={() => navigate(`meeting/:id`)}>
-      <StContainer>
-        <StImageContainer>
-          <StyledImage
-            src={
-              "https://images.pexels.com/photos/19235974/pexels-photo-19235974.jpeg?auto=compress&cs=tinysrgb&w=1600"
-            }
-            alt="group"
-          />
-          <StTopRightButton>
-            <HeartButton meetingId={meetingId} userId={userId} />
-          </StTopRightButton>
-        </StImageContainer>
-
-        <StTitle>Title</StTitle>
-        <StCategory>category</StCategory>
-        <div>
-          <div>
-            100000 <span className="font-light ">명</span>
-          </div>
-          <div>{/* {group.createdAt} */}</div>
-        </div>
-      </StContainer>
-    </StCardContainer>
-  );
-};
-
-export default MeetingCard;

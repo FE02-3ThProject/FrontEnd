@@ -1,40 +1,45 @@
+import { useEffect, useState } from "react";
 import FloatingButton from "../../components/common/FloatingButton";
-import MeetingCard from "../../components/Meetings/MeetingCard_before";
+import MeetingCard from "../../components/Meetings/MeetingCard";
 import MainSwiper from "../../components/Swiper/MainSwiper";
 import Categories from "../../components/categories/Categories";
 import styled from "styled-components";
 import Mainbanner from "../../components/banner/Mainbanner";
 import MainBottomBanner from "../../components/banner/MainBottomBanner";
-import { useEffect, useState } from "react";
-import { apiToken } from "../../shared/apis/Apis";
+import getGroups from "../../actions/getGroups";
+
+interface Group {
+  groupId: string;
+  locationName: string;
+  categoryName: string;
+  title: string;
+  description: string;
+  image: string;
+  maxMembers: number;
+  createdAt: string;
+  userId: string;
+}
 
 const MainPage = () => {
-  const [meetingRooms, setMeetingRooms] = useState([]);
+  const [groups, setGroups] = useState<Group[]>([]);
 
   useEffect(() => {
-    const fetchMeetingRooms = async () => {
-      try {
-        const response = await apiToken.get("/api/group/all"); // Adjust this endpoint to your actual meeting rooms API endpoint
-        setMeetingRooms(response.data);
-      } catch (error) {
-        console.error("Failed to fetch meeting rooms:", error);
-      }
+    const loadGroups = async () => {
+      const data = await getGroups();
+      if (data) setGroups(data);
     };
 
-    fetchMeetingRooms();
+    loadGroups();
   }, []);
+
   return (
     <StContainer>
       <MainSwiper />
       <Categories />
       <StTitle>추천 모임</StTitle>
       <StCardContainer>
-        {meetingRooms.map((room) => (
-          <MeetingCard
-            key={room.id}
-            meetingId={room.meetingId}
-            userId={room.userId}
-          />
+        {groups.map((group) => (
+          <MeetingCard key={group.groupId} group={group} />
         ))}
       </StCardContainer>
       <StBannerContainer>
