@@ -1,17 +1,15 @@
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-// import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-// import HeartButton from "../HeartButton";
+import HeartButton from "../common/HeartButton";
+import { apiToken } from "../../shared/apis/Apis";
 
-// interface MeetingCardProps {
-//   groupId: string; // group의 id
-//   userId?: string; // User의 id
-// }
+interface MeetingCardProps {
+  meetingId: string; // group의 id
+  userId?: string; // User의 id
+}
 
 const StCardContainer = styled.div`
-  width: 200px;
-  margin: 20px 35px;
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
@@ -19,19 +17,16 @@ const StCardContainer = styled.div`
   }
 `;
 
-const StMContainer = styled.div`
+const StContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 2rem;
+  width: 100%;
 `;
 
 const StImageContainer = styled.div`
   position: relative;
-  width: 200px;
-  height: 200px;
-  border-radius: 15px;
-  background-size: contain;
-  background-image: url("https://images.pexels.com/photos/19235974/pexels-photo-19235974.jpeg?auto=compress&cs=tinysrgb&w=1600");
+  width: 100%;
   overflow: hidden;
   aspect-ratio: 1;
   border-radius: 1rem;
@@ -54,7 +49,7 @@ const StTopRightButton = styled.div`
 `;
 
 const StTitle = styled.div`
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
 `;
 
@@ -63,38 +58,43 @@ const StCategory = styled.div`
   font-weight: 300;
 `;
 
-const MeetingCard = () => {
-  // const navigate = useNavigate();
+const MeetingCard = ({ meetingId, userId }: MeetingCardProps) => {
+  const navigate = useNavigate();
 
-  // const [group, setGroup] = useState(null);
-  // const [user, setUser] = useState(null);
+  const [group, setGroup] = useState(null);
+  const [user, setUser] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchGroup = async () => {
-  //     const response = await axios.get(`/api/groups/${groupId}`);
-  //     setGroup(response.data);
-  //   };
+  useEffect(() => {
+    const fetchGroup = async () => {
+      const response = await apiToken.get(`/api/groups/${meetingId}`);
+      setGroup(response.data);
+    };
 
-  //   const fetchUser = async () => {
-  //     const response = await axios.get(`/api/users/${userId}`);
-  //     setUser(response.data);
-  //   };
+    const fetchUser = async () => {
+      const response = await apiToken.get(`/api/users/${userId}`);
+      setUser(response.data);
+    };
 
-  //   fetchGroup();
-  //   fetchUser();
-  // }, [groupId, userId]);
+    fetchGroup();
+    fetchUser();
+  }, [meetingId, userId]);
 
-  // if (!group || !user) {
-  //   return <div>Loading...</div>;
-  // }
+  if (!group || !user) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <StCardContainer>
-      <StMContainer>
+    <StCardContainer onClick={() => navigate(`meeting/:id`)}>
+      <StContainer>
         <StImageContainer>
-          <StyledImage src={"이미지"} alt="group" />
+          <StyledImage
+            src={
+              "https://images.pexels.com/photos/19235974/pexels-photo-19235974.jpeg?auto=compress&cs=tinysrgb&w=1600"
+            }
+            alt="group"
+          />
           <StTopRightButton>
-            {/* <HeartButton groupId={group} userId={userId} /> */}
+            <HeartButton meetingId={meetingId} userId={userId} />
           </StTopRightButton>
         </StImageContainer>
 
@@ -106,7 +106,7 @@ const MeetingCard = () => {
           </div>
           <div>{/* {group.createdAt} */}</div>
         </div>
-      </StMContainer>
+      </StContainer>
     </StCardContainer>
   );
 };

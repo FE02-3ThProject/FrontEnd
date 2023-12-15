@@ -2,20 +2,20 @@ import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 
 interface UseFavorite {
-  groupId: string;
+  meetingId: string;
   currentUser?: string | null;
 }
 
-const useFavorite = ({ groupId, currentUser }: UseFavorite) => {
+const useFavorite = ({ meetingId, currentUser }: UseFavorite) => {
   const [hasFavorite, setHasFavorite] = useState(false);
 
   const fetchFavorite = useCallback(async () => {
     if (currentUser) {
       const response = await axios.get(`/api/users/${currentUser}`);
       const favoriteIds = response.data.favoriteIds || [];
-      setHasFavorite(favoriteIds.includes(groupId));
+      setHasFavorite(favoriteIds.includes(meetingId));
     }
-  }, [currentUser, groupId]);
+  }, [currentUser, meetingId]);
 
   useEffect(() => {
     fetchFavorite();
@@ -32,9 +32,9 @@ const useFavorite = ({ groupId, currentUser }: UseFavorite) => {
       let request;
 
       if (hasFavorite) {
-        request = () => axios.delete(`/api/favorites/${groupId}`);
+        request = () => axios.delete(`/api/favorites/${meetingId}`);
       } else {
-        request = () => axios.post(`/api/favorites/${groupId}`);
+        request = () => axios.post(`/api/favorites/${meetingId}`);
       }
 
       await request();

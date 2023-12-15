@@ -2,7 +2,7 @@ import { CiSearch } from "react-icons/ci";
 import styled from "styled-components";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { apiToken } from "../../shared/apis/Apis";
 
 const Search = () => {
   const [keyword, setKeyword] = useState("");
@@ -15,7 +15,7 @@ const Search = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     // 서버에 검색 요청을 보냅니다.
-    const response = await axios.get(`/api/search?keyword=${keyword}`);
+    const response = await apiToken.get(`/api/search?keyword=${keyword}`);
 
     if (response.status === 200) {
       // 요청이 성공적으로 완료되면, 검색 결과 페이지로 이동합니다.
@@ -70,6 +70,6 @@ const StSearchIcon = styled.div`
   color: #fff;
   font-size: 20px;
   font-weight: bold;
-  top: 25px;
+  top: 19px;
   left: 480px;
 `;
