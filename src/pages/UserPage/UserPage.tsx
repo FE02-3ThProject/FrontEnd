@@ -86,7 +86,7 @@ const UserPage = () => {
           <StPointWrap>
             <p>카테고리</p>
             <StPointBox>
-              {profileData?.data.categoryId.name}
+              {/* {profileData?.data.categoryId.name} */}
               카테고리
             </StPointBox>
           </StPointWrap>
@@ -131,10 +131,11 @@ const UserPage = () => {
           open={isModalOpen}
           close={closeModal}
           profileImage={S3}
-          introduction={profileData?.data.introduction}
+          // introduction={profileData?.data.introduction}
+          introduction={"몰루"}
           nickname={profileData?.data.nickname}
-          category={profileData?.data.categoryId}
-          location={profileData?.data.locationId}
+          category={profileData?.data.categoryId.categoryId}
+          location={profileData?.data.locationId.locationId}
         />
       ) : null}
     </StMyProfileContainer>
