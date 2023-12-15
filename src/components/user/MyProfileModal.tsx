@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./modal.css";
 
 import { useMutation, useQueryClient } from "react-query";
 
@@ -8,10 +7,12 @@ import { nicknameCheck } from "../../shared/SignUpCheck";
 import { api, apiToken } from "../../shared/apis/Apis";
 import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
 import { useRef } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import chgImg from "../../images/chgImg.svg";
 import Swal from "sweetalert2";
 import { AxiosResponse } from "axios";
+import Category from "../category/Category";
+import Location from "../location/Location";
 
 interface MyProfileModalProps {
   open: boolean;
@@ -19,8 +20,8 @@ interface MyProfileModalProps {
   profileImage: string;
   introduction: string;
   nickname: string;
-  category:string;
-  location:string;
+  category: string;
+  location: string;
 }
 
 const MyProfileModal: React.FC<MyProfileModalProps> = ({
@@ -30,7 +31,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   introduction,
   nickname,
   category,
-  location
+  location,
 }) => {
   const queryClient = useQueryClient();
 
@@ -38,6 +39,8 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   const [CHGnickname, setCHGnickname] = useState<string>(nickname);
   const [previewImg, setpreviewImg] = useState<string>(profileImage);
   const [CHGprofileImg, setCHGprofileImg] = useState<string>(profileImage);
+  const [CHGlocation, setCHGlocation] = useState<string>(location);
+  const [CHGcategory, setCHGcategory] = useState<string>(category);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const PreNickname = getCookie("nickname");
 
@@ -107,6 +110,8 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     formData.append("introduction", CHGintroduction);
     formData.append("nickname", CHGnickname);
     formData.append("image", CHGprofileImg);
+    formData.append("location", CHGlocation);
+    formData.append("category", CHGcategory);
 
     const data = await apiToken.patch("/api/user/edit", formData);
 
@@ -127,7 +132,11 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
       });
       deleteCookie("nickname");
       deleteCookie("profileimage");
+      deleteCookie("location");
+      deleteCookie("category");
       setCookie("nickname", CHGnickname);
+      setCookie("location", CHGlocation);
+      setCookie("category", CHGcategory);
       setCookie("profileimage", data?.data.profileImage);
       close();
     },
@@ -148,6 +157,8 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
 
     formData.append("introduction", CHGintroduction);
     formData.append("image", CHGprofileImg);
+    formData.append("location", CHGlocation);
+    formData.append("category", CHGcategory);
 
     const data = await apiToken.patch("/api/user/edit", formData);
 
@@ -162,6 +173,10 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     onSuccess: (data) => {
       queryClient.invalidateQueries();
       deleteCookie("profileimage");
+      deleteCookie("location");
+      deleteCookie("category");
+      setCookie("location", CHGlocation);
+      setCookie("category", CHGcategory);
       setCookie("profileimage", data?.data.profileImage);
       Swal.fire({
         text: "변경이 완료되었습니다.",
@@ -193,15 +208,15 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
 
   return (
     <>
-      <div className={open ? "openModal modal" : "modal"}>
+      <StModal className={open ? "openModal" : ""}>
         {open ? (
-          <section>
-            <header>
+          <StModalSection>
+            <StModalHeader>
               <h2>마이페이지 수정</h2>
               <p>Modify Mypage</p>
-            </header>
+            </StModalHeader>
 
-            <div>
+            <StModalMain>
               <StProfileImg
                 src={
                   previewImg.split("/")[3] === "null"
@@ -244,6 +259,28 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                     </StDupButton>
                   </StInputWrap>
                 </StWrap>
+                <StPointWrap>
+                  <p>지역</p>
+                  <Location
+                    width="317px"
+                    height="61px"
+                    fontSize="18px"
+                    background-color="#333"
+                    value={location}
+                    onChange={(selectedValue) => setCHGlocation(selectedValue)}
+                  />
+                </StPointWrap>
+                <StPointWrap>
+                  <p>카테고리</p>
+                  <Category
+                    width="317px"
+                    height="61px"
+                    fontSize="18px"
+                    background-color="#333"
+                    value={category}
+                    onChange={(selectedValue) => setCHGcategory(selectedValue)}
+                  />
+                </StPointWrap>
                 <StWrap2>
                   <p>자기소개</p>
                   <StIntroTextBox
@@ -254,21 +291,118 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                   />
                 </StWrap2>
               </StModifyBox>
-            </div>
-            <footer>
-              <button onClick={close}>취소하기</button>
+            </StModalMain>
+            <StModalFooter>
+              <StModalButton onClick={close}>취소하기</StModalButton>
               {PreNickname === CHGnickname ? (
-                <button onClick={handleOnsubmit1Click}>수정</button>
+                <StModalButton onClick={handleOnsubmit1Click}>
+                  수정
+                </StModalButton>
               ) : (
-                <button onClick={handleOnsubmitClick}>수정</button>
+                <StModalButton onClick={handleOnsubmitClick}>
+                  수정
+                </StModalButton>
               )}
-            </footer>
-          </section>
+            </StModalFooter>
+          </StModalSection>
         ) : null}
-      </div>
+      </StModal>
     </>
   );
 };
+
+const modalShow = keyframes`
+  from {
+    opacity: 0;
+    margin-top: -50px;
+  }
+
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
+`;
+
+const modalBgShow = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
+const StModal = styled.div`
+  display: flex;
+  align-items: center;
+  animation: ${modalBgShow} 0.5s;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.6);
+`;
+
+const StModalSection = styled.section`
+  width: 90%;
+  max-width: 606px;
+  margin: 0 auto;
+  border-radius: 5px;
+  background-color: #f9b937;
+  animation: ${modalShow} 0.3s;
+  overflow: hidden;
+`;
+
+const StModalHeader = styled.div`
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  width: 100%;
+  border-bottom: solid 1px #acacac;
+  margin: 0 auto 32px auto;
+  padding-bottom: 25px;
+  > h2 {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 45px;
+  }
+  > p {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 30px;
+  }
+`;
+
+const StModalMain = styled.div`
+  width: 386px;
+  height: 500px;
+  margin: 160px auto;
+`;
+
+const StModalFooter = styled.div`
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+`;
+
+const StModalButton = styled.button`
+  width: 184px;
+  height: 50px;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 50px;
+  letter-spacing: 0em;
+  margin-top: 41px;
+`;
 
 const StProfileImg = styled.img`
   width: 154px;
@@ -276,6 +410,8 @@ const StProfileImg = styled.img`
   border-radius: 154px;
   display: block;
   margin: 0px auto;
+  background-color: white;
+  border: 1px solid black;
 `;
 
 const StChgProfile = styled.div`
@@ -297,8 +433,6 @@ const StModifyBox = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 16px;
-  width: 400px;
-  margin: 0 auto;
 `;
 
 const StWrap = styled.div`
@@ -328,6 +462,15 @@ const StDupButton = styled.button`
   align-items: center;
   text-align: center;
   width: 80px;
+`;
+
+const StPointWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20.3px;
 `;
 
 const StWrap2 = styled.div`
