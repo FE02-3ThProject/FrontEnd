@@ -1,15 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useMutation } from "react-query";
 import { apiToken } from "../../shared/apis/Apis";
-
+import { getCookie } from "../../shared/Cookie";
 interface data {
   meetingId: string;
   title: string;
   content: string;
 }
+
+//모임정보 불러오기
+// const fetchMeeting = async (meetingId: string | undefined) => {
+//   if (!meetingId) {
+//     throw new Error("Meeting ID is not provided.");
+//   }
+//   const response = await apiToken.get(`/api/group/${parseInt(meetingId)}`);
+//   return response.data;
+// };
 
 const addPost = async (data: data) => {
   const { meetingId, title, content } = data;
@@ -23,13 +32,41 @@ const addPost = async (data: data) => {
   return response.data;
 };
 
+const addNotice = async (data: data) => {
+  const { meetingId, title, content } = data;
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided.");
+  }
+  const response = await apiToken.post(
+    `/api/group/${parseInt(meetingId)}/notice`,
+    { title, content }
+  );
+  return response.data;
+};
+
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [postOrNotice, setPostOrNotice] = useState("");
+  const [meeting, setMeeting] = useState(null);
   const navigator = useNavigate();
   const meetingId = useParams().meetingId as string;
+  // const userId = getCookie("userId");
 
-  const mutation = useMutation(addPost, {
+  useEffect(() => {
+    const fetchMeeting = async () => {
+      try {
+        const data = await apiToken.get(`/api/group/${parseInt(meetingId)}`);
+        setMeeting(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchMeeting();
+  }, [meetingId]);
+
+  const mutationPost = useMutation(addPost, {
     onSuccess: () => {
       Swal.fire({
         text: "게시글이 성공적으로 등록되었습니다.",
@@ -49,8 +86,28 @@ const CreatePostPage = () => {
     },
   });
 
+  const mutationNotice = useMutation(addNotice, {
+    onSuccess: () => {
+      Swal.fire({
+        text: "공지사항이 성공적으로 등록되었습니다.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      });
+      navigator(`/meeting/${meetingId}`);
+    },
+    onError: () => {
+      Swal.fire({
+        text: "공지사항 등록에 실패했습니다.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      });
+    },
+  });
+
   const handleUpdate = async () => {
-    if (title === "" || content === "") {
+    if (title === "" || content === "" || postOrNotice === "") {
       Swal.fire({
         text: "타이틀과 내용을 모두 입력해주세요.",
         icon: "error",
@@ -59,9 +116,17 @@ const CreatePostPage = () => {
       });
       return;
     }
-
-    mutation.mutate({ meetingId, title, content });
+    if (postOrNotice === "post") {
+      mutationPost.mutate({ meetingId, title, content });
+    } else if (postOrNotice === "notice") {
+      mutationNotice.mutate({ meetingId, title, content });
+    }
   };
+
+  const HandlePostOrNotice = (event: React.ChangeEvent<HTMLInputElement>) => {
+    return setPostOrNotice(event.target.value);
+  };
+  console.log("postOrNotice", postOrNotice);
 
   return (
     <StContainer>
@@ -80,6 +145,40 @@ const CreatePostPage = () => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
+        <StPostOrNotice>
+          {/* {meeting && meeting.userId === userId && ( 
+          <label>
+            <input
+              type="radio"
+              name="post"
+              value={"notice"}
+              onChange={HandlePostOrNotice}
+              checked={postOrNotice === "notice"}
+            />
+            공지사항
+          </label>
+        )} */}
+          <label>
+            <input
+              type="radio"
+              name="post"
+              value={"notice"}
+              onChange={HandlePostOrNotice}
+              checked={postOrNotice === "notice"}
+            />
+            공지사항
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="post"
+              value={"post"}
+              onChange={HandlePostOrNotice}
+              checked={postOrNotice === "post"}
+            />
+            게시글
+          </label>
+        </StPostOrNotice>
         <StButtonForm>
           <StButton onClick={handleUpdate}>등록</StButton>
         </StButtonForm>
@@ -149,6 +248,16 @@ const StButtonForm = styled.div`
   position: absolute;
   bottom: 10px;
   right: 10px;
+`;
+
+const StPostOrNotice = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 90%;
+  height: 20px;
+  gap: 5px;
+  margin-top: 5px;
 `;
 
 const StButton = styled.button`

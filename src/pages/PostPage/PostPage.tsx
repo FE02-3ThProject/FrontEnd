@@ -1,7 +1,81 @@
-import React from "react";
+// import styled from "styled-components";
+// import { apiToken } from "../../shared/apis/Apis";
+// import { Link, useParams } from "react-router-dom";
+// import { useEffect, useState } from "react";
+// import { getCookie } from "../../shared/Cookie";
+
+// const deletePost = async (
+//   meetingId: string | undefined,
+//   postId: string | undefined
+// ) => {
+//   if (!meetingId || !postId) {
+//     throw new Error("Meeting ID or Post ID is not provided.");
+//   }
+//   const response = await apiToken.delete(
+//     `/api/group/${meetingId}/post/${postId}`
+//   );
+//   return response.data;
+// };
+
+// interface Post {
+//   userId: string;
+//   title: string;
+//   content: string;
+//   createAt: string;
+// }
+
+// const PostPage = () => {
+//   const { meetingId, postId } = useParams();
+//   const [post, setPost] = useState<Post | null>(null);
+//   const userId = getCookie("userId");
+
+//   useEffect(() => {
+//     const fetchPostData = async () => {
+//       try {
+//         const data = await apiToken.get(
+//           `/api/group/${meetingId}/post/${postId}`
+//         );
+//         setPost(data.data);
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     };
+
+//     fetchPostData();
+//   }, [postId]);
+
+//   console.log("meetingId: ", meetingId);
+//   console.log("postId: ", postId);
+//   return (
+//     <StContainer>
+//       <StForm>
+//         <StTitle>게시글 타이틀</StTitle>
+//         <StContent>게시글 내용</StContent>
+//         <StButtonForm>
+//           {post && post.userId === userId && (
+//             <>
+//               <Link to={`/meeting/${meetingId}/${postId}/modification`}>
+//                 <StButton>수정</StButton>
+//               </Link>
+//               <StButton onClick={() => deletePost(meetingId, postId)}>
+//                 삭제
+//               </StButton>
+//             </>
+//           )}
+//         </StButtonForm>
+//       </StForm>
+//     </StContainer>
+//   );
+// };
+
+// export default PostPage;
+
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { apiToken } from "../../shared/apis/Apis";
 import { Link, useParams } from "react-router-dom";
+import { getCookie } from "../../shared/Cookie";
+import Loading from "../../components/loading/Loading";
 
 const deletePost = async (
   meetingId: string | undefined,
@@ -11,29 +85,69 @@ const deletePost = async (
     throw new Error("Meeting ID or Post ID is not provided.");
   }
   const response = await apiToken.delete(
-    `/api/group/${parseInt(meetingId)}/post/${parseInt(postId)}`
+    `/api/group/${meetingId}/post/${postId}`
   );
+  return response.data;
+};
+
+interface Post {
+  userId: string;
+  title: string;
+  content: string;
+  createAt: string;
+}
+
+const fetchPostData = async (meetingId: string, postId: string) => {
+  const response = await apiToken.get(`/api/group/${meetingId}/post/${postId}`);
   return response.data;
 };
 
 const PostPage = () => {
   const { meetingId, postId } = useParams();
 
-  console.log("meetingId: ", meetingId);
-  console.log("postId: ", postId);
+  if (!meetingId || !postId) {
+    return <div>Meeting ID or Post ID is not provided.</div>;
+  }
+
+  const {
+    data: post,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<Post, Error>(["post", meetingId, postId], () =>
+    fetchPostData(meetingId, postId)
+  );
+
+  const userId = getCookie("userId");
+
+  if (isLoading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
+
+  if (isError && error instanceof Error) {
+    return <StErrorView>에러가 발생했습니다: {error.message}</StErrorView>;
+  }
+
   return (
     <StContainer>
       <StForm>
-        <StTitle>게시글 타이틀</StTitle>
-        <StContent>게시글 내용</StContent>
+        <StTitle>{post?.title}</StTitle>
+        <StContent>{post?.content}</StContent>
         <StButtonForm>
-          <Link to={`/meeting/${meetingId}/${postId}/modification`}>
-            <StButton>수정</StButton>
-          </Link>
-
-          <StButton onClick={() => deletePost(meetingId, postId)}>
-            삭제
-          </StButton>
+          {post && post.userId === userId && (
+            <>
+              <Link to={`/meeting/${meetingId}/${postId}/modification`}>
+                <StButton>수정</StButton>
+              </Link>
+              <StButton onClick={() => deletePost(meetingId, postId)}>
+                삭제
+              </StButton>
+            </>
+          )}
         </StButtonForm>
       </StForm>
     </StContainer>
@@ -91,6 +205,15 @@ const StButtonForm = styled.div`
   position: absolute;
   bottom: 10px;
   right: 10px;
+`;
+
+const StErrorView = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
 `;
 
 const StButton = styled.button`

@@ -1,11 +1,10 @@
-// import { useQuery } from "react-query";
-// import { apiToken } from "../../shared/apis/Apis";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { apiToken } from "../../shared/apis/Apis";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 import Post from "../../components/post/Post";
 import Notice from "../../components/post/Notice";
-
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 //Image Import
 import MeetingImage from "../../images/MeetingRoom.jpg";
@@ -13,84 +12,139 @@ import MeetingImage from "../../images/MeetingRoom.jpg";
 //Icons Import
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 //모임정보 불러오기
-// const fetchMeeting = async (meetingId: string | undefined) => {
-//   if (!meetingId) {
-//     throw new Error("Meeting ID is not provided.");
-//   }
-//   const response = await apiToken.get(`/api/group/${parseInt(meetingId)}`);
-//   return response.data;
-// };
+const fetchMeeting = async (meetingId: string | undefined) => {
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided.");
+  }
+  const response = await apiToken.get(`/api/group/${parseInt(meetingId)}`);
+  return response.data;
+};
 
 //즐겨찾기 추가
-// const favoriteMeeting = async (meetingId: string | undefined) => {
-//   if (!meetingId) {
-//     throw new Error("Meeting ID is not provided.");
-//   }
-//   const response = await apiToken.post(`/api/bookmark/${parseInt(meetingId)}`);
-//   return response.data;
-// };
+const favoriteMeeting = async (meetingId: string | undefined) => {
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided.");
+  }
+  const response = await apiToken.post(`/api/bookmark/${parseInt(meetingId)}`);
+  return response.data;
+};
 
 //즐겨찾기 삭제
-// const deleteFavorite = async (meetingId: string | undefined) => {
-//   const response = await apiToken.delete(`/api/bookmark/${parseInt(meetingId)}/cancel`);
-//   return response.data;
-// };
+const deleteFavorite = async (meetingId: string | undefined) => {
+  const response = await apiToken.delete(
+    `/api/user-group/unbookmark/${meetingId}`
+  );
+  return response.data;
+};
 
 //즐겨찾기 목록 불러오기
-// const fetchFavorite = async () => {
-//   const response = await apiToken.get(`/api/bookmark/group`);
-//   return response.data;
-// };
+const fetchFavorite = async () => {
+  const response = await apiToken.get(`/api/bookmark/group`);
+  return response.data;
+};
 
 //모임 가입
-// const joinMeeting = async (meetingId: string | undefined) => {
-//   if (!meetingId) {
-//     throw new Error("Meeting ID is not provided.");
-//   }
-//   const response = await apiToken.post(
-//     `/api/group/${parseInt(meetingId)}/join`
-//   );
-//   return response.data;
-// };
+const joinMeeting = async (meetingId: string | undefined) => {
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided.");
+  }
+  const response = await apiToken.post(
+    `/api/group/${parseInt(meetingId)}/join`
+  );
+  return response.data;
+};
+
+//모임 탈퇴
+const leaveMeeting = async (meetingId: string | undefined) => {
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided.");
+  }
+  const response = await apiToken.delete(
+    `/api/group/${parseInt(meetingId)}/leave`
+  );
+  return response.data;
+};
 
 //가입한 모임 목록 불러오기
-// const fetchJoin = async () => {
-//   const response = await apiToken.get(`/api/user/mygroup`);
-//   return response.data;
-// };
+const fetchJoin = async () => {
+  const response = await apiToken.get(`/api/user-group/joined`);
+  return response.data;
+};
 
 //개시글 불러오기
-// const fetchPost = async (meetingId: string | undefined) => {
-//   if (!meetingId) {
-//     throw new Error("Meeting ID is not provided");
-//   }
-//   const response = await apiToken.get(`/api/group/${parseInt(meetingId)}/post`);
-//   return response.data;
-// };
+const fetchPost = async (meetingId: string | undefined) => {
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided");
+  }
+  const response = await apiToken.get(`/api/group/${parseInt(meetingId)}/post`);
+  return response.data;
+};
+
+//공지사항 불러오기
+const fetchNotice = async (meetingId: string | undefined) => {
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided");
+  }
+  const response = await apiToken.get(
+    `/api/group/${parseInt(meetingId)}/notice`
+  );
+  return response.data[0];
+};
+
+interface PostType {
+  id: string;
+  title: string;
+  content: string;
+  createAt: string;
+}
 
 const MeetingRoom = () => {
-  const [favorite, setFavorite] = useState(false);
-  const [join, setJoin] = useState(false);
-
   const meetingId = useParams().meetingId as string;
+  const queryClient = useQueryClient();
 
-  // console.log(meetingId);
-  // const {
-  //   data: meeting,
-  //   isLoading,
-  //   error,
-  // } = useQuery(["meeting", meetingId], () => fetchMeeting(meetingId.meetingId));
+  const { data: meeting } = useQuery(["meeting", meetingId], () =>
+    fetchMeeting(meetingId)
+  );
+  const { data: favoriteMeetings } = useQuery(
+    "favoriteMeetings",
+    fetchFavorite
+  );
+  const { data: joinedMeetings } = useQuery("joinedMeetings", fetchJoin);
+  const { data: posts } = useQuery<PostType[]>(["posts", meetingId], () =>
+    fetchPost(meetingId)
+  );
+  const { data: notice } = useQuery(["notice", meetingId], () =>
+    fetchNotice(meetingId)
+  );
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  const addFavoriteMutation = useMutation(favoriteMeeting, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("favoriteMeetings");
+    },
+  });
 
-  // if (error) {
-  //   return <div>An error has occurred: {error.toString()}</div>;
-  // }
+  const deleteFavoriteMutation = useMutation(deleteFavorite, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("favoriteMeetings");
+    },
+  });
+
+  const joinMeetingMutation = useMutation(joinMeeting, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("joinedMeetings");
+    },
+  });
+
+  const leaveMeetingMutation = useMutation(leaveMeeting, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("joinedMeetings");
+    },
+  });
+
+  const isFavorite = favoriteMeetings?.includes(meetingId);
+  const isJoined = joinedMeetings?.includes(meetingId);
 
   return (
     <StContainer>
@@ -112,23 +166,27 @@ const MeetingRoom = () => {
               </StProfileRight>
             </StProfile>
             <StButtonSec>
-              {favorite && favorite === true ? (
-                <StButton onClick={() => setFavorite(false)}>
+              {isFavorite ? (
+                <StButton
+                  onClick={() => deleteFavoriteMutation.mutate(meetingId)}
+                >
                   <FaHeart />
-                  즐겨찾기
+                  즐겨찾기 해제
                 </StButton>
               ) : (
-                <StButton onClick={() => setFavorite(true)}>
+                <StButton onClick={() => addFavoriteMutation.mutate(meetingId)}>
                   <FaRegHeart />
                   즐겨찾기
                 </StButton>
               )}
-              {join && join === true ? (
-                <StButton onClick={() => setJoin(false)}>
+              {isJoined ? (
+                <StButton
+                  onClick={() => leaveMeetingMutation.mutate(meetingId)}
+                >
                   <FaHeart /> 탈퇴하기
                 </StButton>
               ) : (
-                <StButton onClick={() => setJoin(true)}>
+                <StButton onClick={() => joinMeetingMutation.mutate(meetingId)}>
                   <FaRegHeart /> 참여하기
                 </StButton>
               )}
@@ -136,20 +194,11 @@ const MeetingRoom = () => {
           </StProfileSec>
         </StLeftForm>
         <StRightForm>
-          <StNotice>
-            <Notice />
-          </StNotice>
+          <StNotice>{notice && <Notice data={notice} />}</StNotice>
           <StPost>
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
+            {posts?.slice(0, 10).map((post) => (
+              <Post key={post.id} data={post} />
+            ))}
           </StPost>
           <StPostButtonSec>
             <Link to={`/meeting/${parseInt(meetingId)}/createpost`}>
@@ -180,6 +229,7 @@ const StForm = styled.div`
   box-shadow: 11px 13px 4px 0px #0000001a;
   margin-top: 50px;
   margin-bottom: 50px;
+  background-color: white;
 `;
 
 const StLeftForm = styled.div`
