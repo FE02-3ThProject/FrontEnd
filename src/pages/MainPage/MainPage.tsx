@@ -1,5 +1,5 @@
 import FloatingButton from "../../components/common/FloatingButton";
-import MeetingCard from "../../components/Meetings/MeetingCard";
+import MeetingCard from "../../components/Meetings/MeetingCard_before";
 import MainSwiper from "../../components/Swiper/MainSwiper";
 import Categories from "../../components/categories/Categories";
 import styled from "styled-components";
