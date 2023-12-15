@@ -30,11 +30,11 @@ function App() {
           <Route path="mypage/:id" element={<UserPage />} />
           <Route path="joind/meeting" element={<JoinedMeetingPage />} />
           <Route
-            path="meeting/:meetingId/:postId/postmodification"
+            path="meeting/:meetingId/:postId/post/modification"
             element={<PostModificationPage />}
           />
           <Route
-            path="meeting/:meetingId/:noticeId/noticemodification"
+            path="meeting/:meetingId/:noticeId/notice/modification"
             element={<NoticeModificationPage />}
           />
           <Route

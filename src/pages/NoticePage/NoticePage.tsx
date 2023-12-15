@@ -70,7 +70,9 @@ const NoticePage = () => {
         <StButtonForm>
           {notice && notice.userId === userId && (
             <>
-              <Link to={`/meeting/${meetingId}/${noticeId}/noticemodification`}>
+              <Link
+                to={`/meeting/${meetingId}/${noticeId}/notice/modification`}
+              >
                 <StButton>수정</StButton>
               </Link>
               <StButton onClick={() => deleteNotice(meetingId, noticeId)}>

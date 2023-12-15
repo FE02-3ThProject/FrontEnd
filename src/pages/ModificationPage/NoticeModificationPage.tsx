@@ -39,7 +39,7 @@ const NoticeModificationPage = () => {
     try {
       await modificationPost(meetingId, noticeId, title, content);
       Swal.fire({
-        text: "게시글이 성공적으로 수정되었습니다.",
+        text: "공지사항이 성공적으로 수정되었습니다.",
         icon: "success",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
@@ -47,7 +47,7 @@ const NoticeModificationPage = () => {
       navigator(`/meeting/${meetingId}/${noticeId}/notice`);
     } catch (error) {
       Swal.fire({
-        text: "게시글 수정에 실패했습니다.",
+        text: "공지사항 수정에 실패했습니다.",
         icon: "error",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
