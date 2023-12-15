@@ -1,10 +1,19 @@
 import styled from "styled-components";
 
-const Post = () => {
+interface PostProps {
+  data: {
+    id: string;
+    title: string;
+    content: string;
+    createAt: string;
+  };
+}
+
+const Post: React.FC<PostProps> = ({ data }) => {
   return (
     <StContainer>
-      <StTitle>게시글 타이틀</StTitle>
-      <StContent>게시글 내용 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</StContent>
+      <StTitle>{data.title}</StTitle>
+      <StContent>{data.content}</StContent>
     </StContainer>
   );
 };

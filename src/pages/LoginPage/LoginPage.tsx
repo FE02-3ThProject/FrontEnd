@@ -53,9 +53,13 @@ const LoginPage = () => {
     onSuccess: async (res) => {
       console.log(res.access_token);
       await api
-      .post("/oauth2/authorization/google", {}, {
-        headers: { 'Authorization': `Bearer ${res.access_token}` }
-    })
+        .post(
+          "/oauth2/authorization/google",
+          {},
+          {
+            headers: { Authorization: `Bearer ${res.access_token}` },
+          }
+        )
         .then((res) => {
           console.log(res);
         })

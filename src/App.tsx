@@ -12,6 +12,7 @@ import ModificationPage from "./pages/ModificationPage/ModificationPage";
 import PostPage from "./pages/PostPage/PostPage";
 import CreatePostPage from "./pages/CreatePostPage/CreatePostPage";
 import JoinedMeetingPage from "./pages/JoinedMeetingPage/JoinedMeetingPage";
+import MeetingModificationPage from "./pages/MeetingModificationPage/MeetingModificationPage";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
           <Route path="meeting/:meetingId" element={<MeetingPage />} />{" "}
           <Route path="chating/:roomId" element={<ChatingRoom />} />
           <Route path="mypage/:id" element={<UserPage />} />
-          <Route path="joind/meeting" element={<JoinedMeetingPage/>} />
+          <Route path="joind/meeting" element={<JoinedMeetingPage />} />
           <Route
             path="meeting/:meetingId/:postId/modification"
             element={<ModificationPage />}
@@ -34,6 +35,10 @@ function App() {
           <Route
             path="meeting/:meetingId/createpost"
             element={<CreatePostPage />}
+          />
+          <Route
+            path="meeting/:meetindId/modification"
+            element={<MeetingModificationPage />}
           />
         </Route>
       </Routes>

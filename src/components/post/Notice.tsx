@@ -1,12 +1,19 @@
 import styled from "styled-components";
 
-const Notice = () => {
+interface NoticeProps {
+  data: {
+    title: string;
+    content: string;
+    createAt: string; // 또는 Date 타입을 사용할 수 있습니다.
+  };
+}
+
+const Notice: React.FC<NoticeProps> = ({ data }) => {
   return (
     <StContainer>
-      <StTitle>공지사항</StTitle>
-      <StContent>
-        공지사항 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      </StContent>
+      <StTitle>{data.title}</StTitle>
+      <StContent>{data.content}</StContent>
+      <StDate>{data.createAt}</StDate>
     </StContainer>
   );
 };
@@ -31,5 +38,9 @@ const StTitle = styled.h3`
 `;
 
 const StContent = styled.p`
+  font-size: 12px;
+`;
+
+const StDate = styled.p`
   font-size: 12px;
 `;
