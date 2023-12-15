@@ -20,7 +20,7 @@ const modificationPost = async (
   return response.data;
 };
 
-const ModificationPage = () => {
+const PostModificationPage = () => {
   const { meetingId, postId } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -80,7 +80,7 @@ const ModificationPage = () => {
   );
 };
 
-export default ModificationPage;
+export default PostModificationPage;
 
 const StContainer = styled.div`
   width: 100vw;

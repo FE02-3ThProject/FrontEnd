@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { getCookie } from "../../shared/Cookie";
 import Loading from "../../components/loading/Loading";
 
-const deletePost = async (
+const deleteNotice = async (
   meetingId: string | undefined,
   postId: string | undefined
 ) => {
@@ -25,15 +25,17 @@ interface Post {
   createAt: string;
 }
 
-const fetchPostData = async (meetingId: string, postId: string) => {
-  const response = await apiToken.get(`/api/group/${meetingId}/post/${postId}`);
+const fetchNoticeData = async (meetingId: string, noticeId: string) => {
+  const response = await apiToken.get(
+    `/api/group/${meetingId}/notice/${noticeId}`
+  );
   return response.data;
 };
 
-const PostPage = () => {
-  const { meetingId, postId } = useParams();
+const NoticePage = () => {
+  const { meetingId, noticeId } = useParams();
 
-  if (!meetingId || !postId) {
+  if (!meetingId || !noticeId) {
     return <div>Meeting ID or Post ID is not provided.</div>;
   }
 
@@ -42,8 +44,8 @@ const PostPage = () => {
     isLoading,
     isError,
     error,
-  } = useQuery<Post, Error>(["post", meetingId, postId], () =>
-    fetchPostData(meetingId, postId)
+  } = useQuery<Post, Error>(["post", meetingId, noticeId], () =>
+    fetchNoticeData(meetingId, noticeId)
   );
 
   const userId = getCookie("email");
@@ -68,10 +70,10 @@ const PostPage = () => {
         <StButtonForm>
           {post && post.userId === userId && (
             <>
-              <Link to={`/meeting/${meetingId}/${postId}/modification`}>
+              <Link to={`/meeting/${meetingId}/${noticeId}/modification`}>
                 <StButton>수정</StButton>
               </Link>
-              <StButton onClick={() => deletePost(meetingId, postId)}>
+              <StButton onClick={() => deleteNotice(meetingId, noticeId)}>
                 삭제
               </StButton>
             </>
@@ -82,7 +84,7 @@ const PostPage = () => {
   );
 };
 
-export default PostPage;
+export default NoticePage;
 
 const StContainer = styled.div`
   width: 100vw;

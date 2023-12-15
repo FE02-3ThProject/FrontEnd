@@ -12,11 +12,8 @@ interface data {
 }
 
 //모임정보 불러오기
-// const fetchMeeting = async (meetingId: string | undefined) => {
-//   if (!meetingId) {
-//     throw new Error("Meeting ID is not provided.");
-//   }
-//   const response = await apiToken.get(`/api/group/${parseInt(meetingId)}`);
+// const fetchMeeting = async () => {
+//   const response = await apiToken.get(`/api/group/all`);
 //   return response.data;
 // };
 
@@ -51,13 +48,13 @@ const CreatePostPage = () => {
   const [meeting, setMeeting] = useState(null);
   const navigator = useNavigate();
   const meetingId = useParams().meetingId as string;
-  // const userId = getCookie("userId");
+  // const userId = getCookie("email");
 
   useEffect(() => {
     const fetchMeeting = async () => {
       try {
-        const data = await apiToken.get(`/api/group/${parseInt(meetingId)}`);
-        setMeeting(data.data);
+        const data = await apiToken.get(`/api/group/all`);
+        setMeeting(data.data.meetingId);
       } catch (error) {
         console.error(error);
       }
