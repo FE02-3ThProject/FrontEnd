@@ -1,25 +1,26 @@
 import { CiSearch } from "react-icons/ci";
 import styled from "styled-components";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiToken } from "../../shared/apis/Apis";
 
 const Search = () => {
-  const [keyword, setKeyword] = useState("");
+  const [title, setTitle] = useState("");
   const navigate = useNavigate();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
+    setTitle(e.target.value);
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     // 서버에 검색 요청을 보냅니다.
-    const response = await apiToken.get(`/api/search?keyword=${keyword}`);
+    const response = await apiToken.get(
+      `/api/group/title/${encodeURIComponent(title)}`
+    );
 
     if (response.status === 200) {
       // 요청이 성공적으로 완료되면, 검색 결과 페이지로 이동합니다.
-      navigate(`/search/${keyword}`);
+      navigate(`/search/${title}`);
     } else {
       // 요청이 실패하면, 오류 메시지를 로그에 출력합니다.
       console.error(`Search failed: ${response.statusText}`);
@@ -27,17 +28,22 @@ const Search = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <StSearch>
         <StInput
           type="text"
           placeholder="어떤 모임을 찾고계신가요?"
-          value={keyword}
+          value={title}
           onChange={handleInputChange}
         />
       </StSearch>
       <StSearchIcon>
-        <CiSearch />
+        <CiSearch onClick={handleSubmit} />
       </StSearchIcon>
     </form>
   );
@@ -72,4 +78,5 @@ const StSearchIcon = styled.div`
   font-weight: bold;
   top: 19px;
   left: 480px;
+  cursor: pointer;
 `;
