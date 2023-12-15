@@ -7,13 +7,13 @@ import Loading from "../../components/loading/Loading";
 
 const deleteNotice = async (
   meetingId: string | undefined,
-  postId: string | undefined
+  noticeId: string | undefined
 ) => {
-  if (!meetingId || !postId) {
+  if (!meetingId || !noticeId) {
     throw new Error("Meeting ID or Post ID is not provided.");
   }
   const response = await apiToken.delete(
-    `/api/group/${meetingId}/post/${postId}`
+    `/api/group/${meetingId}/notice/${noticeId}`
   );
   return response.data;
 };
@@ -40,11 +40,11 @@ const NoticePage = () => {
   }
 
   const {
-    data: post,
+    data: notice,
     isLoading,
     isError,
     error,
-  } = useQuery<Post, Error>(["post", meetingId, noticeId], () =>
+  } = useQuery<Post, Error>(["notice", meetingId, noticeId], () =>
     fetchNoticeData(meetingId, noticeId)
   );
 
@@ -65,12 +65,12 @@ const NoticePage = () => {
   return (
     <StContainer>
       <StForm>
-        <StTitle>{post?.title}</StTitle>
-        <StContent>{post?.content}</StContent>
+        <StTitle>{notice?.title}</StTitle>
+        <StContent>{notice?.content}</StContent>
         <StButtonForm>
-          {post && post.userId === userId && (
+          {notice && notice.userId === userId && (
             <>
-              <Link to={`/meeting/${meetingId}/${noticeId}/modification`}>
+              <Link to={`/meeting/${meetingId}/${noticeId}/noticemodification`}>
                 <StButton>수정</StButton>
               </Link>
               <StButton onClick={() => deleteNotice(meetingId, noticeId)}>

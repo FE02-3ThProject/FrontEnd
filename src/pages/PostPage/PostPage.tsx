@@ -68,7 +68,7 @@ const PostPage = () => {
         <StButtonForm>
           {post && post.userId === userId && (
             <>
-              <Link to={`/meeting/${meetingId}/${postId}/modification`}>
+              <Link to={`/meeting/${meetingId}/${postId}/postmodification`}>
                 <StButton>수정</StButton>
               </Link>
               <StButton onClick={() => deletePost(meetingId, postId)}>
