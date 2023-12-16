@@ -13,6 +13,7 @@ import PostPage from "./pages/PostPage/PostPage";
 import CreatePostPage from "./pages/CreatePostPage/CreatePostPage";
 import JoinedMeetingPage from "./pages/JoinedMeetingPage/JoinedMeetingPage";
 import MeetingModificationPage from "./pages/MeetingModificationPage/MeetingModificationPage";
+import SearchPage from "./pages/SearchPage/SearchPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             path="meeting/:meetindId/modification"
             element={<MeetingModificationPage />}
           />
+          <Route path="search/:title" element={<SearchPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
