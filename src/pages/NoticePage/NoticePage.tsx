@@ -72,11 +72,15 @@ const NoticePage = () => {
     return <StErrorView>에러가 발생했습니다: {error.message}</StErrorView>;
   }
 
+  const contentArray = notice?.content.split(". ");
+
   return (
     <StContainer>
       <StForm>
         <StTitle>{notice?.title}</StTitle>
-        <StContent>{notice?.content}</StContent>
+        {contentArray?.map((content, index) => (
+          <StContent key={index}>{content}</StContent>
+        ))}
         <StButtonForm>
           {notice && notice.email === userId && (
             <>
@@ -137,6 +141,7 @@ const StContent = styled.p`
   align-items: center;
   padding-top: 10px;
   padding-left: 10px;
+  line-height: 20px;
 `;
 
 const StButtonForm = styled.div`

@@ -9,10 +9,15 @@ interface NoticeProps {
 }
 
 const Notice: React.FC<NoticeProps> = ({ data }) => {
+  // 마침표를 기준으로 내용을 분리합니다.
+  const contentArray = data.content.split(". ");
+
   return (
     <StContainer>
       <StTitle>{data.title}</StTitle>
-      <StContent>{data.content}</StContent>
+      {contentArray.map((content, index) => (
+        <StContent key={index}>{content}</StContent>
+      ))}
     </StContainer>
   );
 };
@@ -21,8 +26,7 @@ export default Notice;
 
 const StContainer = styled.div`
   width: 100%;
-  height: 40px;
-  text-indent: 15px;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -34,10 +38,11 @@ const StContainer = styled.div`
 const StTitle = styled.h3`
   font-size: 20px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 const StContent = styled.p`
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
+  line-height: 20px;
 `;
