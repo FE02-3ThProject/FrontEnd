@@ -67,6 +67,9 @@ const LoginPage = () => {
     },
   });
 
+  const cliendId =
+    "1038968461691-300p0glse8mmu833osl6qk2094lpqmjv.apps.googleusercontent.com";
+
   return (
     <StLoginContainer>
       <StLoginBox>

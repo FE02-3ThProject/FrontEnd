@@ -3,10 +3,9 @@ import styled from "styled-components";
 import Location from "../../components/location/Location";
 import Category from "../../components/category/Category";
 import Swal from "sweetalert2";
-// import { apiToken } from "../../shared/apis/Apis";
-// import { useNavigate } from "react-router-dom";
-// import { useMutation } from "react-query";
-// // import { Mutation } from "react-query";
+import { apiToken } from "../../shared/apis/Apis";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 
 // Image Import
 import Banner from "../../images/sub_3.png";
@@ -14,37 +13,36 @@ import Friends from "../..//images/friends.png";
 import Vector from "../../images/pngegg.png";
 import Friends2 from "../../images/friends2.png";
 
-// interface Meeting {
-//   title: string;
-//   image: File | null;
-//   location: number;
-//   description: string;
-//   maxMembers: number;
-//   category: number;
-// }
+interface Meeting {
+  title: string;
+  image: string | null;
+  locationId: number;
+  description: string;
+  maxMembers: number;
+  categoryId: number;
+}
 
 // const createMeeting = async (newMeeting: Meeting) => {
 //   const formData = new FormData();
 //   Object.entries(newMeeting).forEach(([key, value]) => {
 //     formData.append(key, value);
 //   });
-//   const response = await apiToken.post("/api/group/register", formData);
+//   const response = await apiToken.post("/api/group/create", formData);
 //   return response.data;
 // };
 
-const MeetingCreate = () => {
-  // const date = new Date();
-  // const year = date.getFullYear();
-  // const month = String(date.getMonth() + 1).padStart(2, "0");
-  // const day = String(date.getDate()).padStart(2, "0");
-  // const today = `${year}-${month}-${day}`;
+const createMeeting = async (newMeeting: Meeting) => {
+  const response = await apiToken.post("/api/group/create", newMeeting);
+  return response.data;
+};
 
+const MeetingCreate = () => {
   const fileInput = useRef<HTMLInputElement>(null);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<string | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [maxMembers, setMaxMembers] = useState<number | string>("");
@@ -59,76 +57,61 @@ const MeetingCreate = () => {
       setter(value as unknown as T);
     };
 
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     setImage(event.target.files[0]);
+  //   }
+  // };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(event.target.files[0]);
+      const file = event.target.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          setImage(reader.result.toString());
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  // const mutation = useMutation(createMeeting, {
-  //   onSuccess: () => {
-  //     setTitle("");
-  //     setImage(null);
-  //     setLocation("");
-  //     setDescription("");
-  //     setMaxMembers(1);
-  //     setCategory("");
-  //     if (fileInput.current) {
-  //       fileInput.current.value = "";
-  //     }
-  //     Swal.fire({
-  //       text: "등록이 완료되었습니다.",
-  //       icon: "success",
-  //       confirmButtonColor: "#3085d6",
-  //       confirmButtonText: "확인",
-  //     }).then(() => {
-  //       navigate("/");
-  //     });
-  //   },
-  // });
-
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   mutation.mutate({
-  //     title: title,
-  //     image: image,
-  //     location: Number(location),
-  //     description: description,
-  //     maxMembers: Number(maxMembers),
-  //     category: Number(category),
-  //   });
-  // };
+  const mutation = useMutation(createMeeting, {
+    onSuccess: () => {
+      setTitle("");
+      setImage(null);
+      setLocation("");
+      setDescription("");
+      setMaxMembers(1);
+      setCategory("");
+      if (fileInput.current) {
+        fileInput.current.value = "";
+      }
+      Swal.fire({
+        text: "등록이 완료되었습니다.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      }).then(() => {
+        navigate("/");
+      });
+    },
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    console.log({
+    mutation.mutate({
       title: title,
-      image: image,
+      image: "image",
       locationId: Number(location),
       description: description,
       maxMembers: Number(maxMembers),
-      categoryIds: Number(category),
-    });
-
-    setTitle("");
-    setImage(null);
-    setLocation("");
-    setDescription("");
-    setMaxMembers(1);
-    setCategory("");
-    if (fileInput.current) {
-      fileInput.current.value = "";
-    }
-    Swal.fire({
-      text: "등록이 완료되었습니다.",
-      icon: "success",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "확인",
-    }).then(() => {
-      // navigate("/");
+      categoryId: Number(category),
     });
   };
+
+  console.log(image);
 
   return (
     <StForm>

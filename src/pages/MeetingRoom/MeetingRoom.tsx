@@ -12,13 +12,11 @@ import MeetingImage from "../../images/MeetingRoom.jpg";
 //Icons Import
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
+import { getCookie } from "../../shared/Cookie";
 
 //모임정보 불러오기
-const fetchMeeting = async (meetingId: string | undefined) => {
-  if (!meetingId) {
-    throw new Error("Meeting ID is not provided.");
-  }
-  const response = await apiToken.get(`/api/group/${parseInt(meetingId)}`);
+const fetchMeeting = async () => {
+  const response = await apiToken.get(`/api/group/all`);
   return response.data;
 };
 
@@ -78,7 +76,9 @@ const fetchPost = async (meetingId: string | undefined) => {
   if (!meetingId) {
     throw new Error("Meeting ID is not provided");
   }
-  const response = await apiToken.get(`/api/group/${parseInt(meetingId)}/post`);
+  const response = await apiToken.get(
+    `/api/group/${parseInt(meetingId) - 1}/post`
+  );
   return response.data;
 };
 
@@ -88,9 +88,20 @@ const fetchNotice = async (meetingId: string | undefined) => {
     throw new Error("Meeting ID is not provided");
   }
   const response = await apiToken.get(
-    `/api/group/${parseInt(meetingId)}/notice`
+    `/api/group/${parseInt(meetingId) - 1}/notice`
   );
   return response.data[0];
+};
+
+//모임 삭제
+const deleteMeeting = async (meetingId: string | undefined) => {
+  if (!meetingId) {
+    throw new Error("Meeting ID is not provided");
+  }
+  const response = await apiToken.delete(
+    `/api/group/delete/${parseInt(meetingId)}`
+  );
+  return response.data;
 };
 
 interface PostType {
@@ -102,11 +113,10 @@ interface PostType {
 
 const MeetingRoom = () => {
   const meetingId = useParams().meetingId as string;
+  const meetingNumber = Number(meetingId) - 1;
   const queryClient = useQueryClient();
 
-  const { data: meeting } = useQuery(["meeting", meetingId], () =>
-    fetchMeeting(meetingId)
-  );
+  const { data: meeting } = useQuery(["meeting"], () => fetchMeeting());
   const { data: favoriteMeetings } = useQuery(
     "favoriteMeetings",
     fetchFavorite
@@ -143,53 +153,77 @@ const MeetingRoom = () => {
     },
   });
 
+  const deleteMeetingMutation = useMutation(deleteMeeting, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("meetings");
+    },
+  });
+
   const isFavorite = favoriteMeetings?.includes(meetingId);
   const isJoined = joinedMeetings?.includes(meetingId);
-
+  const userId = getCookie("email");
+  console.log(userId);
+  console.log(meeting[meetingNumber]);
   return (
     <StContainer>
       <StForm>
         <StLeftForm>
           <StProfileSec>
-            <StTitle>MBTI_P 모여라</StTitle>
-            <StDesc>
-              서울부터 해남까지 걸어가면서 일어난 일들 #극기훈련 #사람살려
-              #실시간모집 #2030 #J참교육
-            </StDesc>
+            <StTitle>{meeting && meeting[meetingNumber].title}</StTitle>
+            <StDesc>{meeting && meeting[meetingNumber].description}</StDesc>
             <StProfile>
               <StProfileImg src={MeetingImage} />
               <StProfileRight>
                 <StNickName>빛이나는무계획</StNickName>
                 <StProfileDesc>
-                  <p>130/300명</p>|<p>개설일 2024.12.11</p>
+                  <p>130/{meeting && meeting[meetingNumber]?.maxMembers}명</p>|
+                  <p>개설일 {meeting && meeting[meetingNumber]?.createdAt}</p>
                 </StProfileDesc>
               </StProfileRight>
             </StProfile>
             <StButtonSec>
-              {isFavorite ? (
-                <StButton
-                  onClick={() => deleteFavoriteMutation.mutate(meetingId)}
-                >
-                  <FaHeart />
-                  즐겨찾기 해제
-                </StButton>
-              ) : (
-                <StButton onClick={() => addFavoriteMutation.mutate(meetingId)}>
-                  <FaRegHeart />
-                  즐겨찾기
-                </StButton>
+              {meeting?.userId === userId && (
+                <StButtonLine>
+                  <Link to={`/meeting/${parseInt(meetingId)}/modification`}>
+                    <StButton>모임 수정</StButton>
+                  </Link>
+                  <StButton
+                    onClick={() => deleteMeetingMutation.mutate(meetingId)}
+                  >
+                    모임 삭제
+                  </StButton>
+                </StButtonLine>
               )}
-              {isJoined ? (
-                <StButton
-                  onClick={() => leaveMeetingMutation.mutate(meetingId)}
-                >
-                  <FaHeart /> 탈퇴하기
-                </StButton>
-              ) : (
-                <StButton onClick={() => joinMeetingMutation.mutate(meetingId)}>
-                  <FaRegHeart /> 참여하기
-                </StButton>
-              )}
+              <StButtonLine>
+                {isFavorite ? (
+                  <StButton
+                    onClick={() => deleteFavoriteMutation.mutate(meetingId)}
+                  >
+                    <FaHeart />
+                    즐겨찾기 해제
+                  </StButton>
+                ) : (
+                  <StButton
+                    onClick={() => addFavoriteMutation.mutate(meetingId)}
+                  >
+                    <FaRegHeart />
+                    즐겨찾기
+                  </StButton>
+                )}
+                {isJoined ? (
+                  <StButton
+                    onClick={() => leaveMeetingMutation.mutate(meetingId)}
+                  >
+                    <FaHeart /> 탈퇴하기
+                  </StButton>
+                ) : (
+                  <StButton
+                    onClick={() => joinMeetingMutation.mutate(meetingId)}
+                  >
+                    <FaRegHeart /> 참여하기
+                  </StButton>
+                )}
+              </StButtonLine>
             </StButtonSec>
           </StProfileSec>
         </StLeftForm>
@@ -302,6 +336,13 @@ const StButtonSec = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
+  flex-direction: column;
+`;
+
+const StButtonLine = styled.div`
+  display: flex;
+  margin-bottom: 5px;
+  justify-content: space-between;
 `;
 
 const StButton = styled.button`
