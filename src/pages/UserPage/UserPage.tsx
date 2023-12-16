@@ -6,10 +6,14 @@ import defaultUserImage from "../../images/default_profile.png";
 import { deleteCookie, getCookie } from "../../shared/Cookie";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
+import Loading from "../../components/loading/Loading";
+
+import profileBG from "../../images/Group_556.png";
 
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false)
 
   const navigator = useNavigate();
 
@@ -39,6 +43,10 @@ const UserPage = () => {
     if (isModalOpen === true) return setIsModalOpen(false);
   };
 
+  const meetingView = () => {
+    setIsVisible(!isVisible)
+  }
+
   const getMyProfile = async () => {
     const res = await apiToken.get(`/api/user/info?email=${email}`);
     return res;
@@ -49,95 +57,89 @@ const UserPage = () => {
   );
   console.log(profileData);
   if (profileLoading) {
-    return <div>loading...</div>;
+    return Loading;
   }
-  const S3 = "https://www.snsboom.co.kr/common/img/default_profile.png";
 
   return (
     <StMyProfileContainer>
       <StProfileBox>
         <StTitle>
-          <h2>마이페이지</h2>
-          <p>Mypage</p>
+          <h2>My page</h2>
         </StTitle>
-        <StProfileImg
-          src={
-            profileData?.data.image === null
-              ? defaultUserImage
-              : profileData?.data.image
-          }
-          alt="profileImg"
-        />
-        <StProfileDetailBox>
-          <StPointWrap>
-            <p>닉네임</p>
-            <StPointBox>
-              {profileData?.data.nickname}
-              닉네임
-            </StPointBox>
-          </StPointWrap>
-          <StPointWrap>
-            <p>지역</p>
-            <StPointBox>
-              {profileData?.data.locationId.name}
-              지역
-            </StPointBox>
-          </StPointWrap>
-          <StPointWrap>
-            <p>카테고리</p>
-            <StPointBox>
-              {/* {profileData?.data.categoryId.name} */}
-              카테고리
-            </StPointBox>
-          </StPointWrap>
-          <StIntroBox>
-            <p>자기소개</p>
-            <StIntro>
-              {profileData?.data.introduction}
-              자기소개
-            </StIntro>
-          </StIntroBox>
-        </StProfileDetailBox>
-        <StProfileButton
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
-          마이페이지 수정
-        </StProfileButton>
-        <StOpenJoinde>
-          <button
-            onClick={() => {
-              navigator("/joind/meeting");
-            }}
-          >
-            내가 가입한 모임 열기
-          </button>
-        </StOpenJoinde>
-        <StDeleteAccountButton>
-          {isDeleted ? (
-            <p>회원 탈퇴가 완료되었습니다.</p>
-          ) : (
-            <>
-              <p>회원 탈퇴하시겠습니까?</p>
-              <button onClick={deleteUser}>회원 탈퇴</button>
-            </>
-          )}
-        </StDeleteAccountButton>
+        <StUser>
+          <StProfileImgBG>
+            <StProfileImg
+              src={
+                // profileData?.data.image === null
+                //   ? defaultUserImage
+                //   : profileData?.data.image
+                defaultUserImage
+              }
+              alt="profileImg"
+            />
+          </StProfileImgBG>        
+          <StTextBox>
+            <StProfileDetailBox>
+              <StPointWrap>
+                <StPointBox>{profileData?.data.nickname}</StPointBox>
+              </StPointWrap>
+              <StPointWrap>
+                <StPointBox>{profileData?.data.locationId.name}</StPointBox>
+              </StPointWrap>
+              <StPointWrap>
+                <StPointBox>{profileData?.data.categoryId.name}</StPointBox>
+              </StPointWrap>
+              <StIntroBox>
+                <StIntro>{profileData?.data.introduction}</StIntro>
+              </StIntroBox>
+            </StProfileDetailBox>
+            <StProfileButton
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
+              마이페이지 수정
+            </StProfileButton>
+            <StOpenJoinde>
+              <button
+                onClick={() => {
+                  navigator("/joind/meeting");
+                }}
+              >
+                내가 가입한 모임 열기
+              </button>
+            </StOpenJoinde>
+            <StDeleteAccountButton>
+              {isDeleted ? (
+                <p>회원 탈퇴가 완료되었습니다.</p>
+              ) : (
+                <>
+                  <p>회원 탈퇴하시겠습니까?</p>
+                  <button onClick={deleteUser}>회원 탈퇴</button>
+                </>
+              )}
+            </StDeleteAccountButton>
+          </StTextBox>
+        </StUser>
       </StProfileBox>
 
       {isModalOpen ? (
         <MyProfileModal
           open={isModalOpen}
           close={closeModal}
-          profileImage={S3}
-          // introduction={profileData?.data.introduction}
-          introduction={"몰루"}
+          profileImage={profileData?.data.image}
+          introduction={profileData?.data.introduction}
           nickname={profileData?.data.nickname}
           category={profileData?.data.categoryId.categoryId}
           location={profileData?.data.locationId.locationId}
+          userId={profileData?.data.userId}
         />
       ) : null}
+
+      <div>
+        <button onClick={meetingView}>togle</button>
+        {isVisible && <div>가입모임</div>}
+      </div>
     </StMyProfileContainer>
   );
 };
@@ -151,44 +153,66 @@ const StMyProfileContainer = styled.div`
 `;
 
 const StProfileBox = styled.div`
-  width: 386px;
-  margin: 160px auto;
+  width: 1096px;
+  height: 731px;
+  margin: 68px auto;
+  flex-direction: column;
+  border: 1px solid white;
+`;
+
+const StUser = styled.div`
+  display: flex;
+  border: 1px solid red;
+`;
+
+const StTextBox = styled.div`
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 55px;
+  border: 1px solid green;
 `;
 
 const StTitle = styled.div`
   display: flex;
-  text-align: center;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   width: 100%;
+  height: 78px;
   border-bottom: solid 1px #acacac;
-  margin: 0 auto 32px auto;
-  padding-bottom: 25px;
   > h2 {
-    font-size: 30px;
-    font-weight: 400;
-    line-height: 45px;
-  }
-  > p {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 30px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 39px;
+    text-align: center;
   }
 `;
 
+const StProfileImgBG = styled.div`
+  width: 610px;
+  height: 560px;
+  background-image: url(${profileBG});
+  background-size: cover;
+  background-position: center;
+  border: 1px solid yellow;
+`;
+
 const StProfileImg = styled.img`
-  width: 154px;
-  height: 154px;
-  border-radius: 154px;
+  width: 337px;
+  height: 337px;
+  border-radius: 337px;
   display: block;
-  margin: 0px auto 24px auto;
-  cursor: default;
+  margin: 62px auto 161px 119px;
+  cursor: pointer;
+  border: 1px solid purple;
 `;
 
 const StProfileDetailBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 16px;
+  gap: 22px;
 `;
 
 const StPointWrap = styled.div`
@@ -197,20 +221,20 @@ const StPointWrap = styled.div`
   align-items: center;
   font-size: 14px;
   font-weight: 500;
-  line-height: 20.3px;
 `;
 
 const StPointBox = styled.div`
-  background-color: white;
-  width: 272px;
-  height: 50px;
+  width: 360px;
+  height: 43px;
   padding-left: 10px;
   font-size: 14px;
   font-weight: 500;
   line-height: 20.3px;
   display: flex;
   align-items: center;
-  border-bottom: solid 1px #acacac;
+  border: 1px solid #D9D9D9;
+  box-shadow: 0px 4px 4px 0px #f9b93790;
+  color: black;
 `;
 
 const StIntroBox = styled.div`
@@ -222,11 +246,12 @@ const StIntroBox = styled.div`
 `;
 
 const StIntro = styled.div`
-  background-color: white;
-  height: 102px;
+width: 360px;
+  height: 185px;
   padding: 10px;
-  margin-top: 8px;
-  border-bottom: solid 1px #acacac;
+  margin-top: 22px;
+  border: 1px solid #D9D9D9;
+  box-shadow: 0px 4px 4px 0px #f9b93790;
 `;
 
 const StProfileButton = styled.button`
