@@ -8,11 +8,13 @@ import MeetingCreate from "./pages/MeetingCreatePage/MeetingCreate";
 import MeetingPage from "./pages/MeetingRoom/MeetingRoom";
 import ChatingRoom from "./pages/ChatingRoom/ChatingRoom";
 import UserPage from "./pages/UserPage/UserPage";
-import ModificationPage from "./pages/ModificationPage/ModificationPage";
 import PostPage from "./pages/PostPage/PostPage";
 import CreatePostPage from "./pages/CreatePostPage/CreatePostPage";
 import JoinedMeetingPage from "./pages/JoinedMeetingPage/JoinedMeetingPage";
 import MeetingModificationPage from "./pages/MeetingModificationPage/MeetingModificationPage";
+import NoticePage from "./pages/NoticePage/NoticePage";
+import PostModificationPage from "./pages/ModificationPage/PostModificationPage";
+import NoticeModificationPage from "./pages/ModificationPage/NoticeModificationPage";
 import SearchPage from "./pages/SearchPage/SearchPage";
 
 function App() {
@@ -29,16 +31,27 @@ function App() {
           <Route path="mypage/:id" element={<UserPage />} />
           <Route path="joind/meeting" element={<JoinedMeetingPage />} />
           <Route
-            path="meeting/:meetingId/:postId/modification"
-            element={<ModificationPage />}
+            path="meeting/:meetingId/:postId/post/modification"
+            element={<PostModificationPage />}
           />
-          <Route path="meeting/:meetingId/:postId" element={<PostPage />} />
+          <Route
+            path="meeting/:meetingId/:noticeId/notice/modification"
+            element={<NoticeModificationPage />}
+          />
+          <Route
+            path="meeting/:meetingId/:postId/post"
+            element={<PostPage />}
+          />
+          <Route
+            path="meeting/:meetingId/:noticeId/notice"
+            element={<NoticePage />}
+          />
           <Route
             path="meeting/:meetingId/createpost"
             element={<CreatePostPage />}
           />
           <Route
-            path="meeting/:meetindId/modification"
+            path="meeting/:meetingId/modification"
             element={<MeetingModificationPage />}
           />
           <Route path="search/:title" element={<SearchPage />} />

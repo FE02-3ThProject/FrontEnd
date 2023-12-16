@@ -6,6 +6,7 @@ import defaultUserImage from "../../images/default_profile.png";
 import { deleteCookie, getCookie } from "../../shared/Cookie";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
+import Loading from "../../components/loading/Loading";
 
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +50,11 @@ const UserPage = () => {
   );
   console.log(profileData);
   if (profileLoading) {
-    return <div>loading...</div>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
   const S3 = "https://www.snsboom.co.kr/common/img/default_profile.png";
 
