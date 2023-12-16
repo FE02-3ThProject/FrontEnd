@@ -8,15 +8,21 @@ interface CategoryBoxProps {
   label: string;
   path: string;
   selected?: boolean;
+  onSelect: (category: string) => void; // 새로 추가
 }
 const CategoryBox: React.FC<CategoryBoxProps> = ({
   icon: Icon,
   label,
   path,
   selected,
+  onSelect, // 새로 추가
 }) => {
   return (
-    <StLink to={`/?category=${path}`} selected={selected}>
+    <StLink
+      to={`/?category=${path}`}
+      selected={selected}
+      onClick={() => onSelect(path)}
+    >
       {/* <StLink to={`/api/group/category/${path}`} selected={selected}> */}
       <Icon size={26} />
       <StIconLabel>{label}</StIconLabel>
