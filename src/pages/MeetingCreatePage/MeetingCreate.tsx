@@ -15,19 +15,24 @@ import Friends2 from "../../images/friends2.png";
 
 interface Meeting {
   title: string;
-  image: File | null;
+  image: string | null;
   locationId: number;
   description: string;
   maxMembers: number;
   categoryId: number;
 }
 
+// const createMeeting = async (newMeeting: Meeting) => {
+//   const formData = new FormData();
+//   Object.entries(newMeeting).forEach(([key, value]) => {
+//     formData.append(key, value);
+//   });
+//   const response = await apiToken.post("/api/group/create", formData);
+//   return response.data;
+// };
+
 const createMeeting = async (newMeeting: Meeting) => {
-  const formData = new FormData();
-  Object.entries(newMeeting).forEach(([key, value]) => {
-    formData.append(key, value);
-  });
-  const response = await apiToken.post("/api/group/create", formData);
+  const response = await apiToken.post("/api/group/create", newMeeting);
   return response.data;
 };
 
@@ -37,7 +42,7 @@ const MeetingCreate = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<string | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [maxMembers, setMaxMembers] = useState<number | string>("");
@@ -52,9 +57,23 @@ const MeetingCreate = () => {
       setter(value as unknown as T);
     };
 
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     setImage(event.target.files[0]);
+  //   }
+  // };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(event.target.files[0]);
+      const file = event.target.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          setImage(reader.result.toString());
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -84,13 +103,15 @@ const MeetingCreate = () => {
     event.preventDefault();
     mutation.mutate({
       title: title,
-      image: image,
+      image: "image",
       locationId: Number(location),
       description: description,
       maxMembers: Number(maxMembers),
       categoryId: Number(category),
     });
   };
+
+  console.log(image);
 
   return (
     <StForm>

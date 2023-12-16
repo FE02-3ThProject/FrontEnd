@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { apiToken } from "../../shared/apis/Apis";
 import { getCookie } from "../../shared/Cookie";
 interface data {
@@ -22,10 +22,10 @@ const addPost = async (data: data) => {
   if (!meetingId) {
     throw new Error("Meeting ID is not provided.");
   }
-  const response = await apiToken.post(
-    `/api/group/${parseInt(meetingId)}/post`,
-    { title, content }
-  );
+  const response = await apiToken.post(`/api/group/${groupId}/post`, {
+    title,
+    content,
+  });
   return response.data;
 };
 
@@ -35,9 +35,14 @@ const addNotice = async (data: data) => {
     throw new Error("Meeting ID is not provided.");
   }
   const response = await apiToken.post(
-    `/api/group/${parseInt(meetingId)}/notice`,
+    `/api/group/${parseInt(meetingId) - 1}/notice`,
     { title, content }
   );
+  return response.data;
+};
+
+const fetchMeeting = async () => {
+  const response = await apiToken.get(`/api/group/all`);
   return response.data;
 };
 
@@ -45,23 +50,15 @@ const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [postOrNotice, setPostOrNotice] = useState("");
-  const [meeting, setMeeting] = useState(null);
+  // const [meeting, setMeeting] = useState(null);
   const navigator = useNavigate();
   const meetingId = useParams().meetingId as string;
   // const userId = getCookie("email");
 
-  useEffect(() => {
-    const fetchMeeting = async () => {
-      try {
-        const data = await apiToken.get(`/api/group/all`);
-        setMeeting(data.data.meetingId);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const { data: meeting } = useQuery(["meeting"], () => fetchMeeting());
+  console.log(meeting[Number(meetingId) - 1].groupId);
 
-    fetchMeeting();
-  }, [meetingId]);
+  const groupId = meeting[Number(meetingId) - 1].groupId;
 
   const mutationPost = useMutation(addPost, {
     onSuccess: () => {
