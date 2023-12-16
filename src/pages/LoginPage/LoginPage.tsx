@@ -10,6 +10,7 @@ import LoginBg from "../../images/login_bg.png";
 import Naver from "../../images/naver.png";
 
 import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 const LoginPage = () => {
   const queryClient = useQueryClient();
@@ -67,8 +68,20 @@ const LoginPage = () => {
     },
   });
 
-  const cliendId =
-    "1038968461691-300p0glse8mmu833osl6qk2094lpqmjv.apps.googleusercontent.com";
+  const googleLoginBt = useGoogleLogin({
+    onSuccess: async (res) => {
+      console.log(res.access_token);
+      await axios({
+        method: "post",
+        url: "https://15.164.234.129:9090/oauth2/authorization/google",
+        data: { access_token: res.access_token },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => console.log(e));
+    },
+  });
 
   return (
     <StLoginContainer>
@@ -98,6 +111,7 @@ const LoginPage = () => {
         <StSoCialTitle>Login with Google</StSoCialTitle>
         <StSocailBtnBox>
           <StSocialLoginBtnGoogle onClick={() => googleLogin()} />
+          <button onClick={() => googleLoginBt()}>Google로그인</button>
         </StSocailBtnBox>
         <StSingup>
           Don’t have account?

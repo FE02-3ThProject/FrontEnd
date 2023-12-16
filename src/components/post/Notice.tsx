@@ -13,7 +13,6 @@ const Notice: React.FC<NoticeProps> = ({ data }) => {
     <StContainer>
       <StTitle>{data.title}</StTitle>
       <StContent>{data.content}</StContent>
-      <StDate>{data.createAt}</StDate>
     </StContainer>
   );
 };
@@ -21,26 +20,24 @@ const Notice: React.FC<NoticeProps> = ({ data }) => {
 export default Notice;
 
 const StContainer = styled.div`
-  width: 600px;
+  width: 100%;
   height: 40px;
   text-indent: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: start;
-  border: 1px solid lightgray;
   border-radius: 10px;
+  color: black;
 `;
 
 const StTitle = styled.h3`
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 700;
+  margin-bottom: 10px;
 `;
 
 const StContent = styled.p`
   font-size: 12px;
-`;
-
-const StDate = styled.p`
-  font-size: 12px;
+  font-weight: 500;
 `;

@@ -21,46 +21,44 @@ const fetchMeeting = async () => {
 };
 
 //즐겨찾기 추가
-const favoriteMeeting = async (meetingId: string | undefined) => {
-  if (!meetingId) {
+const favoriteMeeting = async (groupId: string | undefined) => {
+  if (!groupId) {
     throw new Error("Meeting ID is not provided.");
   }
-  const response = await apiToken.post(`/api/bookmark/${parseInt(meetingId)}`);
+  const response = await apiToken.post(`/api/bookmark/${parseInt(groupId)}`);
   return response.data;
 };
 
 //즐겨찾기 삭제
-const deleteFavorite = async (meetingId: string | undefined) => {
+const deleteFavorite = async (groupId: string | undefined) => {
   const response = await apiToken.delete(
-    `/api/user-group/unbookmark/${meetingId}`
+    `/api/user-group/unbookmark/${groupId}`
   );
   return response.data;
 };
 
 //즐겨찾기 목록 불러오기
-const fetchFavorite = async () => {
-  const response = await apiToken.get(`/api/bookmark/group`);
+const fetchFavorite = async (userId: string | undefined) => {
+  const response = await apiToken.get(`/api/user-group/bookmark/${userId}`);
   return response.data;
 };
 
 //모임 가입
-const joinMeeting = async (meetingId: string | undefined) => {
-  if (!meetingId) {
+const joinMeeting = async (groupId: string | undefined) => {
+  if (!groupId) {
     throw new Error("Meeting ID is not provided.");
   }
-  const response = await apiToken.post(
-    `/api/group/${parseInt(meetingId)}/join`
-  );
+  const response = await apiToken.post(`/api/group/${parseInt(groupId)}/join`);
   return response.data;
 };
 
 //모임 탈퇴
-const leaveMeeting = async (meetingId: string | undefined) => {
-  if (!meetingId) {
+const leaveMeeting = async (groupId: string | undefined) => {
+  if (!groupId) {
     throw new Error("Meeting ID is not provided.");
   }
   const response = await apiToken.delete(
-    `/api/group/${parseInt(meetingId)}/leave`
+    `/api/group/${parseInt(groupId)}/leave`
   );
   return response.data;
 };
@@ -72,39 +70,43 @@ const fetchJoin = async () => {
 };
 
 //개시글 불러오기
-const fetchPost = async (meetingId: string | undefined) => {
-  if (!meetingId) {
-    throw new Error("Meeting ID is not provided");
+const fetchPost = async (groupId: string | undefined) => {
+  if (!groupId) {
+    throw new Error("Group ID is not provided");
   }
-  const response = await apiToken.get(
-    `/api/group/${parseInt(meetingId) - 1}/post`
-  );
+  const response = await apiToken.get(`/api/group/${parseInt(groupId)}/post`);
   return response.data;
 };
 
 //공지사항 불러오기
-const fetchNotice = async (meetingId: string | undefined) => {
-  if (!meetingId) {
-    throw new Error("Meeting ID is not provided");
+const fetchNotice = async (groupId: string | undefined) => {
+  if (!groupId) {
+    throw new Error("Group ID is not provided");
   }
-  const response = await apiToken.get(
-    `/api/group/${parseInt(meetingId) - 1}/notice`
-  );
-  return response.data[0];
+  const response = await apiToken.get(`/api/group/${parseInt(groupId)}/notice`);
+  const notices = response.data;
+
+  if (notices.length === 0) {
+    throw new Error("No notices found for the group.");
+  }
+
+  const latestNotice = notices[notices.length - 1];
+  return latestNotice;
 };
 
 //모임 삭제
-const deleteMeeting = async (meetingId: string | undefined) => {
-  if (!meetingId) {
+const deleteMeeting = async (groupId: string | undefined) => {
+  if (!groupId) {
     throw new Error("Meeting ID is not provided");
   }
   const response = await apiToken.delete(
-    `/api/group/delete/${parseInt(meetingId)}`
+    `/api/group/delete/${parseInt(groupId)}`
   );
   return response.data;
 };
 
 interface PostType {
+  postId: string;
   id: string;
   title: string;
   content: string;
@@ -115,18 +117,21 @@ const MeetingRoom = () => {
   const meetingId = useParams().meetingId as string;
   const meetingNumber = Number(meetingId) - 1;
   const queryClient = useQueryClient();
+  const userId = getCookie("email");
 
   const { data: meeting } = useQuery(["meeting"], () => fetchMeeting());
-  const { data: favoriteMeetings } = useQuery(
-    "favoriteMeetings",
-    fetchFavorite
+  const groupId = meeting && meeting[Number(meetingId) - 1].groupId;
+  const { data: favoriteMeetings } = useQuery(["favoriteMeetings"], () =>
+    fetchFavorite(userId)
   );
-  const { data: joinedMeetings } = useQuery("joinedMeetings", fetchJoin);
-  const { data: posts } = useQuery<PostType[]>(["posts", meetingId], () =>
-    fetchPost(meetingId)
+  const { data: joinedMeetings } = useQuery(["joinedMeetings"], () =>
+    fetchJoin()
   );
-  const { data: notice } = useQuery(["notice", meetingId], () =>
-    fetchNotice(meetingId)
+  const { data: posts } = useQuery<PostType[]>(["posts", groupId], () =>
+    fetchPost(groupId)
+  );
+  const { data: notice } = useQuery(["notice", groupId], () =>
+    fetchNotice(groupId)
   );
 
   const addFavoriteMutation = useMutation(favoriteMeeting, {
@@ -161,9 +166,10 @@ const MeetingRoom = () => {
 
   const isFavorite = favoriteMeetings?.includes(meetingId);
   const isJoined = joinedMeetings?.includes(meetingId);
-  const userId = getCookie("email");
   console.log(userId);
-  console.log(meeting[meetingNumber]);
+  console.log(posts && posts[0].postId);
+  console.log(notice);
+
   return (
     <StContainer>
       <StForm>
@@ -184,42 +190,46 @@ const MeetingRoom = () => {
             <StButtonSec>
               {meeting?.userId === userId && (
                 <StButtonLine>
-                  <Link to={`/meeting/${parseInt(meetingId)}/modification`}>
+                  <Link to={`/meeting/${parseInt(groupId)}/modification`}>
                     <StButton>모임 수정</StButton>
                   </Link>
                   <StButton
-                    onClick={() => deleteMeetingMutation.mutate(meetingId)}
+                    onClick={() => deleteMeetingMutation.mutate(groupId)}
                   >
                     모임 삭제
                   </StButton>
                 </StButtonLine>
               )}
               <StButtonLine>
+                <Link to={`/meeting/${parseInt(groupId)}/modification`}>
+                  <StButton>모임 수정</StButton>
+                </Link>
+                <StButton onClick={() => deleteMeetingMutation.mutate(groupId)}>
+                  모임 삭제
+                </StButton>
+              </StButtonLine>
+              <StButtonLine>
                 {isFavorite ? (
                   <StButton
-                    onClick={() => deleteFavoriteMutation.mutate(meetingId)}
+                    onClick={() => deleteFavoriteMutation.mutate(groupId)}
                   >
                     <FaHeart />
                     즐겨찾기 해제
                   </StButton>
                 ) : (
-                  <StButton
-                    onClick={() => addFavoriteMutation.mutate(meetingId)}
-                  >
+                  <StButton onClick={() => addFavoriteMutation.mutate(groupId)}>
                     <FaRegHeart />
                     즐겨찾기
                   </StButton>
                 )}
                 {isJoined ? (
                   <StButton
-                    onClick={() => leaveMeetingMutation.mutate(meetingId)}
+                    onClick={() => leaveMeetingMutation.mutate(groupId)}
                   >
                     <FaHeart /> 탈퇴하기
                   </StButton>
                 ) : (
-                  <StButton
-                    onClick={() => joinMeetingMutation.mutate(meetingId)}
-                  >
+                  <StButton onClick={() => joinMeetingMutation.mutate(groupId)}>
                     <FaRegHeart /> 참여하기
                   </StButton>
                 )}
@@ -228,17 +238,37 @@ const MeetingRoom = () => {
           </StProfileSec>
         </StLeftForm>
         <StRightForm>
-          <StNotice>{notice && <Notice data={notice} />}</StNotice>
-          <StPost>
-            {posts?.slice(0, 10).map((post) => (
-              <Post key={post.id} data={post} />
-            ))}
-          </StPost>
-          <StPostButtonSec>
-            <Link to={`/meeting/${parseInt(meetingId)}/createpost`}>
-              <StPostButton>게시글 작성</StPostButton>
-            </Link>
-          </StPostButtonSec>
+          <StRightContainer>
+            <StNotice>
+              <Link
+                to={`/meeting/${groupId}/${notice && notice.noticeIdx}/notice`}
+              >
+                {notice && <Notice data={notice} />}
+              </Link>
+            </StNotice>
+            {isJoined ? (
+              <>
+                <StPost>
+                  {posts?.slice(0, 10).map((post) => (
+                    <Link to={`/meeting/${groupId}/${post.postId}/post`}>
+                      <Post key={post.id} data={post} />
+                    </Link>
+                  ))}
+                </StPost>
+                <StPostButtonSec>
+                  <Link to={`/meeting/${parseInt(meetingId)}/createpost`}>
+                    <StPostButton>게시글 작성</StPostButton>
+                  </Link>
+                </StPostButtonSec>
+              </>
+            ) : (
+              <StFalseJoin>
+                <p>게시판 및 채팅방</p>
+                <p>이용은 가입 후</p>
+                <p>사용가능합니다</p>
+              </StFalseJoin>
+            )}
+          </StRightContainer>
         </StRightForm>
       </StForm>
     </StContainer>
@@ -368,18 +398,29 @@ const StRightForm = styled.div`
   width: 640px;
   height: 630px;
   display: flex;
-  justify-content: start;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StRightContainer = styled.div`
+  width: 566px;
+  height: 544px;
+  background-color: #e0e0e0;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
 `;
 
 const StNotice = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 640px;
-  height: 60px;
-  border-bottom: 1px solid gray;
+  justify-content: start;
+  align-items: start;
+  width: 90%;
+  height: 240px;
+  color: black;
+  border-bottom: 2px solid white;
 `;
 
 const StPost = styled.div`
@@ -387,17 +428,28 @@ const StPost = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 1px solid lightgray;
-  width: 600px;
-  height: 500px;
-  border-radius: 10px;
+  width: 90%;
+  height: 250px;
   margin-top: 10px;
 `;
 
+const StFalseJoin = styled.div`
+  width: 60%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 55px;
+`;
+
 const StPostButtonSec = styled.div`
-  width: 100%;
+  width: 90%;
   display: flex;
   justify-content: end;
   margin-right: 50px;
   margin-top: 10px;
+  margin-bottom: 10px;
 `;

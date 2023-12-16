@@ -22,15 +22,6 @@ interface Meeting {
   categoryId: number;
 }
 
-// const createMeeting = async (newMeeting: Meeting) => {
-//   const formData = new FormData();
-//   Object.entries(newMeeting).forEach(([key, value]) => {
-//     formData.append(key, value);
-//   });
-//   const response = await apiToken.post("/api/group/create", formData);
-//   return response.data;
-// };
-
 const createMeeting = async (newMeeting: Meeting) => {
   const response = await apiToken.post("/api/group/create", newMeeting);
   return response.data;
@@ -56,12 +47,6 @@ const MeetingCreate = () => {
       const value = event.target.value;
       setter(value as unknown as T);
     };
-
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.files && event.target.files[0]) {
-  //     setImage(event.target.files[0]);
-  //   }
-  // };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {

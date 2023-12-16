@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { apiToken } from "../../shared/apis/Apis";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getCookie } from "../../shared/Cookie";
 import Loading from "../../components/loading/Loading";
 
@@ -19,7 +19,7 @@ const deleteNotice = async (
 };
 
 interface Post {
-  userId: string;
+  email: string;
   title: string;
   content: string;
   createAt: string;
@@ -34,6 +34,7 @@ const fetchNoticeData = async (meetingId: string, noticeId: string) => {
 
 const NoticePage = () => {
   const { meetingId, noticeId } = useParams();
+  const navigate = useNavigate();
 
   if (!meetingId || !noticeId) {
     return <div>Meeting ID or Post ID is not provided.</div>;
@@ -49,6 +50,15 @@ const NoticePage = () => {
   );
 
   const userId = getCookie("email");
+
+  const handleDeletePost = async (meetingId: string, postId: string) => {
+    try {
+      await deleteNotice(meetingId, postId);
+      navigate(-1); // 삭제 성공 후 이전 페이지로 돌아가기
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -68,14 +78,14 @@ const NoticePage = () => {
         <StTitle>{notice?.title}</StTitle>
         <StContent>{notice?.content}</StContent>
         <StButtonForm>
-          {notice && notice.userId === userId && (
+          {notice && notice.email === userId && (
             <>
               <Link
                 to={`/meeting/${meetingId}/${noticeId}/notice/modification`}
               >
                 <StButton>수정</StButton>
               </Link>
-              <StButton onClick={() => deleteNotice(meetingId, noticeId)}>
+              <StButton onClick={() => handleDeletePost(meetingId, noticeId)}>
                 삭제
               </StButton>
             </>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -6,20 +6,14 @@ import { useMutation, useQuery } from "react-query";
 import { apiToken } from "../../shared/apis/Apis";
 import { getCookie } from "../../shared/Cookie";
 interface data {
-  meetingId: string;
+  groupId: string;
   title: string;
   content: string;
 }
 
-//모임정보 불러오기
-// const fetchMeeting = async () => {
-//   const response = await apiToken.get(`/api/group/all`);
-//   return response.data;
-// };
-
 const addPost = async (data: data) => {
-  const { meetingId, title, content } = data;
-  if (!meetingId) {
+  const { groupId, title, content } = data;
+  if (!groupId) {
     throw new Error("Meeting ID is not provided.");
   }
   const response = await apiToken.post(`/api/group/${groupId}/post`, {
@@ -30,12 +24,12 @@ const addPost = async (data: data) => {
 };
 
 const addNotice = async (data: data) => {
-  const { meetingId, title, content } = data;
-  if (!meetingId) {
+  const { groupId, title, content } = data;
+  if (!groupId) {
     throw new Error("Meeting ID is not provided.");
   }
   const response = await apiToken.post(
-    `/api/group/${parseInt(meetingId) - 1}/notice`,
+    `/api/group/${parseInt(groupId)}/notice`,
     { title, content }
   );
   return response.data;
@@ -50,7 +44,6 @@ const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [postOrNotice, setPostOrNotice] = useState("");
-  // const [meeting, setMeeting] = useState(null);
   const navigator = useNavigate();
   const meetingId = useParams().meetingId as string;
   // const userId = getCookie("email");
@@ -111,9 +104,9 @@ const CreatePostPage = () => {
       return;
     }
     if (postOrNotice === "post") {
-      mutationPost.mutate({ meetingId, title, content });
+      mutationPost.mutate({ groupId, title, content });
     } else if (postOrNotice === "notice") {
-      mutationNotice.mutate({ meetingId, title, content });
+      mutationNotice.mutate({ groupId, title, content });
     }
   };
 
