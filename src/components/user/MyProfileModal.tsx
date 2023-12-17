@@ -1,18 +1,21 @@
 import React, { useState } from "react";
-
 import { useMutation, useQueryClient } from "react-query";
+import { useRef } from "react";
 
 import { nicknameCheck } from "../../shared/SignUpCheck";
-
 import { api, apiToken } from "../../shared/apis/Apis";
 import { deleteCookie, getCookie, setCookie } from "../../shared/Cookie";
-import { useRef } from "react";
+
 import styled, { keyframes } from "styled-components";
-import chgImg from "../../images/chgImg.svg";
 import Swal from "sweetalert2";
 import { AxiosResponse } from "axios";
+
 import Category from "../category/Category";
 import Location from "../location/Location";
+
+import chgImg from "../../images/chgImg.svg";
+import defaultImg from "../../images/default_profile.png"
+
 
 interface MyProfileModalProps {
   open: boolean;
@@ -22,6 +25,7 @@ interface MyProfileModalProps {
   nickname: string;
   category: string;
   location: string;
+  userId: number;
 }
 
 const MyProfileModal: React.FC<MyProfileModalProps> = ({
@@ -32,12 +36,13 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   nickname,
   category,
   location,
+  userId,
 }) => {
   const queryClient = useQueryClient();
 
   const [CHGintroduction, setCHGIntroduction] = useState<string>(introduction);
   const [CHGnickname, setCHGnickname] = useState<string>(nickname);
-  const [previewImg, setpreviewImg] = useState<string>(profileImage);
+  const [previewImg, setpreviewImg] = useState<string>(profileImage || "");
   const [CHGprofileImg, setCHGprofileImg] = useState<string>(profileImage);
   const [CHGlocation, setCHGlocation] = useState<string>(location);
   const [CHGcategory, setCHGcategory] = useState<string>(category);
@@ -49,9 +54,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     if (!nicknameCheck(CHGnickname)) {
       return null;
     } else {
-      const data = await api.post(`/api/user/${nickname}/existsNickname`, {
-        nickname: CHGnickname,
-      });
+      const data: AxiosResponse = await api.get(`/api/user/${CHGnickname}/existsNickname`);
       return data;
     }
   };
@@ -113,7 +116,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     formData.append("location", CHGlocation);
     formData.append("category", CHGcategory);
 
-    const data = await apiToken.patch("/api/user/edit", formData);
+    const data = await apiToken.put(`/api/user/edit/${userId}`, formData);
 
     return data;
   };
@@ -160,7 +163,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     formData.append("location", CHGlocation);
     formData.append("category", CHGcategory);
 
-    const data = await apiToken.patch("/api/user/edit", formData);
+    const data = await apiToken.put(`/api/user/edit/${userId}`, formData);
 
     return data;
   };
@@ -220,7 +223,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
               <StProfileImg
                 src={
                   previewImg.split("/")[3] === "null"
-                    ? "https://www.snsboom.co.kr/common/img/default_profile.png"
+                    ? defaultImg
                     : previewImg
                 }
                 alt="profile"
@@ -266,7 +269,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                     height="61px"
                     fontSize="18px"
                     background-color="#333"
-                    value={location}
+                    value={CHGlocation}
                     onChange={(selectedValue) => setCHGlocation(selectedValue)}
                   />
                 </StPointWrap>
