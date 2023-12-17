@@ -6,6 +6,8 @@ import defaultUserImage from "../../images/default_profile.png";
 import { deleteCookie, getCookie } from "../../shared/Cookie";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
+import { AxiosResponse } from "axios";
+
 import Loading from "../../components/loading/Loading";
 
 import bgImg from "../../images/userInfo/Group 559.png";
@@ -17,7 +19,7 @@ import productionIcon from "../../images/userInfo/production.png";
 import modificationIcon from "../../images/userInfo/image 20.png";
 import SubMeeting from "../../components/user/SubMeeting";
 import JoindeMeeting from "../../components/user/JoinedMeeting";
-import { AxiosResponse } from "axios";
+import Swal from "sweetalert2";
 
 interface MeetingType {
   id: string;
@@ -28,7 +30,6 @@ interface MeetingType {
 
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
   const [activeView, setActiveView] = useState("none");
 
   const navigator = useNavigate();
@@ -38,19 +39,33 @@ const UserPage = () => {
   //회원탈퇴
   const deleteUser = async () => {
     try {
-      const response = await apiToken.delete("/api/user/userDelete");
-      console.log(response.data);
-      setIsDeleted(true);
-      deleteCookie("token");
-      deleteCookie("nickname");
-      deleteCookie("profileimage");
-      deleteCookie("email");
-      deleteCookie("password");
-      deleteCookie("status");
-      deleteCookie("is_login");
-      deleteCookie("address");
-      window.alert("회원 탈퇴에 성공 하셨습니다.");
-      navigator("/");
+      Swal.fire({
+        title: "정말 회원 탈퇴를 하시겠습니까?",
+        text: "확인후에는 되돌릴 수 없습니다!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "탈퇴",
+        cancelButtonText: "취소",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await apiToken.delete("/api/user/userDelete");
+          deleteCookie("token");
+          deleteCookie("nickname");
+          deleteCookie("email");
+          deleteCookie("profileimage");
+          deleteCookie("location");
+          deleteCookie("userRole");
+          Swal.fire({
+            title: "삭제 되었습니다!",
+            text: "당신의 계정이 정상적으로 삭제 되었습니다.",
+            icon: "success",
+          });
+          return response;
+          navigator("/");
+        }
+      });
     } catch (error) {
       console.error("회원 탈퇴 오류:", error);
     }
@@ -112,7 +127,6 @@ const UserPage = () => {
       </div>
     );
   }
-  
 
   return (
     <StMyProfileContainer>
@@ -151,24 +165,19 @@ const UserPage = () => {
                 <StIntro>{profileData?.data.introduction}</StIntro>
               </StIntroBox>
             </StProfileDetailBox>
-            <StProfileButton
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-            >
-              <img src={modificationIcon} />
-              마이페이지 수정
-            </StProfileButton>
-            <StDeleteAccountButton>
-              {isDeleted ? (
-                <p>회원 탈퇴가 완료되었습니다.</p>
-              ) : (
-                <>
-                  <p>회원 탈퇴하시겠습니까?</p>
-                  <button onClick={deleteUser}>회원 탈퇴</button>
-                </>
-              )}
-            </StDeleteAccountButton>
+            <StButtonBox>
+              <StDeleteAccountButton onClick={deleteUser}>
+                회원 탈퇴
+              </StDeleteAccountButton>
+              <StProfileButton
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              >
+                <img src={modificationIcon} />
+                마이페이지 수정
+              </StProfileButton>
+            </StButtonBox>
           </StTextBox>
         </StUser>
         <StVisibleWrap>
@@ -199,7 +208,7 @@ const UserPage = () => {
           introduction={profileData?.data.introduction}
           nickname={profileData?.data.nickname}
           category={profileData?.data.categoryId.categoryId}
-          location={profileData?.data.locationId.locationId}         
+          location={profileData?.data.locationId.locationId}
           userId={profileData?.data.userId}
         />
       ) : null}
@@ -273,7 +282,6 @@ const StProfileImg = styled.img`
   display: block;
   margin: 62px auto 161px 119px;
   cursor: pointer;
-  border: 1px solid purple;
 `;
 
 const StProfileDetailBox = styled.div`
@@ -346,8 +354,7 @@ const StProfileButton = styled.button`
   letter-spacing: 0em;
   text-align: left;
   gap: 8px;
-  margin-top: 22px;
-  margin-left: 254px;
+
   > img {
     width: 18px;
     height: 18px;
@@ -371,7 +378,27 @@ const StToggleButton = styled.button`
   font-weight: 700;
   text-align: center;
 `;
+const StButtonBox = styled.div`
+  display: flex;
+  margin-top: 22px;
+  margin-left: 70px;
+  gap: 16px;
+`;
 
-const StDeleteAccountButton = styled.div``;
+const StDeleteAccountButton = styled.button`
+  width: 169px;
+  height: 43px;
+  background-color: #767676;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 0px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+`;
 
 export default UserPage;

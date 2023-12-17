@@ -13,17 +13,21 @@ import Friends from "../..//images/friends.png";
 import Vector from "../../images/pngegg.png";
 import Friends2 from "../../images/friends2.png";
 
-interface Meeting {
-  title: string;
-  image: string | null;
-  locationId: number;
-  description: string;
-  maxMembers: number;
-  categoryId: number;
-}
+// interface Meeting {
+//   title: string;
+//   image: File | null;
+//   locationId: number;
+//   description: string;
+//   maxMembers: number;
+//   categoryId: number;
+// }
 
-const createMeeting = async (newMeeting: Meeting) => {
-  const response = await apiToken.post("/api/group/create", newMeeting);
+const createMeeting = async (formData: FormData) => {
+  const response = await apiToken.post("/api/image", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 
@@ -33,7 +37,7 @@ const MeetingCreate = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [maxMembers, setMaxMembers] = useState<number | string>("");
@@ -50,15 +54,7 @@ const MeetingCreate = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          setImage(reader.result.toString());
-        }
-      };
-      reader.readAsDataURL(file);
+      setImage(event.target.files[0]); // 이미지 파일을 상태에 바로 저장합니다.
     }
   };
 
@@ -86,14 +82,18 @@ const MeetingCreate = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    mutation.mutate({
-      title: title,
-      image: "image",
-      locationId: Number(location),
-      description: description,
-      maxMembers: Number(maxMembers),
-      categoryId: Number(category),
-    });
+
+    // FormData 객체를 생성하고 필드를 추가합니다.
+    const formData = new FormData();
+    formData.append("name", title);
+    if (image) formData.append("file", image); // 이미지 파일을 formData에 추가합니다.
+    formData.append("locationId", String(location));
+    formData.append("description", description);
+    formData.append("maxMembers", String(maxMembers));
+    formData.append("categoryId", String(category));
+
+    // FormData 객체를 서버에 보냅니다.
+    mutation.mutate(formData);
   };
 
   console.log(image);
