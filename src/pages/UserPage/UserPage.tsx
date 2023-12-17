@@ -144,7 +144,7 @@ const UserPage = () => {
               </StPointWrap>
               <StPointWrap>
                 <img src={categoryIcon} />
-                <StPointBox>{profileData?.data.categoryId}</StPointBox>
+                <StPointBox>{profileData?.data.categoryId.name}</StPointBox>
               </StPointWrap>
               <StIntroBox>
                 <img src={productionIcon} />
@@ -159,7 +159,7 @@ const UserPage = () => {
               <img src={modificationIcon} />
               마이페이지 수정
             </StProfileButton>
-            {/* <StDeleteAccountButton>
+            <StDeleteAccountButton>
               {isDeleted ? (
                 <p>회원 탈퇴가 완료되었습니다.</p>
               ) : (
@@ -168,7 +168,7 @@ const UserPage = () => {
                   <button onClick={deleteUser}>회원 탈퇴</button>
                 </>
               )}
-            </StDeleteAccountButton> */}
+            </StDeleteAccountButton>
           </StTextBox>
         </StUser>
         <StVisibleWrap>
@@ -199,7 +199,7 @@ const UserPage = () => {
           introduction={profileData?.data.introduction}
           nickname={profileData?.data.nickname}
           category={profileData?.data.categoryId.categoryId}
-          location={profileData?.data.locationId.locationId}
+          location={profileData?.data.locationId.locationId}         
           userId={profileData?.data.userId}
         />
       ) : null}
