@@ -8,17 +8,34 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import Loading from "../../components/loading/Loading";
 
-import profileBG from "../../images/Group_556.png";
+import bgImg from "../../images/userInfo/Group 559.png";
+import profileBG from "../../images/userInfo/Group_556.png";
+import userIcon from "../../images/userInfo/nickName.png";
+import categoryIcon from "../../images/userInfo/category.png";
+import locationIcon from "../../images/userInfo/location.png";
+import productionIcon from "../../images/userInfo/production.png";
+import modificationIcon from "../../images/userInfo/image 20.png";
+import SubMeeting from "../../components/user/SubMeeting";
+import JoindeMeeting from "../../components/user/JoinedMeeting";
+import { AxiosResponse } from "axios";
+
+interface MeetingType {
+  id: string;
+  title: string;
+  content: string;
+  createAt: string;
+}
 
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
-  const [isVisible, setIsVisible] = useState(false)
+  const [activeView, setActiveView] = useState("none");
 
   const navigator = useNavigate();
 
   const email = getCookie("email");
 
+  //회원탈퇴
   const deleteUser = async () => {
     try {
       const response = await apiToken.delete("/api/user/userDelete");
@@ -43,9 +60,41 @@ const UserPage = () => {
     if (isModalOpen === true) return setIsModalOpen(false);
   };
 
-  const meetingView = () => {
-    setIsVisible(!isVisible)
-  }
+  //가입&즐찾 모임 열기
+  const SubMeetingView = () => {
+    if (activeView === "sub") {
+      setActiveView("none");
+    } else {
+      setActiveView("sub");
+    }
+  };
+  const JoinMeetingView = () => {
+    if (activeView === "join") {
+      setActiveView("none");
+    } else {
+      setActiveView("join");
+    }
+  };
+
+  const getMyJoinedMeeting = async () => {
+    const res = await apiToken.get("/api/user-group/joined");
+    return res;
+  };
+  const { data: joinedMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
+    "MY_JOINEDMEETING",
+    getMyJoinedMeeting
+  );
+  console.log(joinedMeetingData);
+
+  const getSubMeeting = async () => {
+    const res = await apiToken.get(`/api/user-group/bookmark/${email}`);
+    return res;
+  };
+  const { data: subMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
+    "MY_SUBMEETING",
+    getSubMeeting
+  );
+  console.log(subMeetingData);
 
   const getMyProfile = async () => {
     const res = await apiToken.get(`/api/user/info?email=${email}`);
@@ -57,8 +106,13 @@ const UserPage = () => {
   );
   console.log(profileData);
   if (profileLoading) {
-    return Loading;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
+  
 
   return (
     <StMyProfileContainer>
@@ -77,19 +131,23 @@ const UserPage = () => {
               }
               alt="profileImg"
             />
-          </StProfileImgBG>        
+          </StProfileImgBG>
           <StTextBox>
             <StProfileDetailBox>
               <StPointWrap>
+                <img src={userIcon} />
                 <StPointBox>{profileData?.data.nickname}</StPointBox>
               </StPointWrap>
               <StPointWrap>
+                <img src={locationIcon} />
                 <StPointBox>{profileData?.data.locationId.name}</StPointBox>
               </StPointWrap>
               <StPointWrap>
-                <StPointBox>{profileData?.data.categoryId.name}</StPointBox>
+                <img src={categoryIcon} />
+                <StPointBox>{profileData?.data.categoryId}</StPointBox>
               </StPointWrap>
               <StIntroBox>
+                <img src={productionIcon} />
                 <StIntro>{profileData?.data.introduction}</StIntro>
               </StIntroBox>
             </StProfileDetailBox>
@@ -98,18 +156,10 @@ const UserPage = () => {
                 setIsModalOpen(true);
               }}
             >
+              <img src={modificationIcon} />
               마이페이지 수정
             </StProfileButton>
-            <StOpenJoinde>
-              <button
-                onClick={() => {
-                  navigator("/joind/meeting");
-                }}
-              >
-                내가 가입한 모임 열기
-              </button>
-            </StOpenJoinde>
-            <StDeleteAccountButton>
+            {/* <StDeleteAccountButton>
               {isDeleted ? (
                 <p>회원 탈퇴가 완료되었습니다.</p>
               ) : (
@@ -118,9 +168,27 @@ const UserPage = () => {
                   <button onClick={deleteUser}>회원 탈퇴</button>
                 </>
               )}
-            </StDeleteAccountButton>
+            </StDeleteAccountButton> */}
           </StTextBox>
         </StUser>
+        <StVisibleWrap>
+          <StToggleWrap>
+            <StToggleButton onClick={JoinMeetingView}>
+              가입한모임
+            </StToggleButton>
+            {activeView === "join" &&
+              joinedMeetingData?.data.map((data) => (
+                <JoindeMeeting key={data.id} data={data} />
+              ))}
+          </StToggleWrap>
+          <StToggleWrap>
+            <StToggleButton onClick={SubMeetingView}>즐겨찾기</StToggleButton>
+            {activeView === "sub" &&
+              subMeetingData?.data.map((data) => (
+                <SubMeeting key={data.id} data={data} />
+              ))}
+          </StToggleWrap>
+        </StVisibleWrap>
       </StProfileBox>
 
       {isModalOpen ? (
@@ -135,11 +203,6 @@ const UserPage = () => {
           userId={profileData?.data.userId}
         />
       ) : null}
-
-      <div>
-        <button onClick={meetingView}>togle</button>
-        {isVisible && <div>가입모임</div>}
-      </div>
     </StMyProfileContainer>
   );
 };
@@ -150,19 +213,26 @@ const StMyProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solie red;
+  background-image: url(${bgImg});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StProfileBox = styled.div`
+  display: flex;
   width: 1096px;
-  height: 731px;
+  min-height: 731px;
+  align-items: center;
   margin: 68px auto;
   flex-direction: column;
+  border-radius: 30px;
   border: 1px solid white;
+  box-shadow: 11px 13px 4px 0px #0000001a;
 `;
 
 const StUser = styled.div`
   display: flex;
-  border: 1px solid red;
 `;
 
 const StTextBox = styled.div`
@@ -170,7 +240,6 @@ const StTextBox = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 55px;
-  border: 1px solid green;
 `;
 
 const StTitle = styled.div`
@@ -180,7 +249,7 @@ const StTitle = styled.div`
   flex-direction: column;
   width: 100%;
   height: 78px;
-  border-bottom: solid 1px #acacac;
+  border-bottom: solid 1px #d9d9d9;
   > h2 {
     font-size: 32px;
     font-weight: 700;
@@ -195,7 +264,6 @@ const StProfileImgBG = styled.div`
   background-image: url(${profileBG});
   background-size: cover;
   background-position: center;
-  border: 1px solid yellow;
 `;
 
 const StProfileImg = styled.img`
@@ -217,10 +285,14 @@ const StProfileDetailBox = styled.div`
 
 const StPointWrap = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   font-size: 14px;
   font-weight: 500;
+  gap: 17px;
+  > img {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 const StPointBox = styled.div`
@@ -232,45 +304,74 @@ const StPointBox = styled.div`
   line-height: 20.3px;
   display: flex;
   align-items: center;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   box-shadow: 0px 4px 4px 0px #f9b93790;
   color: black;
 `;
 
 const StIntroBox = styled.div`
   display: flex;
-  flex-direction: column;
   font-size: 14px;
   font-weight: 500;
   line-height: 20.3px;
+  gap: 17px;
+  > img {
+    width: 25px;
+    height: 25px;
+    margin-top: 22px;
+  }
 `;
 
 const StIntro = styled.div`
-width: 360px;
+  width: 360px;
   height: 185px;
   padding: 10px;
   margin-top: 22px;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   box-shadow: 0px 4px 4px 0px #f9b93790;
 `;
 
 const StProfileButton = styled.button`
-  width: 100%;
-  height: 50px;
-  background-color: black;
+  width: 169px;
+  height: 43px;
+  background-color: #767676;
   display: flex;
   justify-content: center;
+  align-items: center;
   color: white;
-  border: 1px solid #e5e2db;
+  padding: 0px;
   font-size: 16px;
-  font-weight: 400;
-  line-height: 50px;
+  font-weight: 700;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  gap: 8px;
+  margin-top: 22px;
+  margin-left: 254px;
+  > img {
+    width: 18px;
+    height: 18px;
+  }
+`;
+
+const StVisibleWrap = styled.div`
+  display: flex;
+  gap: 15px;
+`;
+
+const StToggleWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StToggleButton = styled.button`
+  display: flex;
+  margin-bottom: 26px;
+  font-size: 32px;
+  font-weight: 700;
   text-align: center;
-  margin-top: 32px;
 `;
 
 const StDeleteAccountButton = styled.div``;
-
-const StOpenJoinde = styled.div``;
 
 export default UserPage;

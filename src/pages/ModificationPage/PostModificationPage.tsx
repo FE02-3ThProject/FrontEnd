@@ -20,7 +20,7 @@ const modificationPost = async (
   return response.data;
 };
 
-const ModificationPage = () => {
+const PostModificationPage = () => {
   const { meetingId, postId } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -44,7 +44,7 @@ const ModificationPage = () => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       });
-      navigator(`/meeting/${meetingId}/${postId}`);
+      navigator(`/meeting/${meetingId}/${postId}/post`);
     } catch (error) {
       Swal.fire({
         text: "게시글 수정에 실패했습니다.",
@@ -80,7 +80,7 @@ const ModificationPage = () => {
   );
 };
 
-export default ModificationPage;
+export default PostModificationPage;
 
 const StContainer = styled.div`
   width: 100vw;

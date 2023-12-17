@@ -1,17 +1,56 @@
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-// import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import styled from "styled-components";
-// import HeartButton from "../HeartButton";
+import HeartButton from "../common/HeartButton";
 
-// interface MeetingCardProps {
-//   groupId: string; // group의 id
-//   userId?: string; // User의 id
-// }
+interface Group {
+  groupId: string;
+  locationName: string;
+  categoryName: string;
+  title: string;
+  description: string;
+  image: string;
+  maxMembers: number;
+  createdAt: string;
+  userId: string;
+}
+interface MeetingCardProps {
+  group: Group;
+}
+
+const MeetingCard = ({ group }: MeetingCardProps) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`meeting/${group.groupId}`);
+  }, [group, navigate]);
+
+  return (
+    <StCardContainer onClick={() => navigate(`meeting/${group.groupId}`)}>
+      <StContainer>
+        <StImageContainer>
+          <StyledImage src={group.image} alt="group" />
+          <StTopRightButton>
+            <HeartButton groupId={group.groupId} userId={group.userId} />
+          </StTopRightButton>
+        </StImageContainer>
+
+        <StTitle>{group.title}</StTitle>
+        <StCategory>{group.categoryName}</StCategory>
+        <div>
+          <div>
+            {group.maxMembers} <span className="font-light ">명</span>
+          </div>
+          <div>{group.createdAt}</div>
+        </div>
+      </StContainer>
+    </StCardContainer>
+  );
+};
+
+export default MeetingCard;
 
 const StCardContainer = styled.div`
-  width: 200px;
-  margin: 20px 35px;
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
@@ -19,19 +58,16 @@ const StCardContainer = styled.div`
   }
 `;
 
-const StMContainer = styled.div`
+const StContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 2rem;
+  width: 100%;
 `;
 
 const StImageContainer = styled.div`
   position: relative;
-  width: 200px;
-  height: 200px;
-  border-radius: 15px;
-  background-size: contain;
-  background-image: url("https://images.pexels.com/photos/19235974/pexels-photo-19235974.jpeg?auto=compress&cs=tinysrgb&w=1600");
+  width: 100%;
   overflow: hidden;
   aspect-ratio: 1;
   border-radius: 1rem;
@@ -54,7 +90,7 @@ const StTopRightButton = styled.div`
 `;
 
 const StTitle = styled.div`
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
 `;
 
@@ -62,53 +98,3 @@ const StCategory = styled.div`
   color: #9ca3af;
   font-weight: 300;
 `;
-
-const MeetingCard = () => {
-  // const navigate = useNavigate();
-
-  // const [group, setGroup] = useState(null);
-  // const [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchGroup = async () => {
-  //     const response = await axios.get(`/api/groups/${groupId}`);
-  //     setGroup(response.data);
-  //   };
-
-  //   const fetchUser = async () => {
-  //     const response = await axios.get(`/api/users/${userId}`);
-  //     setUser(response.data);
-  //   };
-
-  //   fetchGroup();
-  //   fetchUser();
-  // }, [groupId, userId]);
-
-  // if (!group || !user) {
-  //   return <div>Loading...</div>;
-  // }
-
-  return (
-    <StCardContainer>
-      <StMContainer>
-        <StImageContainer>
-          <StyledImage src={"이미지"} alt="group" />
-          <StTopRightButton>
-            {/* <HeartButton groupId={group} userId={userId} /> */}
-          </StTopRightButton>
-        </StImageContainer>
-
-        <StTitle>Title</StTitle>
-        <StCategory>category</StCategory>
-        <div>
-          <div>
-            100000 <span className="font-light ">명</span>
-          </div>
-          <div>{/* {group.createdAt} */}</div>
-        </div>
-      </StMContainer>
-    </StCardContainer>
-  );
-};
-
-export default MeetingCard;
