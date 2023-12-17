@@ -127,11 +127,15 @@ const MeetingRoom = () => {
   const { data: joinedMeetings } = useQuery(["joinedMeetings"], () =>
     fetchJoin()
   );
-  const { data: posts } = useQuery<PostType[]>(["posts", groupId], () =>
-    fetchPost(groupId)
+  const { data: posts } = useQuery<PostType[]>(
+    ["posts", groupId],
+    () => fetchPost(groupId),
+    { enabled: !!groupId }
   );
-  const { data: notice } = useQuery(["notice", groupId], () =>
-    fetchNotice(groupId)
+  const { data: notice } = useQuery(
+    ["notice", groupId],
+    () => fetchNotice(groupId),
+    { enabled: !!groupId }
   );
 
   const addFavoriteMutation = useMutation(favoriteMeeting, {
@@ -166,9 +170,10 @@ const MeetingRoom = () => {
 
   const isFavorite = favoriteMeetings?.includes(meetingId);
   const isJoined = joinedMeetings?.includes(meetingId);
-  console.log(userId);
-  console.log(posts && posts[0].postId);
-  console.log(notice);
+  // console.log(userId);
+  // console.log(posts && posts[0].postId);
+  // console.log(notice);
+  // console.log(groupId);
 
   return (
     <StContainer>

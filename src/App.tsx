@@ -5,7 +5,6 @@ import MainPage from "./pages/MainPage/MainPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import MeetingCreate from "./pages/MeetingCreatePage/MeetingCreate";
-import MeetingPage from "./pages/MeetingRoom/MeetingRoom";
 import ChatingRoom from "./pages/ChatingRoom/ChatingRoom";
 import UserPage from "./pages/UserPage/UserPage";
 import PostPage from "./pages/PostPage/PostPage";
@@ -15,6 +14,7 @@ import MeetingModificationPage from "./pages/MeetingModificationPage/MeetingModi
 import NoticePage from "./pages/NoticePage/NoticePage";
 import PostModificationPage from "./pages/ModificationPage/PostModificationPage";
 import NoticeModificationPage from "./pages/ModificationPage/NoticeModificationPage";
+import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignUpPage />} />
           <Route path="additional" element={<MeetingCreate />} />
-          <Route path="meeting/:meetingId" element={<MeetingPage />} />{" "}
+          <Route path="meeting/:meetingId" element={<MeetingRoom />} />
           <Route path="chating/:roomId" element={<ChatingRoom />} />
           <Route path="mypage/:id" element={<UserPage />} />
           <Route path="joind/meeting" element={<JoinedMeetingPage />} />

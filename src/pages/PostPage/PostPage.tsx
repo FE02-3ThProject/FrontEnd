@@ -76,7 +76,7 @@ const PostPage = () => {
         <StTitle>{post?.title}</StTitle>
         <StContent>{post?.content}</StContent>
         <StButtonForm>
-          {post && post.email === userId && (
+          {post && post.email === userId ? (
             <>
               <Link to={`/meeting/${meetingId}/${postId}/post/modification`}>
                 <StButton>수정</StButton>
@@ -84,7 +84,10 @@ const PostPage = () => {
               <StButton onClick={() => handleDeletePost(meetingId, postId)}>
                 삭제
               </StButton>
+              <StButton onClick={() => navigate(-1)}>돌아가기</StButton>
             </>
+          ) : (
+            <StButton onClick={() => navigate(-1)}>돌아가기</StButton>
           )}
         </StButtonForm>
       </StForm>

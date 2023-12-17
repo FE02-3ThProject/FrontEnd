@@ -74,6 +74,9 @@ const NoticePage = () => {
 
   const contentArray = notice?.content.split(". ");
 
+  console.log(notice?.email);
+  console.log(userId);
+
   return (
     <StContainer>
       <StForm>
@@ -82,7 +85,7 @@ const NoticePage = () => {
           <StContent key={index}>{content}</StContent>
         ))}
         <StButtonForm>
-          {notice && notice.email === userId && (
+          {notice && notice.email === userId ? (
             <>
               <Link
                 to={`/meeting/${meetingId}/${noticeId}/notice/modification`}
@@ -92,7 +95,10 @@ const NoticePage = () => {
               <StButton onClick={() => handleDeletePost(meetingId, noticeId)}>
                 삭제
               </StButton>
+              <StButton onClick={() => navigate(-1)}>돌아가기</StButton>
             </>
+          ) : (
+            <StButton onClick={() => navigate(-1)}>돌아가기</StButton>
           )}
         </StButtonForm>
       </StForm>
