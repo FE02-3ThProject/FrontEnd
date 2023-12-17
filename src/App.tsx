@@ -14,7 +14,11 @@ import MeetingModificationPage from "./pages/MeetingModificationPage/MeetingModi
 import NoticePage from "./pages/NoticePage/NoticePage";
 import PostModificationPage from "./pages/ModificationPage/PostModificationPage";
 import NoticeModificationPage from "./pages/ModificationPage/NoticeModificationPage";
+<<<<<<< HEAD
 import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
+=======
+import SearchPage from "./pages/SearchPage/SearchPage";
+>>>>>>> bbe94bacbd3cb20f48b54ecc2d45c491b4742552
 
 function App() {
   return (
@@ -53,6 +57,7 @@ function App() {
             path="meeting/:meetingId/modification"
             element={<MeetingModificationPage />}
           />
+          <Route path="search/:title" element={<SearchPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

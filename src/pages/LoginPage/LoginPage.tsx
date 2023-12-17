@@ -10,7 +10,7 @@ import LoginBg from "../../images/login_bg.png";
 import Naver from "../../images/naver.png";
 
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
+import { AxiosResponse } from "axios";
 
 const LoginPage = () => {
   const queryClient = useQueryClient();
@@ -19,8 +19,8 @@ const LoginPage = () => {
   const [email, setEmail] = UseInput("");
   const [password, setPassword] = UseInput("");
 
-  const postLogin = async () => {
-    const data = await api.post("/api/user/login", {
+  const postLogin = async (): Promise<AxiosResponse | null> => {
+    const data: AxiosResponse = await api.post("/api/user/login", {
       email,
       password,
     });
@@ -29,24 +29,26 @@ const LoginPage = () => {
   const { mutate: onsubmit } = useMutation(postLogin, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      const token = data.headers.authorization.split(" ")[1];
+      console.log(data);
+      const token = data?.headers.authorization.split(" ")[1];
       setCookie("token", token, 2);
-      setCookie("nickname", data.data.nickname, 2);
-      setCookie("email", data.data.email, 2);
-      setCookie("profileimage", data.data.image, 2);
-      setCookie("location", data.data.location, 2);
-      setCookie("userRole", data.data.userRole, 2);
+      setCookie("nickname", data?.data.nickname, 2);
+      setCookie("email", data?.data.email, 2);
+      setCookie("profileimage", data?.data.image, 2);
+      setCookie("location", data?.data.location, 2);
+      setCookie("userRole", data?.data.userRole, 2);
 
       navigate("/");
     },
-    onError: () => {
-      Swal.fire({
-        text: "아아디, 비밀번호를 확인해주세요.",
-        icon: "warning",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "확인",
-      });
-      return;
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+        Swal.fire({
+          text: "아아디, 비밀번호를 확인해주세요.",
+          icon: "warning",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "확인",
+        });
+      }
     },
   });
 
@@ -68,20 +70,8 @@ const LoginPage = () => {
     },
   });
 
-  const googleLoginBt = useGoogleLogin({
-    onSuccess: async (res) => {
-      console.log(res.access_token);
-      await axios({
-        method: "post",
-        url: "https://15.164.234.129:9090/oauth2/authorization/google",
-        data: { access_token: res.access_token },
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((e) => console.log(e));
-    },
-  });
+  const cliendId =
+    "1038968461691-300p0glse8mmu833osl6qk2094lpqmjv.apps.googleusercontent.com";
 
   return (
     <StLoginContainer>
