@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 
 interface Meeting {
   title: string;
-  image: File | null;
+  image: string;
   locationId: number;
   description: string;
   maxMembers: number;
@@ -25,17 +25,17 @@ const updateMeeting = async ({
   newMeeting: Meeting;
   meetingId: string;
 }) => {
-  const formData = new FormData();
-  Object.entries(newMeeting).forEach(([key, value]) => {
-    formData.append(key, value);
-  });
   const response = await apiToken.put(
     `/api/group/update/${parseInt(meetingId)}`,
-    formData
+    JSON.stringify(newMeeting),
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
   );
   return response.data;
 };
-
 //모임정보 불러오기
 const fetchMeeting = async () => {
   const response = await apiToken.get(`/api/group/all`);
@@ -44,7 +44,7 @@ const fetchMeeting = async () => {
 
 const MeetingModificationPage = () => {
   const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<string | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [maxMembers, setMaxMembers] = useState<number | string>("");
@@ -66,7 +66,15 @@ const MeetingModificationPage = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(event.target.files[0]);
+      const file = event.target.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          setImage(reader.result.toString());
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -92,7 +100,7 @@ const MeetingModificationPage = () => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       }).then(() => {
-        navigate(`meeting/${meetingId}`);
+        navigate(-1);
       });
     },
   });
@@ -105,7 +113,7 @@ const MeetingModificationPage = () => {
     mutation.mutate({
       newMeeting: {
         title: title,
-        image: image,
+        image: "image",
         locationId: Number(location),
         description: description,
         maxMembers: Number(maxMembers),

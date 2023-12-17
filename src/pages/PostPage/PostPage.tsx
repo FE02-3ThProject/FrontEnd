@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { apiToken } from "../../shared/apis/Apis";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getCookie } from "../../shared/Cookie";
 import Loading from "../../components/loading/Loading";
 
@@ -19,7 +19,7 @@ const deletePost = async (
 };
 
 interface Post {
-  userId: string;
+  email: string;
   title: string;
   content: string;
   createAt: string;
@@ -32,6 +32,7 @@ const fetchPostData = async (meetingId: string, postId: string) => {
 
 const PostPage = () => {
   const { meetingId, postId } = useParams();
+  const navigate = useNavigate();
 
   if (!meetingId || !postId) {
     return <div>Meeting ID or Post ID is not provided.</div>;
@@ -47,6 +48,15 @@ const PostPage = () => {
   );
 
   const userId = getCookie("email");
+
+  const handleDeletePost = async (meetingId: string, postId: string) => {
+    try {
+      await deletePost(meetingId, postId);
+      navigate(-1); // 삭제 성공 후 이전 페이지로 돌아가기
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -66,15 +76,18 @@ const PostPage = () => {
         <StTitle>{post?.title}</StTitle>
         <StContent>{post?.content}</StContent>
         <StButtonForm>
-          {post && post.userId === userId && (
+          {post && post.email === userId ? (
             <>
               <Link to={`/meeting/${meetingId}/${postId}/post/modification`}>
                 <StButton>수정</StButton>
               </Link>
-              <StButton onClick={() => deletePost(meetingId, postId)}>
+              <StButton onClick={() => handleDeletePost(meetingId, postId)}>
                 삭제
               </StButton>
+              <StButton onClick={() => navigate(-1)}>돌아가기</StButton>
             </>
+          ) : (
+            <StButton onClick={() => navigate(-1)}>돌아가기</StButton>
           )}
         </StButtonForm>
       </StForm>
