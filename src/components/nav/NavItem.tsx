@@ -37,10 +37,10 @@ const NavItem = () => {
       queryClient.invalidateQueries();
       deleteCookie("token");
       deleteCookie("nickname");
-      deleteCookie("userId");
       deleteCookie("email");
       deleteCookie("profileimage");
       deleteCookie("location");
+      deleteCookie("userRole");
       setCookie(false);
 
       Swal.fire({
@@ -81,7 +81,7 @@ const NavItem = () => {
   }, [el]);
 
   useEffect(() => {
-    if (cookie !== undefined) {
+    if (cookie !== undefined || null) {
       return setCookie(true);
     }
   }, [cookie]);
