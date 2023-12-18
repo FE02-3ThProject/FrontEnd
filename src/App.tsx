@@ -16,6 +16,8 @@ import PostModificationPage from "./pages/ModificationPage/PostModificationPage"
 import NoticeModificationPage from "./pages/ModificationPage/NoticeModificationPage";
 import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
 import SearchPage from "./pages/SearchPage/SearchPage";
+import MeetingMemberPage from "./pages/MeetingMemberPage/MeetingMemberPage";
+import SearchPageResult from "./pages/SearchPage/SearchPageResult";
 
 const App = () => {
   return (
@@ -55,6 +57,11 @@ const App = () => {
             element={<MeetingModificationPage />}
           />
           <Route path="search/:keyword" element={<SearchPage />} />
+          <Route
+            path="meeting/:meetingId/members"
+            element={<MeetingMemberPage />}
+          />
+          <Route path="searchresult/:keyword" element={<SearchPageResult />} />
         </Route>
       </Routes>
     </BrowserRouter>
