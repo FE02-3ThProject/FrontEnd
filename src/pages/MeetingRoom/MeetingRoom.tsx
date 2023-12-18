@@ -6,9 +6,6 @@ import Notice from "../../components/post/Notice";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-//Image Import
-import MeetingImage from "../../images/MeetingRoom.jpg";
-
 //Icons Import
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
@@ -20,14 +17,20 @@ const fetchMeeting = async () => {
   return response.data;
 };
 
-//즐겨찾기 추가
-const favoriteMeeting = async (groupId: string | undefined) => {
-  if (!groupId) {
-    throw new Error("Meeting ID is not provided.");
-  }
-  const response = await apiToken.post(`/api/bookmark/${parseInt(groupId)}`);
+//모임 상세조회 불러오기
+const fetchDetails = async (groupId: string | undefined) => {
+  const response = await apiToken.get(`/api/group/detail/${groupId}`);
   return response.data;
 };
+
+//즐겨찾기 추가
+// const favoriteMeeting = async (groupId: string | undefined) => {
+//   if (!groupId) {
+//     throw new Error("Meeting ID is not provided.");
+//   }
+//   const response = await apiToken.post(`/api/bookmark/${parseInt(groupId)}`);
+//   return response.data;
+// };
 
 const addFavorite = async (groupId: string | undefined) => {
   if (!groupId) {
@@ -38,12 +41,12 @@ const addFavorite = async (groupId: string | undefined) => {
 };
 
 //즐겨찾기 삭제
-const deleteFavorite = async (groupId: string | undefined) => {
-  const response = await apiToken.delete(
-    `/api/user-group/unbookmark/${groupId}`
-  );
-  return response.data;
-};
+// const deleteFavorite = async (groupId: string | undefined) => {
+//   const response = await apiToken.delete(
+//     `/api/user-group/unbookmark/${groupId}`
+//   );
+//   return response.data;
+// };
 
 //즐겨찾기 목록 불러오기
 const fetchFavorite = async (userId: string | undefined) => {
@@ -113,12 +116,22 @@ const deleteMeeting = async (groupId: string | undefined) => {
   return response.data;
 };
 
+//모임 맴버조회
+const fetchMembers = async (groupId: string | undefined) => {
+  const response = await apiToken.get(`api/group/groupMembers/${groupId}`);
+  return response.data;
+};
+
 interface PostType {
   postId: string;
   id: string;
   title: string;
   content: string;
   createAt: string;
+}
+
+interface StLeftFormProps {
+  MeetingImage?: string;
 }
 
 const MeetingRoom = () => {
@@ -145,6 +158,19 @@ const MeetingRoom = () => {
     () => fetchNotice(groupId),
     { enabled: !!groupId }
   );
+  const { data: details } = useQuery(
+    ["details", groupId],
+    () => fetchDetails(groupId),
+    { enabled: !!groupId }
+  );
+  const { data: members } = useQuery(
+    ["members", groupId],
+    () => fetchMembers(groupId),
+    { enabled: !!groupId }
+  );
+
+  console.log(details);
+  console.log(members);
 
   const addFavoriteMutation = useMutation(addFavorite, {
     onSuccess: () => {
@@ -178,6 +204,7 @@ const MeetingRoom = () => {
 
   const isFavorite = favoriteMeetings?.includes(meetingId);
   const isJoined = joinedMeetings?.includes(meetingId);
+  const MeetingImage = meeting && meeting[meetingNumber].image;
   // console.log(userId);
   // console.log(posts && posts[0].postId);
   // console.log(notice);
@@ -186,7 +213,7 @@ const MeetingRoom = () => {
   return (
     <StContainer>
       <StForm>
-        <StLeftForm>
+        <StLeftForm MeetingImage={MeetingImage}>
           <StProfileSec>
             <StTitle>{meeting && meeting[meetingNumber].title}</StTitle>
             <StDesc>{meeting && meeting[meetingNumber].description}</StDesc>
@@ -253,11 +280,17 @@ const MeetingRoom = () => {
         <StRightForm>
           <StRightContainer>
             <StNotice>
-              <Link
-                to={`/meeting/${groupId}/${notice && notice.noticeIdx}/notice`}
-              >
-                {notice && <Notice data={notice} />}
-              </Link>
+              {notice ? (
+                <Link
+                  to={`/meeting/${groupId}/${
+                    notice && notice.noticeIdx
+                  }/notice`}
+                >
+                  {notice && <Notice data={notice} />}
+                </Link>
+              ) : (
+                <StEmptyNotice>공지사항이 없습니다.</StEmptyNotice>
+              )}
             </StNotice>
             {isJoined ? (
               <>
@@ -309,15 +342,15 @@ const StForm = styled.div`
   background-color: white;
 `;
 
-const StLeftForm = styled.div`
+const StLeftForm = styled.div<StLeftFormProps>`
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  align-items: start;
+  justify-content: flex-end;
+  align-items: flex-start;
   width: 460px;
   height: 630px;
   border-radius: 30px;
-  background-image: url(${MeetingImage});
+  background-image: url(${(props) => props.MeetingImage});
   background-size: cover;
   background-position: center;
 `;
@@ -456,6 +489,17 @@ const StFalseJoin = styled.div`
   font-size: 44px;
   font-weight: 700;
   line-height: 55px;
+`;
+
+const StEmptyNotice = styled.div`
+  width: 90vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 44px;
+  font-weight: 700;
+  color: white;
 `;
 
 const StPostButtonSec = styled.div`

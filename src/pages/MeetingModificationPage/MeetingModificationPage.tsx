@@ -9,33 +9,53 @@ import Location from "../../components/location/Location";
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
 
-interface Meeting {
-  title: string;
-  image: string;
-  locationId: number;
-  description: string;
-  maxMembers: number;
-  categoryId: number;
-}
+// interface Meeting {
+//   title: string;
+//   image: string;
+//   locationId: number;
+//   description: string;
+//   maxMembers: number;
+//   categoryId: number;
+// }
+
+// const updateMeeting = async ({
+//   newMeeting,
+//   meetingId,
+// }: {
+//   newMeeting: Meeting;
+//   meetingId: string;
+// }) => {
+//   const response = await apiToken.put(
+//     `/api/group/update/${parseInt(meetingId)}`,
+//     JSON.stringify(newMeeting),
+//     {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     }
+//   );
+//   return response.data;
+// };
 
 const updateMeeting = async ({
-  newMeeting,
+  formData,
   meetingId,
 }: {
-  newMeeting: Meeting;
+  formData: FormData;
   meetingId: string;
 }) => {
   const response = await apiToken.put(
-    `/api/group/update/${parseInt(meetingId)}`,
-    JSON.stringify(newMeeting),
+    `/api/group/${parseInt(meetingId)}`,
+    formData,
     {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     }
   );
   return response.data;
 };
+
 //모임정보 불러오기
 const fetchMeeting = async () => {
   const response = await apiToken.get(`/api/group/all`);
@@ -44,7 +64,7 @@ const fetchMeeting = async () => {
 
 const MeetingModificationPage = () => {
   const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [maxMembers, setMaxMembers] = useState<number | string>("");
@@ -66,24 +86,43 @@ const MeetingModificationPage = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          setImage(reader.result.toString());
-        }
-      };
-      reader.readAsDataURL(file);
+      setImage(event.target.files[0]);
     }
   };
 
+  // const mutation = useMutation<
+  //   { newMeeting: Meeting; meetingId: string },
+  //   unknown,
+  //   { newMeeting: Meeting; meetingId: string },
+  //   unknown
+  // >(({ newMeeting, meetingId }) => updateMeeting({ newMeeting, meetingId }), {
+  //   onSuccess: () => {
+  //     setTitle("");
+  //     setImage(null);
+  //     setLocation("");
+  //     setDescription("");
+  //     setMaxMembers(1);
+  //     setCategory("");
+  //     if (fileInput.current) {
+  //       fileInput.current.value = "";
+  //     }
+  //     Swal.fire({
+  //       text: "수정이 완료되었습니다.",
+  //       icon: "success",
+  //       confirmButtonColor: "#3085d6",
+  //       confirmButtonText: "확인",
+  //     }).then(() => {
+  //       navigate(-1);
+  //     });
+  //   },
+  // });
+
   const mutation = useMutation<
-    { newMeeting: Meeting; meetingId: string },
+    { formData: FormData; meetingId: string },
     unknown,
-    { newMeeting: Meeting; meetingId: string },
+    { formData: FormData; meetingId: string },
     unknown
-  >(({ newMeeting, meetingId }) => updateMeeting({ newMeeting, meetingId }), {
+  >(({ formData, meetingId }) => updateMeeting({ formData, meetingId }), {
     onSuccess: () => {
       setTitle("");
       setImage(null);
@@ -105,24 +144,45 @@ const MeetingModificationPage = () => {
     },
   });
 
+  // const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   if (!meetingId) {
+  //     throw new Error("Meeting ID is not provided.");
+  //   }
+  //   mutation.mutate({
+  //     newMeeting: {
+  //       title: title,
+  //       image: "image",
+  //       locationId: Number(location),
+  //       description: description,
+  //       maxMembers: Number(maxMembers),
+  //       categoryId: Number(category),
+  //     },
+  //     meetingId: meetingId,
+  //   });
+  // };
+
   const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData();
+
+    formData.append("name", title);
+    if (image) {
+      formData.append("file", image);
+    }
+    formData.append("locationId", String(location));
+    formData.append("description", description);
+    formData.append("maxMembers", String(maxMembers));
+    formData.append("categoryId", String(category));
+
     if (!meetingId) {
       throw new Error("Meeting ID is not provided.");
     }
     mutation.mutate({
-      newMeeting: {
-        title: title,
-        image: "image",
-        locationId: Number(location),
-        description: description,
-        maxMembers: Number(maxMembers),
-        categoryId: Number(category),
-      },
+      formData: formData,
       meetingId: meetingId,
     });
   };
-
   return (
     <StContainer>
       <StForm>

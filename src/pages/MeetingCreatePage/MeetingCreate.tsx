@@ -23,7 +23,7 @@ import Friends2 from "../../images/friends2.png";
 // }
 
 const createMeeting = async (formData: FormData) => {
-  const response = await apiToken.post("/api/image", formData, {
+  const response = await apiToken.post("/api/group", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -68,7 +68,7 @@ const MeetingCreate = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(event.target.files[0]); // 이미지 파일을 상태에 바로 저장합니다.
+      setImage(event.target.files[0]);
     }
   };
 
@@ -104,43 +104,6 @@ const MeetingCreate = () => {
   //     maxMembers: Number(maxMembers),
   //     categoryId: Number(category),
   //   });
-  // };
-
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-
-  //   const formData = new FormData();
-
-  //   // 이미지를 제외한 데이터를 저장할 객체
-  //   let dataWithoutImage: { [key: string]: string | number } = {};
-
-  //   const data = {
-  //     name: title,
-  //     locationId: Number(location).toString(),
-  //     description: description,
-  //     maxMembers: Number(maxMembers).toString(),
-  //     categoryId: Number(category).toString(),
-  //     file: image,
-  //   };
-
-  //   // 데이터를 순회하며 이미지 파일과 그 외의 데이터를 구분
-  //   Object.entries(data).forEach(([key, value]) => {
-  //     if (value instanceof File) {
-  //       // 이미지 파일인 경우 formData에 추가
-  //       formData.append(key, value);
-  //     } else if (value) {
-  //       // 이미지가 아닌 데이터인 경우 별도의 객체에 저장
-  //       dataWithoutImage[key] = value;
-  //     }
-  //   });
-
-  //   // 이미지를 제외한 데이터를 JSON 형식으로 변환하여 formData에 추가
-  //   formData.append(
-  //     "data",
-  //     new Blob([JSON.stringify(dataWithoutImage)], { type: "application/json" })
-  //   );
-
-  //   mutation.mutate(formData);
   // };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
