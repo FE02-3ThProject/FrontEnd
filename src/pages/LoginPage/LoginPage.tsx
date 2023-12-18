@@ -43,7 +43,7 @@ const LoginPage = () => {
       setCookie("location", data?.data.location, 2);
       setCookie("userRole", data?.data.userRole, 2);
       setProfileImage(data?.data.image)
-
+      localStorage.setItem("profileImage", data?.data.image);
       navigate("/");
     },
     onError: (error) => {
