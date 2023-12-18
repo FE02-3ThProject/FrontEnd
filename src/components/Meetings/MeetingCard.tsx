@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import styled from "styled-components";
 import HeartButton from "../common/HeartButton";
+import SearchImg from "../../images/searchpage_bg.png";
 
 interface Group {
   groupId: string;
@@ -21,15 +21,13 @@ interface MeetingCardProps {
 const MeetingCard = ({ group }: MeetingCardProps) => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    navigate(`meeting/${group.groupId}`);
-  }, [group, navigate]);
-
   return (
     <StCardContainer onClick={() => navigate(`meeting/${group.groupId}`)}>
       <StContainer>
         <StImageContainer>
-          <StyledImage src={group.image} alt="group" />
+          <StImageArea>
+            <StyledImage src={group.image} alt="group" />
+          </StImageArea>
           <StTopRightButton>
             <HeartButton groupId={group.groupId} userId={group.userId} />
           </StTopRightButton>
@@ -39,9 +37,10 @@ const MeetingCard = ({ group }: MeetingCardProps) => {
         <StCategory>{group.categoryName}</StCategory>
         <div>
           <div>
-            {group.maxMembers} <span className="font-light ">명</span>
+            {group.maxMembers}{" "}
+            <span className="font-light ">명 | {group.createdAt}</span>
           </div>
-          <div>{group.createdAt}</div>
+          <div></div>
         </div>
       </StContainer>
     </StCardContainer>
@@ -56,13 +55,21 @@ const StCardContainer = styled.div`
   &:hover {
     transform: scale(1.05);
   }
+  margin: 20px;
 `;
 
 const StContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
+`;
+
+const StImageArea = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: #999;
+  background-image: url(${SearchImg});
 `;
 
 const StImageContainer = styled.div`
@@ -75,8 +82,8 @@ const StImageContainer = styled.div`
 
 const StyledImage = styled.img`
   object-fit: cover;
-  width: 100%;
-  height: 100%;
+  width: 200px;
+  height: 200px;
   transition: all 0.3s;
   &:hover {
     transform: scale(1.1);
