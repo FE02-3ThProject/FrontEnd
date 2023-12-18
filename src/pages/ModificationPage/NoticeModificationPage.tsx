@@ -44,7 +44,7 @@ const NoticeModificationPage = () => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       });
-      navigator(`/meeting/${meetingId}/${noticeId}/notice`);
+      navigator(-2);
     } catch (error) {
       Swal.fire({
         text: "공지사항 수정에 실패했습니다.",

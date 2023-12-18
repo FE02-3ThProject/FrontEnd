@@ -30,6 +30,7 @@ const StContainer = styled.div`
   align-items: start;
   margin-top: 10px;
   margin-bottom: 5px;
+  color: black;
 `;
 
 const StTitle = styled.h3`

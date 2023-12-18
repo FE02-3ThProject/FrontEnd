@@ -70,7 +70,6 @@ const LoginPage = () => {
     },
   });
 
-  
   return (
     <StLoginContainer>
       <StLoginBox>
