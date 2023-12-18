@@ -191,6 +191,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
       setCookie("category", CHGcategory);
       setCookie("profileimage", data?.data.image);
       setProfileImage(data?.data.image);
+      localStorage.setItem("profileImage", data?.data.image);
       Swal.fire({
         text: "변경이 완료되었습니다.",
         icon: "success",

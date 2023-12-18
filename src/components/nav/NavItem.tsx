@@ -8,8 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import { apiToken } from "../../shared/apis/Apis";
 import { useMutation, useQueryClient } from "react-query";
 
-import { useRecoilValue } from 'recoil';
-import { profileImageState } from "../../Atoms"
+import { useRecoilState } from "recoil";
+import { profileImageState } from "../../Atoms";
 
 import defaultUserImage from "../../images/default_profile.png";
 import home from "../../images/Home.png";
@@ -18,7 +18,14 @@ import create from "../../images/Edit.png";
 import exit from "../../images/Exit to app.png";
 
 const NavItem = () => {
-  const profileImage = useRecoilValue(profileImageState);
+  const [profileImage, setProfileImage] = useRecoilState(profileImageState);
+
+  useEffect(() => {
+    const savedProfileImage = localStorage.getItem("profileImage");
+    if (savedProfileImage) {
+      setProfileImage(savedProfileImage);
+    }
+  }, []);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -47,6 +54,7 @@ const NavItem = () => {
       deleteCookie("location");
       deleteCookie("userRole");
       setCookie(false);
+      localStorage.removeItem("profileImage");
 
       Swal.fire({
         icon: "success",
@@ -89,7 +97,13 @@ const NavItem = () => {
     if (cookie !== undefined || null) {
       return setCookie(true);
     }
-  }, [cookie, profileImage]);
+  }, [cookie]);
+  useEffect(() => {
+    const savedProfileImage = localStorage.getItem("profileImage");
+    if (savedProfileImage) {
+      setProfileImage(savedProfileImage);
+    }
+  }, []);
 
   return (
     <StMenuList>
