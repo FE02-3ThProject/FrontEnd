@@ -13,17 +13,22 @@ import Friends from "../..//images/friends.png";
 import Vector from "../../images/pngegg.png";
 import Friends2 from "../../images/friends2.png";
 
-interface Meeting {
-  title: string;
-  image: string | null;
-  locationId: number;
-  description: string;
-  maxMembers: number;
-  categoryId: number;
-}
+// interface Meeting {
+//   title: string;
+//   image: string | null;
+//   locationId: number;
+//   description: string;
+//   maxMembers: number;
+//   categoryId: number;
+// }
 
-const createMeeting = async (newMeeting: Meeting) => {
-  const response = await apiToken.post("/api/group/create", newMeeting);
+// const createMeeting = async (newMeeting: Meeting) => {
+//   const response = await apiToken.post("/api/groupImg", newMeeting);
+//   return response.data;
+// };
+
+const createMeeting = async (newMeeting: FormData) => {
+  const response = await apiToken.post("/api/image", newMeeting);
   return response.data;
 };
 
@@ -33,7 +38,7 @@ const MeetingCreate = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [maxMembers, setMaxMembers] = useState<number | string>("");
@@ -48,17 +53,23 @@ const MeetingCreate = () => {
       setter(value as unknown as T);
     };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     const file = event.target.files[0];
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          setImage(reader.result.toString());
-        }
-      };
-      reader.readAsDataURL(file);
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       if (reader.result) {
+  //         setImage(reader.result.toString());
+  //       }
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setImage(event.target.files[0]);
     }
   };
 
@@ -84,16 +95,68 @@ const MeetingCreate = () => {
     },
   });
 
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   mutation.mutate({
+  //     title: title,
+  //     image: image,
+  //     locationId: Number(location),
+  //     description: description,
+  //     maxMembers: Number(maxMembers),
+  //     categoryId: Number(category),
+  //   });
+  // };
+
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+
+  //   const formData = new FormData();
+
+  //   // 이미지를 제외한 데이터를 저장할 객체
+  //   let dataWithoutImage: { [key: string]: string | number } = {};
+
+  //   const data = {
+  //     name: title,
+  //     locationId: Number(location).toString(),
+  //     description: description,
+  //     maxMembers: Number(maxMembers).toString(),
+  //     categoryId: Number(category).toString(),
+  //     file: image,
+  //   };
+
+  //   // 데이터를 순회하며 이미지 파일과 그 외의 데이터를 구분
+  //   Object.entries(data).forEach(([key, value]) => {
+  //     if (value instanceof File) {
+  //       // 이미지 파일인 경우 formData에 추가
+  //       formData.append(key, value);
+  //     } else if (value) {
+  //       // 이미지가 아닌 데이터인 경우 별도의 객체에 저장
+  //       dataWithoutImage[key] = value;
+  //     }
+  //   });
+
+  //   // 이미지를 제외한 데이터를 JSON 형식으로 변환하여 formData에 추가
+  //   formData.append(
+  //     "data",
+  //     new Blob([JSON.stringify(dataWithoutImage)], { type: "application/json" })
+  //   );
+
+  //   mutation.mutate(formData);
+  // };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    mutation.mutate({
-      title: title,
-      image: "image",
-      locationId: Number(location),
-      description: description,
-      maxMembers: Number(maxMembers),
-      categoryId: Number(category),
-    });
+
+    const formData = new FormData();
+    if (title) formData.append("name", title);
+    if (image) formData.append("file", image);
+    if (location) formData.append("locationId", Number(location).toString());
+    if (description) formData.append("description", description);
+    if (maxMembers)
+      formData.append("maxMembers", Number(maxMembers).toString());
+    if (category) formData.append("categoryId", Number(category).toString());
+
+    mutation.mutate(formData);
   };
 
   console.log(image);

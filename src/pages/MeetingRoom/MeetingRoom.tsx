@@ -29,6 +29,14 @@ const favoriteMeeting = async (groupId: string | undefined) => {
   return response.data;
 };
 
+const addFavorite = async (groupId: string | undefined) => {
+  if (!groupId) {
+    throw new Error("Meeting Id is not provided.");
+  }
+  const response = await apiToken.post(`/api/bookmark/${parseInt(groupId)}`);
+  return response.data;
+};
+
 //즐겨찾기 삭제
 const deleteFavorite = async (groupId: string | undefined) => {
   const response = await apiToken.delete(
@@ -138,13 +146,13 @@ const MeetingRoom = () => {
     { enabled: !!groupId }
   );
 
-  const addFavoriteMutation = useMutation(favoriteMeeting, {
+  const addFavoriteMutation = useMutation(addFavorite, {
     onSuccess: () => {
       queryClient.invalidateQueries("favoriteMeetings");
     },
   });
 
-  const deleteFavoriteMutation = useMutation(deleteFavorite, {
+  const deleteFavoriteMutation = useMutation(addFavorite, {
     onSuccess: () => {
       queryClient.invalidateQueries("favoriteMeetings");
     },

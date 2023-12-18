@@ -10,7 +10,7 @@ import LoginBg from "../../images/login_bg.png";
 import Naver from "../../images/naver.png";
 
 import { useGoogleLogin } from "@react-oauth/google";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 
 const LoginPage = () => {
   const queryClient = useQueryClient();
@@ -70,9 +70,6 @@ const LoginPage = () => {
     },
   });
 
-  const cliendId =
-    "1038968461691-300p0glse8mmu833osl6qk2094lpqmjv.apps.googleusercontent.com";
-
   return (
     <StLoginContainer>
       <StLoginBox>
@@ -101,7 +98,6 @@ const LoginPage = () => {
         <StSoCialTitle>Login with Google</StSoCialTitle>
         <StSocailBtnBox>
           <StSocialLoginBtnGoogle onClick={() => googleLogin()} />
-          <button onClick={() => googleLoginBt()}>Google로그인</button>
         </StSocailBtnBox>
         <StSingup>
           Don’t have account?
