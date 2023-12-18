@@ -12,6 +12,7 @@ interface SearchResult {
   memberCount: number;
   maxMembers: number;
   createdAt: string;
+  groupId: string;
 }
 
 const SearchPage = () => {
