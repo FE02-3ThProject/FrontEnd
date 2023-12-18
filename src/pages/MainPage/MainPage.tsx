@@ -1,25 +1,58 @@
-import FloatingButton from "../../components/common/FloatingButton";
-import MeetingCard from "../../components/Meetings/MeetingCard_before";
+import { useEffect, useState } from "react";
+import MeetingCard from "../../components/Meetings/MeetingCard";
 import MainSwiper from "../../components/Swiper/MainSwiper";
-import Categories from "../../components/categories/Categories";
 import styled from "styled-components";
 import Mainbanner from "../../components/banner/Mainbanner";
 import MainBottomBanner from "../../components/banner/MainBottomBanner";
+import Categories from "../../components/categories/Categories";
+import { apiToken } from "../../shared/apis/Apis";
+import FloatingButton from "../../components/common/FloatingButton";
 
+interface Group {
+  groupId: string;
+  locationName: string;
+  categoryName: string;
+  title: string;
+  description: string;
+  image: string;
+  maxMembers: number;
+  createdAt: string;
+  userId: string;
+}
+
+// fetch groups
+const fetchGroups = async (category: string | null) => {
+  try {
+    const endpoint = category ? `/api/group/${category}` : "/api/group/all";
+    const response = await apiToken.get(endpoint);
+    return response.data;
+  } catch (error) {
+    console.error(`Failed to fetch groups: ${error}`);
+  }
+};
+
+// MainPage component
 const MainPage = () => {
+  const [groups, setGroups] = useState<Group[]>([]);
+
+  const loadGroups = async () => {
+    const data = await fetchGroups(null);
+    if (data) setGroups(data);
+  };
+
+  useEffect(() => {
+    loadGroups();
+  }, []);
+
   return (
     <StContainer>
       <MainSwiper />
       <Categories />
       <StTitle>추천 모임</StTitle>
       <StCardContainer>
-        <MeetingCard />
-        <MeetingCard />
-        <MeetingCard />
-        <MeetingCard />
-        <MeetingCard />
-        <MeetingCard />
-        <MeetingCard />
+        {groups.slice(0, 7).map((group) => (
+          <MeetingCard key={group.groupId} group={group} />
+        ))}
       </StCardContainer>
       <StBannerContainer>
         <Mainbanner />
@@ -56,7 +89,7 @@ const StCardContainer = styled.div`
 `;
 
 const StTitle = styled.div`
-  margin: 30px 0 0 70px;
+  margin: 30px 0 0 150px;
   font-weight: bold;
   font-size: 18px;
   letter-spacing: -1px;
