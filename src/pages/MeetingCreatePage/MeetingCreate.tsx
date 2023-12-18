@@ -23,7 +23,7 @@ import Friends2 from "../../images/friends2.png";
 // }
 
 const createMeeting = async (formData: FormData) => {
-  const response = await apiToken.post("/api/image", formData, {
+  const response = await apiToken.post("/api/group", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -52,9 +52,23 @@ const MeetingCreate = () => {
       setter(value as unknown as T);
     };
 
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     const file = event.target.files[0];
+
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       if (reader.result) {
+  //         setImage(reader.result.toString());
+  //       }
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(event.target.files[0]); // 이미지 파일을 상태에 바로 저장합니다.
+      setImage(event.target.files[0]);
     }
   };
 
@@ -79,6 +93,18 @@ const MeetingCreate = () => {
       });
     },
   });
+
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   mutation.mutate({
+  //     title: title,
+  //     image: image,
+  //     locationId: Number(location),
+  //     description: description,
+  //     maxMembers: Number(maxMembers),
+  //     categoryId: Number(category),
+  //   });
+  // };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
