@@ -17,7 +17,7 @@ import NoticeModificationPage from "./pages/ModificationPage/NoticeModificationP
 import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
 import SearchPage from "./pages/SearchPage/SearchPage";
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>

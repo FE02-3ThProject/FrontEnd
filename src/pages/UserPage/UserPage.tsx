@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiToken } from "../../shared/apis/Apis";
 import MyProfileModal from "../../components/user/MyProfileModal";
 import styled from "styled-components";
@@ -91,25 +91,25 @@ const UserPage = () => {
     }
   };
 
-  const getMyJoinedMeeting = async () => {
-    const res = await apiToken.get("/api/user-group/joined");
-    return res;
-  };
-  const { data: joinedMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
-    "MY_JOINEDMEETING",
-    getMyJoinedMeeting
-  );
-  console.log(joinedMeetingData);
+  // const getMyJoinedMeeting = async () => {
+  //   const res = await apiToken.get("/api/user-group/joined");
+  //   return res;
+  // };
+  // const { data: joinedMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
+  //   "MY_JOINEDMEETING",
+  //   getMyJoinedMeeting
+  // );
+  // console.log(joinedMeetingData);
 
-  const getSubMeeting = async () => {
-    const res = await apiToken.get(`/api/user-group/bookmark/${email}`);
-    return res;
-  };
-  const { data: subMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
-    "MY_SUBMEETING",
-    getSubMeeting
-  );
-  console.log(subMeetingData);
+  // const getSubMeeting = async () => {
+  //   const res = await apiToken.get(`/api/user-group/bookmark/${email}`);
+  //   return res;
+  // };
+  // const { data: subMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
+  //   "MY_SUBMEETING",
+  //   getSubMeeting
+  // );
+  // console.log(subMeetingData);
 
   const getMyProfile = async () => {
     const res = await apiToken.get(`/api/user/info?email=${email}`);
@@ -119,7 +119,9 @@ const UserPage = () => {
     "MY_PROFILE",
     getMyProfile
   );
-  console.log(profileData);
+
+  useEffect(() => {}, [profileData]);
+
   if (profileLoading) {
     return (
       <div>
@@ -138,10 +140,9 @@ const UserPage = () => {
           <StProfileImgBG>
             <StProfileImg
               src={
-                // profileData?.data.image === null
-                //   ? defaultUserImage
-                //   : profileData?.data.image
-                defaultUserImage
+                profileData?.data.image === null
+                  ? defaultUserImage
+                  : profileData?.data.image
               }
               alt="profileImg"
             />
@@ -204,12 +205,10 @@ const UserPage = () => {
         <MyProfileModal
           open={isModalOpen}
           close={closeModal}
-          profileImage={profileData?.data.image}
           introduction={profileData?.data.introduction}
           nickname={profileData?.data.nickname}
           category={profileData?.data.categoryId.categoryId}
           location={profileData?.data.locationId.locationId}
-          userId={profileData?.data.userId}
         />
       ) : null}
     </StMyProfileContainer>
