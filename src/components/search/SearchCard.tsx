@@ -58,6 +58,11 @@ const StMeetingImg = styled.div`
   height: 162px;
   background-image: url(${SearchImg});
   margin: 18px 22px;
+  img {
+    width: 300px;
+    height: 162px;
+    border-radius: 20px;
+  }
 `;
 
 const StSearchInfo = styled.div`

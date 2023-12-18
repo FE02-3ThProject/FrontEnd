@@ -20,37 +20,37 @@ const SearchPage = () => {
   const [keyword, setKeyword] = useState("");
   const [searchResults, setSearchResults] = useState(initialSearchResults);
 
-  const locations = [
-    "서울",
-    "경기도",
-    "인천",
-    "강원도",
-    "충청남도",
-    "대전",
-    "충청북도",
-    "세종시",
-    "부산",
-    "울산",
-    "대구",
-    "경상북도",
-    "경상남도",
-    "전라남도",
-    "광주",
-    "전라북도",
-    "제주도",
-  ];
-  const categories = [
-    "게임",
-    "여행",
-    "운동",
-    "책",
-    "직무",
-    "언어",
-    "공연",
-    "음악",
-    "공예",
-    "댄스",
-  ];
+  const locations: { [key: string]: number } = {
+    서울: 1,
+    경기도: 2,
+    인천: 3,
+    강원도: 4,
+    충청남도: 5,
+    대전: 6,
+    충청북도: 7,
+    세종시: 8,
+    부산: 9,
+    울산: 10,
+    대구: 11,
+    경상북도: 12,
+    경상남도: 13,
+    전라남도: 14,
+    광주: 15,
+    전라북도: 16,
+    제주도: 17,
+  };
+  const categories: { [key: string]: number } = {
+    게임: 1,
+    여행: 2,
+    운동: 3,
+    책: 4,
+    직무: 5,
+    언어: 6,
+    공연: 7,
+    음악: 8,
+    공예: 9,
+    댄스: 10,
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
@@ -58,10 +58,10 @@ const SearchPage = () => {
 
   const handleSubmit = async () => {
     let url;
-    if (locations.includes(keyword)) {
-      url = `/api/group/location/${encodeURIComponent(keyword)}`;
-    } else if (categories.includes(keyword)) {
-      url = `/api/group/category/${encodeURIComponent(keyword)}`;
+    if (Object.prototype.hasOwnProperty.call(locations, keyword)) {
+      url = `/api/group/location/${locations[keyword]}`;
+    } else if (Object.prototype.hasOwnProperty.call(categories, keyword)) {
+      url = `/api/group/category/${categories[keyword]}`;
     } else if (keyword !== "") {
       url = `/api/group/title/${encodeURIComponent(keyword)}`;
     } else {
