@@ -8,6 +8,9 @@ import { useEffect, useRef, useState } from "react";
 import { apiToken } from "../../shared/apis/Apis";
 import { useMutation, useQueryClient } from "react-query";
 
+import { useRecoilState } from "recoil";
+import { profileImageState } from "../../Atoms";
+
 import defaultUserImage from "../../images/default_profile.png";
 import home from "../../images/Home.png";
 import account from "../../images/Account box.png";
@@ -15,12 +18,21 @@ import create from "../../images/Edit.png";
 import exit from "../../images/Exit to app.png";
 
 const NavItem = () => {
+  const [profileImage, setProfileImage] = useRecoilState(profileImageState);
+
+  useEffect(() => {
+    const savedProfileImage = localStorage.getItem("profileImage");
+    if (savedProfileImage) {
+      setProfileImage(savedProfileImage);
+    }
+  }, []);
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const cookie = getCookie("token");
-  const profileimage = getCookie("profileimage");
   const userId = getCookie("email");
+  const nickname = getCookie("nickname");
   const [is_cookie, setCookie] = useState(false);
 
   const Logout = async () => {
@@ -42,6 +54,7 @@ const NavItem = () => {
       deleteCookie("location");
       deleteCookie("userRole");
       setCookie(false);
+      localStorage.removeItem("profileImage");
 
       Swal.fire({
         icon: "success",
@@ -85,6 +98,12 @@ const NavItem = () => {
       return setCookie(true);
     }
   }, [cookie]);
+  useEffect(() => {
+    const savedProfileImage = localStorage.getItem("profileImage");
+    if (savedProfileImage) {
+      setProfileImage(savedProfileImage);
+    }
+  }, []);
 
   return (
     <StMenuList>
@@ -92,7 +111,7 @@ const NavItem = () => {
         <>
           <StDropDownContainer ref={el}>
             <StProfileImgBox
-              src={profileimage === null ? defaultUserImage : profileimage}
+              src={profileImage === null ? defaultUserImage : profileImage}
               onClick={toggling}
             />
             {isOpen && (
@@ -138,7 +157,7 @@ const NavItem = () => {
               </StDropDownListContainer>
             )}
           </StDropDownContainer>
-          <StNickBox>닉네임</StNickBox>
+          <StNickBox>{nickname}</StNickBox>
         </>
       ) : (
         <>
@@ -168,6 +187,7 @@ const StProfileImgBox = styled.img`
   border-radius: 50%;
   align-items: center;
   cursor: pointer;
+  border: 1px solid #d9d9d9;
 `;
 
 const StDropDownContainer = styled.div`
@@ -218,11 +238,12 @@ const StNickBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 72px;
   font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 25px;
   line-height: 14px;
+  color: black;
+  padding: 10px;
   @media screen and (max-width: 1100px) {
     display: none;
   }

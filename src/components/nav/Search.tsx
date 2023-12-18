@@ -60,7 +60,7 @@ const Search = () => {
     const response = await apiToken.get(url);
 
     if (response.status === 200) {
-      navigate(`/searchresult/${keyword}`, {
+      navigate(`/search/${keyword}`, {
         state: { data: response.data, keyword: keyword },
       });
       setKeyword("");

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useRef } from "react";
 
@@ -13,46 +13,45 @@ import { AxiosResponse } from "axios";
 import Category from "../category/Category";
 import Location from "../location/Location";
 
+import { useRecoilState } from "recoil";
+import { profileImageState } from "../../Atoms";
+
 import chgImg from "../../images/chgImg.svg";
 import defaultImg from "../../images/default_profile.png";
-
-import bgImg from "../../images/userInfo/Group 559.png";
 import profileBG from "../../images/userInfo/Group_556.png";
 import userIcon from "../../images/userInfo/nickName.png";
 import categoryIcon from "../../images/userInfo/category.png";
 import locationIcon from "../../images/userInfo/location.png";
 import productionIcon from "../../images/userInfo/production.png";
-import modificationIcon from "../../images/userInfo/image 20.png";
-import SubMeeting from "../../components/user/SubMeeting";
-import JoindeMeeting from "../../components/user/JoinedMeeting";
 
 interface MyProfileModalProps {
   open: boolean;
   close: () => void;
-  profileImage: string;
   introduction: string;
   nickname: string;
   category: string;
   location: string;
-  userId: number;
 }
 
 const MyProfileModal: React.FC<MyProfileModalProps> = ({
   open,
   close,
-  profileImage,
   introduction,
   nickname,
   category,
   location,
-  userId,
 }) => {
   const queryClient = useQueryClient();
 
+  const [profileImage, setProfileImage] = useRecoilState(profileImageState);
+
   const [CHGintroduction, setCHGIntroduction] = useState<string>(introduction);
   const [CHGnickname, setCHGnickname] = useState<string>(nickname);
-  const [previewImg, setpreviewImg] = useState<string>(profileImage || "");
-  const [CHGprofileImg, setCHGprofileImg] = useState<string>(profileImage);
+  const [confirmNick, setConfirmNick] = useState<boolean>(false);
+  const [previewImg, setpreviewImg] = useState<string | null>(profileImage);
+  const [CHGprofileImg, setCHGprofileImg] = useState<File | string | null>(
+    profileImage
+  );
   const [CHGlocation, setCHGlocation] = useState<string>(location);
   const [CHGcategory, setCHGcategory] = useState<string>(category);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -77,6 +76,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   const { mutate: dupnick } = useMutation(getNickCheck, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
+      console.log(data);
       if (data === null) {
         Swal.fire({
           text: "닉네임 형식을 지켜주세요.",
@@ -84,24 +84,43 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
           confirmButtonColor: "#3085d6",
           confirmButtonText: "확인",
         });
-      } else {
+      } else if (data?.data === false) {
+        Swal.fire({
+          text: "닉네임 중복입니다.",
+          icon: "error",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "확인",
+        });
+        setConfirmNick(false);
+      } else if (data?.data === true) {
         Swal.fire({
           text: "사용가능한 닉네임 입니다.",
           icon: "success",
           confirmButtonColor: "#3085d6",
           confirmButtonText: "확인",
         });
+        setConfirmNick(true);
       }
     },
     onError: () => {
       Swal.fire({
-        text: "닉네임 중복입니다.",
+        text: "닉네임 변경중 에러가 발생하였습니다.",
         icon: "error",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       });
+      setConfirmNick(false);
     },
   });
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setCHGprofileImg(event.target.files[0]);
+      encodeFileToBase64(event.target.files[0]).then((encodedImage) => {
+        setpreviewImg(encodedImage);
+      });
+    }
+  };
 
   //이미지 미리보기
   const encodeFileToBase64 = (fileBlob: File): Promise<string> => {
@@ -120,30 +139,49 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   //프로필 변경
   const useProfile = async (): Promise<AxiosResponse | null> => {
     const formData = new FormData();
-
-    formData.append("introduction", CHGintroduction);
     formData.append("nickname", CHGnickname);
-    formData.append("image", CHGprofileImg);
-    formData.append("location", CHGlocation);
-    formData.append("category", CHGcategory);
+    formData.append("locationId", CHGlocation);
+    formData.append("categoryId", CHGcategory);
+    formData.append("introduction", CHGintroduction);
+    if (typeof CHGprofileImg === "string") {
+      const response = await fetch(CHGprofileImg);
+      const blob = await response.blob();
+      formData.append("image", blob);
+    } else if (CHGprofileImg) {
+      formData.append("image", CHGprofileImg);
+    }
 
-    const data = await apiToken.put(`/api/user/edit/${userId}`, formData);
+    const data = await apiToken.put("/api/user/info", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     return data;
   };
   const handleOnsubmitClick = () => {
-    onsubmit();
+    if (
+      confirmNick &&
+      CHGprofileImg &&
+      CHGcategory &&
+      CHGlocation &&
+      CHGintroduction
+    ) {
+      onsubmit();
+    } else {
+      Swal.fire({
+        text: "닉네임 중복 확인 및 모든 필드를 입력해주세요.",
+        icon: "warning",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      });
+    }
   };
 
   const { mutate: onsubmit } = useMutation(useProfile, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      Swal.fire({
-        text: "변경이 완료되었습니다.",
-        icon: "success",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "확인",
-      });
+      console.log(data);
       deleteCookie("nickname");
       deleteCookie("profileimage");
       deleteCookie("location");
@@ -151,7 +189,15 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
       setCookie("nickname", CHGnickname);
       setCookie("location", CHGlocation);
       setCookie("category", CHGcategory);
-      setCookie("profileimage", data?.data.profileImage);
+      setCookie("profileimage", data?.data.image);
+      setProfileImage(data?.data.image);
+      localStorage.setItem("profileImage", data?.data.image);
+      Swal.fire({
+        text: "변경이 완료되었습니다.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      });
       close();
     },
     onError: () => {
@@ -168,13 +214,22 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   //프로필 변경
   const useProfile1 = async (): Promise<AxiosResponse | null> => {
     const formData = new FormData();
-
     formData.append("introduction", CHGintroduction);
-    formData.append("image", CHGprofileImg);
-    formData.append("location", CHGlocation);
-    formData.append("category", CHGcategory);
+    formData.append("locationId", CHGlocation);
+    formData.append("categoryId", CHGcategory);
+    if (typeof CHGprofileImg === "string") {
+      const response = await fetch(CHGprofileImg);
+      const blob = await response.blob();
+      formData.append("image", blob);
+    } else if (CHGprofileImg) {
+      formData.append("image", CHGprofileImg);
+    }
 
-    const data = await apiToken.put(`/api/user/edit/${userId}`, formData);
+    const data = await apiToken.put("/api/user/info", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     return data;
   };
@@ -191,7 +246,8 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
       deleteCookie("category");
       setCookie("location", CHGlocation);
       setCookie("category", CHGcategory);
-      setCookie("profileimage", data?.data.profileImage);
+      setCookie("profileimage", data?.data.image);
+      setProfileImage(data?.data.image);
       Swal.fire({
         text: "변경이 완료되었습니다.",
         icon: "success",
@@ -220,6 +276,12 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     fileInputRef.current?.click();
   };
 
+  useEffect(() => {
+    if (CHGprofileImg !== undefined || null) {
+      return setCookie("profileimage", defaultImg);
+    }
+  }, [CHGprofileImg]);
+
   return (
     <>
       <StModal className={open ? "openModal" : ""}>
@@ -233,9 +295,9 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
               <StProfileImgBG>
                 <StProfileImg
                   src={
-                    previewImg.split("/")[3] === "null"
-                      ? defaultImg
-                      : previewImg
+                    previewImg && previewImg.split("/")[3] !== "null"
+                      ? previewImg
+                      : defaultImg
                   }
                   alt="profile"
                   onClick={onClickImageUpload}
@@ -243,23 +305,17 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                 <input
                   type="file"
                   id="file"
-                  accept={"image/*"}
                   style={{ display: "none" }}
                   ref={fileInputRef}
-                  onChange={(e) => {
-                    const file = e.target.files && e.target.files[0];
-                    if (file) {
-                      encodeFileToBase64(file);
-                      const fileURL = URL.createObjectURL(file);
-                      setCHGprofileImg(fileURL);
-                    }
-                  }}
+                  accept=".jpg, .jpeg, .png"
+                  required
+                  onChange={handleFileChange}
                 />
-                <StChgProfile>
-                <img src={chgImg} alt="img" onClick={onClickImageUpload} />
-              </StChgProfile>
+                <StChgProfile onClick={onClickImageUpload}>
+                  <img src={chgImg} alt="img" />
+                </StChgProfile>
               </StProfileImgBG>
-              
+
               <StModifyBox>
                 <StProfileDetailBox>
                   <StWrap>
@@ -300,7 +356,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                       fontSize="14px"
                       background-color="#333"
                       boxShadow="0px 4px 4px 0px #f9b93790"
-                      value={category}
+                      value={CHGcategory}
                       onChange={(selectedValue) =>
                         setCHGcategory(selectedValue)
                       }
@@ -315,20 +371,20 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                       }}
                     />
                   </StWrap2>
-                
-              <StModalFooter>
-                <StModalButton onClick={close}>취소하기</StModalButton>
-                {PreNickname === CHGnickname ? (
-                  <StModalButton onClick={handleOnsubmit1Click}>
-                    수정
-                  </StModalButton>
-                ) : (
-                  <StModalButton onClick={handleOnsubmitClick}>
-                    수정
-                  </StModalButton>
-                )}
-              </StModalFooter>
-              </StProfileDetailBox>
+
+                  <StModalFooter>
+                    <StModalButton onClick={close}>취소하기</StModalButton>
+                    {PreNickname === CHGnickname ? (
+                      <StModalButton onClick={handleOnsubmit1Click}>
+                        수정
+                      </StModalButton>
+                    ) : (
+                      <StModalButton onClick={handleOnsubmitClick}>
+                        수정
+                      </StModalButton>
+                    )}
+                  </StModalFooter>
+                </StProfileDetailBox>
               </StModifyBox>
             </StModalMain>
           </StModalSection>
