@@ -54,7 +54,7 @@ function App() {
             path="meeting/:meetingId/modification"
             element={<MeetingModificationPage />}
           />
-          <Route path="search/:title" element={<SearchPage />} />
+          <Route path="search/:keyword" element={<SearchPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
