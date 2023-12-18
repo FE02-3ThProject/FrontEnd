@@ -3,57 +3,85 @@ import { apiToken } from "../../shared/apis/Apis";
 import { useMutation, useQuery } from "react-query";
 import styled from "styled-components";
 
-import MeetingImage from "../../images/MeetingRoom.jpg";
 import Category from "../../components/category/Category";
 import Location from "../../components/location/Location";
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
 
-interface Meeting {
-  title: string;
-  image: string;
-  locationId: number;
-  description: string;
-  maxMembers: number;
-  categoryId: number;
+//image import
+import basicImage from "../../images/default_profile.png";
+
+// interface Meeting {
+//   title: string;
+//   image: string;
+//   locationId: number;
+//   description: string;
+//   maxMembers: number;
+//   categoryId: number;
+// }
+
+interface StLeftFormProps {
+  MeetingImage?: string;
 }
 
+// const updateMeeting = async ({
+//   newMeeting,
+//   meetingId,
+// }: {
+//   newMeeting: Meeting;
+//   meetingId: string;
+// }) => {
+//   const response = await apiToken.put(
+//     `/api/group/update/${parseInt(meetingId)}`,
+//     JSON.stringify(newMeeting),
+//     {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     }
+//   );
+//   return response.data;
+// };
+
 const updateMeeting = async ({
-  newMeeting,
+  formData,
   meetingId,
 }: {
-  newMeeting: Meeting;
+  formData: FormData;
   meetingId: string;
 }) => {
   const response = await apiToken.put(
-    `/api/group/update/${parseInt(meetingId)}`,
-    JSON.stringify(newMeeting),
+    `/api/group/${parseInt(meetingId)}`,
+    formData,
     {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     }
   );
   return response.data;
 };
-//모임정보 불러오기
-const fetchMeeting = async () => {
-  const response = await apiToken.get(`/api/group/all`);
+
+//모임 상세조회 불러오기
+const fetchDetails = async (groupId: string | undefined) => {
+  const response = await apiToken.get(`/api/group/detail/${groupId}`);
   return response.data;
 };
 
 const MeetingModificationPage = () => {
   const [title, setTitle] = useState<string>("");
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [location, setLocation] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [maxMembers, setMaxMembers] = useState<number | string>("");
   const [category, setCategory] = useState<string>("");
   const fileInput = useRef<HTMLInputElement>(null);
   const meetingId = useParams().meetingId;
+  const groupId = meetingId;
   const navigate = useNavigate();
-  const { data: meeting } = useQuery(["meeting"], () => fetchMeeting());
-  console.log(meetingId);
+  const { data: meeting } = useQuery(["meeting"], () => fetchDetails(groupId));
+  const MeetingImage = meeting && meeting.image;
+  console.log(meeting);
 
   const handleInputChange =
     <T extends string | number>(
@@ -66,24 +94,43 @@ const MeetingModificationPage = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          setImage(reader.result.toString());
-        }
-      };
-      reader.readAsDataURL(file);
+      setImage(event.target.files[0]);
     }
   };
 
+  // const mutation = useMutation<
+  //   { newMeeting: Meeting; meetingId: string },
+  //   unknown,
+  //   { newMeeting: Meeting; meetingId: string },
+  //   unknown
+  // >(({ newMeeting, meetingId }) => updateMeeting({ newMeeting, meetingId }), {
+  //   onSuccess: () => {
+  //     setTitle("");
+  //     setImage(null);
+  //     setLocation("");
+  //     setDescription("");
+  //     setMaxMembers(1);
+  //     setCategory("");
+  //     if (fileInput.current) {
+  //       fileInput.current.value = "";
+  //     }
+  //     Swal.fire({
+  //       text: "수정이 완료되었습니다.",
+  //       icon: "success",
+  //       confirmButtonColor: "#3085d6",
+  //       confirmButtonText: "확인",
+  //     }).then(() => {
+  //       navigate(-1);
+  //     });
+  //   },
+  // });
+
   const mutation = useMutation<
-    { newMeeting: Meeting; meetingId: string },
+    { formData: FormData; meetingId: string },
     unknown,
-    { newMeeting: Meeting; meetingId: string },
+    { formData: FormData; meetingId: string },
     unknown
-  >(({ newMeeting, meetingId }) => updateMeeting({ newMeeting, meetingId }), {
+  >(({ formData, meetingId }) => updateMeeting({ formData, meetingId }), {
     onSuccess: () => {
       setTitle("");
       setImage(null);
@@ -105,40 +152,66 @@ const MeetingModificationPage = () => {
     },
   });
 
+  // const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   if (!meetingId) {
+  //     throw new Error("Meeting ID is not provided.");
+  //   }
+  //   mutation.mutate({
+  //     newMeeting: {
+  //       title: title,
+  //       image: "image",
+  //       locationId: Number(location),
+  //       description: description,
+  //       maxMembers: Number(maxMembers),
+  //       categoryId: Number(category),
+  //     },
+  //     meetingId: meetingId,
+  //   });
+  // };
+
   const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData();
+
+    formData.append("name", title);
+    if (image) {
+      formData.append("file", image);
+    }
+    formData.append("locationId", String(location));
+    formData.append("description", description);
+    formData.append("maxMembers", String(maxMembers));
+    formData.append("categoryId", String(category));
+
     if (!meetingId) {
       throw new Error("Meeting ID is not provided.");
     }
     mutation.mutate({
-      newMeeting: {
-        title: title,
-        image: "image",
-        locationId: Number(location),
-        description: description,
-        maxMembers: Number(maxMembers),
-        categoryId: Number(category),
-      },
+      formData: formData,
       meetingId: meetingId,
     });
   };
-
   return (
     <StContainer>
       <StForm>
-        <StLeftForm>
+        <StLeftForm MeetingImage={MeetingImage}>
           <StProfileSec>
-            <StTitle>MBTI_P 모여라</StTitle>
-            <StDesc>
-              서울부터 해남까지 걸어가면서 일어난 일들 #극기훈련 #사람살려
-              #실시간모집 #2030 #J참교육
-            </StDesc>
+            <StTitle>{meeting && meeting.title}</StTitle>
+            <StDesc>{meeting && meeting.description}</StDesc>
             <StProfile>
-              <StProfileImg src={MeetingImage} />
+              {meeting?.leaderProfilePictrue === !null ? (
+                <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
+              ) : (
+                <StProfileImg src={basicImage} />
+              )}
               <StProfileRight>
-                <StNickName>빛이나는무계획</StNickName>
+                <StNickName>{meeting && meeting.leaderNickname}</StNickName>
                 <StProfileDesc>
-                  <p>130/300명</p>|<p>개설일 2024.12.11</p>
+                  <p>
+                    {meeting && meeting.joinedGroupMembers}/
+                    {meeting && meeting.maxMembers}
+                  </p>
+                  |<p>개설일 {meeting && meeting.createdAt}</p>
                 </StProfileDesc>
               </StProfileRight>
             </StProfile>
@@ -232,15 +305,16 @@ const StForm = styled.div`
   background-color: white;
 `;
 
-const StLeftForm = styled.div`
+const StLeftForm = styled.div<StLeftFormProps>`
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  align-items: start;
+  justify-content: flex-end;
+  align-items: flex-start;
   width: 460px;
   height: 630px;
   border-radius: 30px;
-  background-image: url(${MeetingImage});
+  background-color: gray;
+  background-image: url(${(props) => props.MeetingImage});
   background-size: cover;
   background-position: center;
 `;

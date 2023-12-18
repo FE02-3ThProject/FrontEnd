@@ -1,7 +1,7 @@
 import SearchImg from "../../images/searchpage_bg.png";
 import styled from "styled-components";
 import AvatarImg from "../../images/avatar_default.png";
-
+import { useNavigate } from "react-router-dom";
 interface SearchResult {
   image: string;
   title: string;
@@ -9,11 +9,13 @@ interface SearchResult {
   memberCount: number;
   maxMembers: number;
   createdAt: string;
+  groupId: string;
 }
 
 const SearchCard = ({ result }: { result: SearchResult }) => {
+  const navigate = useNavigate();
   return (
-    <StSearchCard>
+    <StSearchCard onClick={() => navigate(`/meeting/${result.groupId}`)}>
       <StMeetingImg>
         <img src={result.image} alt={result.title} />
       </StMeetingImg>
@@ -51,6 +53,7 @@ const StSearchCard = styled.div`
   background-color: #262d34;
   border-radius: 20px;
   margin-bottom: 20px;
+  cursor: pointer;
 `;
 
 const StMeetingImg = styled.div`
@@ -58,6 +61,11 @@ const StMeetingImg = styled.div`
   height: 162px;
   background-image: url(${SearchImg});
   margin: 18px 22px;
+  img {
+    width: 300px;
+    height: 162px;
+    border-radius: 20px;
+  }
 `;
 
 const StSearchInfo = styled.div`
