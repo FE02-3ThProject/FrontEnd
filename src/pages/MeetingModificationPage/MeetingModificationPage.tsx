@@ -3,11 +3,13 @@ import { apiToken } from "../../shared/apis/Apis";
 import { useMutation, useQuery } from "react-query";
 import styled from "styled-components";
 
-import MeetingImage from "../../images/MeetingRoom.jpg";
 import Category from "../../components/category/Category";
 import Location from "../../components/location/Location";
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
+
+//image import
+import basicImage from "../../images/default_profile.png";
 
 // interface Meeting {
 //   title: string;
@@ -17,6 +19,10 @@ import Swal from "sweetalert2";
 //   maxMembers: number;
 //   categoryId: number;
 // }
+
+interface StLeftFormProps {
+  MeetingImage?: string;
+}
 
 // const updateMeeting = async ({
 //   newMeeting,
@@ -56,9 +62,9 @@ const updateMeeting = async ({
   return response.data;
 };
 
-//모임정보 불러오기
-const fetchMeeting = async () => {
-  const response = await apiToken.get(`/api/group/all`);
+//모임 상세조회 불러오기
+const fetchDetails = async (groupId: string | undefined) => {
+  const response = await apiToken.get(`/api/group/detail/${groupId}`);
   return response.data;
 };
 
@@ -71,9 +77,11 @@ const MeetingModificationPage = () => {
   const [category, setCategory] = useState<string>("");
   const fileInput = useRef<HTMLInputElement>(null);
   const meetingId = useParams().meetingId;
+  const groupId = meetingId;
   const navigate = useNavigate();
-  const { data: meeting } = useQuery(["meeting"], () => fetchMeeting());
-  console.log(meetingId);
+  const { data: meeting } = useQuery(["meeting"], () => fetchDetails(groupId));
+  const MeetingImage = meeting && meeting.image;
+  console.log(meeting);
 
   const handleInputChange =
     <T extends string | number>(
@@ -186,19 +194,24 @@ const MeetingModificationPage = () => {
   return (
     <StContainer>
       <StForm>
-        <StLeftForm>
+        <StLeftForm MeetingImage={MeetingImage}>
           <StProfileSec>
-            <StTitle>MBTI_P 모여라</StTitle>
-            <StDesc>
-              서울부터 해남까지 걸어가면서 일어난 일들 #극기훈련 #사람살려
-              #실시간모집 #2030 #J참교육
-            </StDesc>
+            <StTitle>{meeting && meeting.title}</StTitle>
+            <StDesc>{meeting && meeting.description}</StDesc>
             <StProfile>
-              <StProfileImg src={MeetingImage} />
+              {meeting?.leaderProfilePictrue === !null ? (
+                <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
+              ) : (
+                <StProfileImg src={basicImage} />
+              )}
               <StProfileRight>
-                <StNickName>빛이나는무계획</StNickName>
+                <StNickName>{meeting && meeting.leaderNickname}</StNickName>
                 <StProfileDesc>
-                  <p>130/300명</p>|<p>개설일 2024.12.11</p>
+                  <p>
+                    {meeting && meeting.joinedGroupMembers}/
+                    {meeting && meeting.maxMembers}
+                  </p>
+                  |<p>개설일 {meeting && meeting.createdAt}</p>
                 </StProfileDesc>
               </StProfileRight>
             </StProfile>
@@ -292,15 +305,16 @@ const StForm = styled.div`
   background-color: white;
 `;
 
-const StLeftForm = styled.div`
+const StLeftForm = styled.div<StLeftFormProps>`
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  align-items: start;
+  justify-content: flex-end;
+  align-items: flex-start;
   width: 460px;
   height: 630px;
   border-radius: 30px;
-  background-image: url(${MeetingImage});
+  background-color: gray;
+  background-image: url(${(props) => props.MeetingImage});
   background-size: cover;
   background-position: center;
 `;

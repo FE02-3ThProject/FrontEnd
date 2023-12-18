@@ -1,21 +1,20 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { apiToken } from "../../shared/apis/Apis";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Post from "../../components/post/Post";
 import Notice from "../../components/post/Notice";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { getCookie } from "../../shared/Cookie";
 
 //Icons Import
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
-import { getCookie } from "../../shared/Cookie";
+import Pencil from "../../images/meeting/pencil-line_1.png";
+import Trash from "../../images/meeting/trash-2_1.png";
 
-//모임정보 불러오기
-const fetchMeeting = async () => {
-  const response = await apiToken.get(`/api/group/all`);
-  return response.data;
-};
+//image import
+import basicImage from "../../images/default_profile.png";
 
 //모임 상세조회 불러오기
 const fetchDetails = async (groupId: string | undefined) => {
@@ -23,15 +22,7 @@ const fetchDetails = async (groupId: string | undefined) => {
   return response.data;
 };
 
-//즐겨찾기 추가
-// const favoriteMeeting = async (groupId: string | undefined) => {
-//   if (!groupId) {
-//     throw new Error("Meeting ID is not provided.");
-//   }
-//   const response = await apiToken.post(`/api/bookmark/${parseInt(groupId)}`);
-//   return response.data;
-// };
-
+//즐겨찾기 추가 & 삭제
 const addFavorite = async (groupId: string | undefined) => {
   if (!groupId) {
     throw new Error("Meeting Id is not provided.");
@@ -39,14 +30,6 @@ const addFavorite = async (groupId: string | undefined) => {
   const response = await apiToken.post(`/api/bookmark/${parseInt(groupId)}`);
   return response.data;
 };
-
-//즐겨찾기 삭제
-// const deleteFavorite = async (groupId: string | undefined) => {
-//   const response = await apiToken.delete(
-//     `/api/user-group/unbookmark/${groupId}`
-//   );
-//   return response.data;
-// };
 
 //즐겨찾기 목록 불러오기
 const fetchFavorite = async (userId: string | undefined) => {
@@ -136,12 +119,16 @@ interface StLeftFormProps {
 
 const MeetingRoom = () => {
   const meetingId = useParams().meetingId as string;
-  const meetingNumber = Number(meetingId) - 1;
   const queryClient = useQueryClient();
   const userId = getCookie("email");
+  const navigate = useNavigate();
+  const groupId = meetingId;
 
-  const { data: meeting } = useQuery(["meeting"], () => fetchMeeting());
-  const groupId = meeting && meeting[Number(meetingId) - 1].groupId;
+  const { data: meeting } = useQuery(
+    ["meeting", groupId],
+    () => fetchDetails(groupId),
+    { enabled: !!groupId }
+  );
   const { data: favoriteMeetings } = useQuery(["favoriteMeetings"], () =>
     fetchFavorite(userId)
   );
@@ -158,19 +145,15 @@ const MeetingRoom = () => {
     () => fetchNotice(groupId),
     { enabled: !!groupId }
   );
-  const { data: details } = useQuery(
-    ["details", groupId],
-    () => fetchDetails(groupId),
-    { enabled: !!groupId }
-  );
+
   const { data: members } = useQuery(
     ["members", groupId],
     () => fetchMembers(groupId),
     { enabled: !!groupId }
   );
 
-  console.log(details);
   console.log(members);
+  console.log(meeting);
 
   const addFavoriteMutation = useMutation(addFavorite, {
     onSuccess: () => {
@@ -199,55 +182,58 @@ const MeetingRoom = () => {
   const deleteMeetingMutation = useMutation(deleteMeeting, {
     onSuccess: () => {
       queryClient.invalidateQueries("meetings");
+      navigate(`/meeting/${meetingId}`);
     },
   });
 
-  const isFavorite = favoriteMeetings?.includes(meetingId);
-  const isJoined = joinedMeetings?.includes(meetingId);
-  const MeetingImage = meeting && meeting[meetingNumber].image;
-  // console.log(userId);
-  // console.log(posts && posts[0].postId);
-  // console.log(notice);
-  // console.log(groupId);
+  const isFavorite = favoriteMeetings?.includes(groupId);
+  const isJoined = joinedMeetings?.includes(groupId);
+  const MeetingImage = meeting && meeting.image;
 
   return (
     <StContainer>
       <StForm>
         <StLeftForm MeetingImage={MeetingImage}>
           <StProfileSec>
-            <StTitle>{meeting && meeting[meetingNumber].title}</StTitle>
-            <StDesc>{meeting && meeting[meetingNumber].description}</StDesc>
+            <StTitle>{meeting && meeting.title}</StTitle>
+            <StDesc>{meeting && meeting.description}</StDesc>
             <StProfile>
-              <StProfileImg src={MeetingImage} />
+              {meeting?.leaderProfilePictrue === !null ? (
+                <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
+              ) : (
+                <StProfileImg src={basicImage} />
+              )}
               <StProfileRight>
-                <StNickName>빛이나는무계획</StNickName>
+                <StNickName>{meeting && meeting?.leaderNickname}</StNickName>
                 <StProfileDesc>
-                  <p>130/{meeting && meeting[meetingNumber]?.maxMembers}명</p>|
-                  <p>개설일 {meeting && meeting[meetingNumber]?.createdAt}</p>
+                  <p>
+                    {meeting && meeting?.joinedGroupMembers}/
+                    {meeting && meeting?.maxMembers}명
+                  </p>
+                  |<p>개설일 {meeting && meeting?.createdAt}</p>
                 </StProfileDesc>
               </StProfileRight>
             </StProfile>
             <StButtonSec>
-              {meeting?.userId === userId && (
+              {meeting?.leaderEmail === userId && (
                 <StButtonLine>
                   <Link to={`/meeting/${parseInt(groupId)}/modification`}>
-                    <StButton>모임 수정</StButton>
+                    <StButton>
+                      <img src={Pencil} />
+                      모임 수정
+                    </StButton>
                   </Link>
                   <StButton
                     onClick={() => deleteMeetingMutation.mutate(groupId)}
                   >
+                    <img src={Trash} />
                     모임 삭제
                   </StButton>
+                  <Link to={`/meeting/${parseInt(groupId)}/members`}>
+                    <StButton>맴버 관리</StButton>
+                  </Link>
                 </StButtonLine>
               )}
-              <StButtonLine>
-                <Link to={`/meeting/${parseInt(groupId)}/modification`}>
-                  <StButton>모임 수정</StButton>
-                </Link>
-                <StButton onClick={() => deleteMeetingMutation.mutate(groupId)}>
-                  모임 삭제
-                </StButton>
-              </StButtonLine>
               <StButtonLine>
                 {isFavorite ? (
                   <StButton
@@ -350,6 +336,7 @@ const StLeftForm = styled.div<StLeftFormProps>`
   width: 460px;
   height: 630px;
   border-radius: 30px;
+  background-color: gray;
   background-image: url(${(props) => props.MeetingImage});
   background-size: cover;
   background-position: center;
@@ -428,6 +415,7 @@ const StButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: start;
+  gap: 10px;
 `;
 
 const StPostButton = styled.button`

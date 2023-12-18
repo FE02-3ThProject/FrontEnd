@@ -54,7 +54,7 @@ const NoticePage = () => {
   const handleDeletePost = async (meetingId: string, postId: string) => {
     try {
       await deleteNotice(meetingId, postId);
-      navigate(-1); // 삭제 성공 후 이전 페이지로 돌아가기
+      navigate(`/meeting/${meetingId}`); // 삭제 성공 후 이전 페이지로 돌아가기
     } catch (error) {
       console.error(error);
     }
@@ -95,10 +95,14 @@ const NoticePage = () => {
               <StButton onClick={() => handleDeletePost(meetingId, noticeId)}>
                 삭제
               </StButton>
-              <StButton onClick={() => navigate(-1)}>돌아가기</StButton>
+              <StButton onClick={() => navigate(`/meeting/${meetingId}`)}>
+                돌아가기
+              </StButton>
             </>
           ) : (
-            <StButton onClick={() => navigate(-1)}>돌아가기</StButton>
+            <StButton onClick={() => navigate(`/meeting/${meetingId}`)}>
+              돌아가기
+            </StButton>
           )}
         </StButtonForm>
       </StForm>

@@ -124,10 +124,10 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     formData.append("introduction", CHGintroduction);
     formData.append("nickname", CHGnickname);
     formData.append("image", CHGprofileImg);
-    formData.append("location", CHGlocation);
-    formData.append("category", CHGcategory);
+    formData.append("locationId", CHGlocation);
+    formData.append("categoryId", CHGcategory);
 
-    const data = await apiToken.put(`/api/user/edit/${userId}`, formData);
+    const data = await apiToken.put(`api/user/info`, formData);
 
     return data;
   };
@@ -256,10 +256,10 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                   }}
                 />
                 <StChgProfile>
-                <img src={chgImg} alt="img" onClick={onClickImageUpload} />
-              </StChgProfile>
+                  <img src={chgImg} alt="img" onClick={onClickImageUpload} />
+                </StChgProfile>
               </StProfileImgBG>
-              
+
               <StModifyBox>
                 <StProfileDetailBox>
                   <StWrap>
@@ -315,20 +315,20 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                       }}
                     />
                   </StWrap2>
-                
-              <StModalFooter>
-                <StModalButton onClick={close}>취소하기</StModalButton>
-                {PreNickname === CHGnickname ? (
-                  <StModalButton onClick={handleOnsubmit1Click}>
-                    수정
-                  </StModalButton>
-                ) : (
-                  <StModalButton onClick={handleOnsubmitClick}>
-                    수정
-                  </StModalButton>
-                )}
-              </StModalFooter>
-              </StProfileDetailBox>
+
+                  <StModalFooter>
+                    <StModalButton onClick={close}>취소하기</StModalButton>
+                    {PreNickname === CHGnickname ? (
+                      <StModalButton onClick={handleOnsubmit1Click}>
+                        수정
+                      </StModalButton>
+                    ) : (
+                      <StModalButton onClick={handleOnsubmitClick}>
+                        수정
+                      </StModalButton>
+                    )}
+                  </StModalFooter>
+                </StProfileDetailBox>
               </StModifyBox>
             </StModalMain>
           </StModalSection>
