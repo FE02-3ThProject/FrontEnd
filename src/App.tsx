@@ -18,7 +18,7 @@ import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import MeetingMemberPage from "./pages/MeetingMemberPage/MeetingMemberPage";
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>

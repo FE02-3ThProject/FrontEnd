@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { RecoilRoot } from "recoil";
 
 const clientId: string = import.meta.env.VITE_APP_GOOGLE_AUTH_CLIENT_ID!;
 
@@ -19,9 +20,11 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <GoogleOAuthProvider clientId={clientId}>
     <QueryClientProvider client={queryClient}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <RecoilRoot>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </RecoilRoot>
     </QueryClientProvider>
   </GoogleOAuthProvider>
 );
