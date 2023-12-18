@@ -60,9 +60,10 @@ const Search = () => {
     const response = await apiToken.get(url);
 
     if (response.status === 200) {
-      navigate(`/search/${keyword}`, {
+      navigate(`/searchresult/${keyword}`, {
         state: { data: response.data, keyword: keyword },
       });
+      setKeyword("");
     } else {
       console.error(`Search failed: ${response.statusText}`);
     }
@@ -117,7 +118,7 @@ const StSearchIcon = styled.div`
   color: #fff;
   font-size: 20px;
   font-weight: bold;
-  top: 19px;
+  top: 21px;
   left: 480px;
   cursor: pointer;
 `;

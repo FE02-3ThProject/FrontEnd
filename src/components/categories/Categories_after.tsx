@@ -7,10 +7,10 @@ import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { SiTourbox } from "react-icons/si";
 import { SiBytedance } from "react-icons/si";
 import { MdSportsHandball } from "react-icons/md";
+import CategoryBox from "./CategoryBox_after";
 import styled from "styled-components";
 import { SiYoutubemusic } from "react-icons/si";
 import { FaHands } from "react-icons/fa";
-import CategoryBox from "./CategoryBox_after";
 
 export const categories = [
   {
@@ -18,70 +18,78 @@ export const categories = [
     path: "게임",
     icon: SiDuckduckgo,
     description: "게임프로젝트 입니다.",
+    value: 1,
   },
   {
     label: "여행 프로젝트",
     path: "여행",
     icon: SiTourbox,
     description: "여행 프로젝트입니다.",
+    value: 2,
   },
   {
     label: "운동 프로젝트",
     path: "운동",
     icon: MdSportsHandball,
     description: "운동 프로젝트입니다.",
+    value: 3,
   },
   {
     label: "책 프로젝트",
     path: "책",
     icon: FaBookTanakh,
     description: "책 프로젝트입니다.",
+    value: 4,
   },
   {
     label: "직무 프로젝트",
     path: "직무",
     icon: GrWorkshop,
     description: "직무 프로젝트입니다.",
+    value: 5,
   },
   {
     label: "언어 프로젝트",
     path: "언어",
     icon: LiaChalkboardTeacherSolid,
     description: "언어 프로젝트입니다.",
+    value: 6,
   },
   {
     label: "공연 프로젝트",
     path: "공연",
     icon: SiThemoviedatabase,
     description: "공연 프로젝트입니다.",
+    value: 7,
   },
   {
     label: "음악 프로젝트",
     path: "음악",
     icon: SiYoutubemusic,
     description: "음악 프로젝트입니다.",
+    value: 8,
   },
   {
     label: "공예 프로젝트",
     path: "공예",
     icon: FaHands,
     description: "공예 프로젝트입니다.",
+    value: 9,
   },
   {
     label: "댄스 프로젝트",
     path: "댄스",
     icon: SiBytedance,
     description: "댄스 프로젝트입니다.",
+    value: 10,
   },
 ];
 
-// Categories 컴포넌트
-
 interface CategoriesProps {
-  onCategorySelect: (category: string) => void;
+  onSelect: (value: number) => void; // onSelect prop의 타입을 명시
 }
 
-const Categories: React.FC<CategoriesProps> = ({ onCategorySelect }) => {
+const Categories: React.FC<CategoriesProps> = ({ onSelect }) => {
   const { category } = useParams();
 
   return (
@@ -93,7 +101,8 @@ const Categories: React.FC<CategoriesProps> = ({ onCategorySelect }) => {
           path={item.path}
           icon={item.icon}
           selected={category === item.path}
-          onSelect={onCategorySelect} // 새로 추가
+          value={item.value}
+          onSelect={onSelect}
         />
       ))}
     </StCategory>
