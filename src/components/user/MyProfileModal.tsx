@@ -14,8 +14,17 @@ import Category from "../category/Category";
 import Location from "../location/Location";
 
 import chgImg from "../../images/chgImg.svg";
-import defaultImg from "../../images/default_profile.png"
+import defaultImg from "../../images/default_profile.png";
 
+import bgImg from "../../images/userInfo/Group 559.png";
+import profileBG from "../../images/userInfo/Group_556.png";
+import userIcon from "../../images/userInfo/nickName.png";
+import categoryIcon from "../../images/userInfo/category.png";
+import locationIcon from "../../images/userInfo/location.png";
+import productionIcon from "../../images/userInfo/production.png";
+import modificationIcon from "../../images/userInfo/image 20.png";
+import SubMeeting from "../../components/user/SubMeeting";
+import JoindeMeeting from "../../components/user/JoinedMeeting";
 
 interface MyProfileModalProps {
   open: boolean;
@@ -54,7 +63,9 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
     if (!nicknameCheck(CHGnickname)) {
       return null;
     } else {
-      const data: AxiosResponse = await api.get(`/api/user/${CHGnickname}/existsNickname`);
+      const data: AxiosResponse = await api.get(
+        `/api/user/${CHGnickname}/existsNickname`
+      );
       return data;
     }
   };
@@ -215,98 +226,111 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
         {open ? (
           <StModalSection>
             <StModalHeader>
-              <h2>마이페이지 수정</h2>
-              <p>Modify Mypage</p>
+              <h2>Modify Mypage</h2>
             </StModalHeader>
 
             <StModalMain>
-              <StProfileImg
-                src={
-                  previewImg.split("/")[3] === "null"
-                    ? defaultImg
-                    : previewImg
-                }
-                alt="profile"
-                onClick={onClickImageUpload}
-              />
-              <input
-                type="file"
-                id="file"
-                accept={"image/*"}
-                style={{ display: "none" }}
-                ref={fileInputRef}
-                onChange={(e) => {
-                  const file = e.target.files && e.target.files[0];
-                  if (file) {
-                    encodeFileToBase64(file);
-                    const fileURL = URL.createObjectURL(file);
-                    setCHGprofileImg(fileURL);
+              <StProfileImgBG>
+                <StProfileImg
+                  src={
+                    previewImg.split("/")[3] === "null"
+                      ? defaultImg
+                      : previewImg
                   }
-                }}
-              />
-              <StChgProfile>
+                  alt="profile"
+                  onClick={onClickImageUpload}
+                />
+                <input
+                  type="file"
+                  id="file"
+                  accept={"image/*"}
+                  style={{ display: "none" }}
+                  ref={fileInputRef}
+                  onChange={(e) => {
+                    const file = e.target.files && e.target.files[0];
+                    if (file) {
+                      encodeFileToBase64(file);
+                      const fileURL = URL.createObjectURL(file);
+                      setCHGprofileImg(fileURL);
+                    }
+                  }}
+                />
+                <StChgProfile>
                 <img src={chgImg} alt="img" onClick={onClickImageUpload} />
               </StChgProfile>
+              </StProfileImgBG>
+              
               <StModifyBox>
-                <StWrap>
-                  <p>닉네임</p>
-                  <StInputWrap>
-                    <input
-                      defaultValue={nickname}
+                <StProfileDetailBox>
+                  <StWrap>
+                    <img src={userIcon} />
+                    <StInputWrap>
+                      <input
+                        defaultValue={nickname}
+                        onChange={(e) => {
+                          setCHGnickname(e.target.value);
+                        }}
+                      />
+                      <StDupButton onClick={handleDupnickClick}>
+                        중복 확인
+                      </StDupButton>
+                    </StInputWrap>
+                  </StWrap>
+                  <StPointWrap>
+                    <img src={locationIcon} />
+                    <StSellect>
+                      <Location
+                        width="360px"
+                        height="43px"
+                        fontSize="14px"
+                        background-color="#333"
+                        boxShadow="0px 4px 4px 0px #f9b93790"
+                        value={CHGlocation}
+                        onChange={(selectedValue) =>
+                          setCHGlocation(selectedValue)
+                        }
+                      />
+                    </StSellect>
+                  </StPointWrap>
+                  <StPointWrap>
+                    <img src={categoryIcon} />
+                    <Category
+                      width="360px"
+                      height="43px"
+                      fontSize="14px"
+                      background-color="#333"
+                      boxShadow="0px 4px 4px 0px #f9b93790"
+                      value={category}
+                      onChange={(selectedValue) =>
+                        setCHGcategory(selectedValue)
+                      }
+                    />
+                  </StPointWrap>
+                  <StWrap2>
+                    <img src={productionIcon} />
+                    <StIntroTextBox
+                      defaultValue={introduction}
                       onChange={(e) => {
-                        setCHGnickname(e.target.value);
+                        setCHGIntroduction(e.target.value);
                       }}
                     />
-                    <StDupButton onClick={handleDupnickClick}>
-                      중복 확인
-                    </StDupButton>
-                  </StInputWrap>
-                </StWrap>
-                <StPointWrap>
-                  <p>지역</p>
-                  <Location
-                    width="317px"
-                    height="61px"
-                    fontSize="18px"
-                    background-color="#333"
-                    value={CHGlocation}
-                    onChange={(selectedValue) => setCHGlocation(selectedValue)}
-                  />
-                </StPointWrap>
-                <StPointWrap>
-                  <p>카테고리</p>
-                  <Category
-                    width="317px"
-                    height="61px"
-                    fontSize="18px"
-                    background-color="#333"
-                    value={category}
-                    onChange={(selectedValue) => setCHGcategory(selectedValue)}
-                  />
-                </StPointWrap>
-                <StWrap2>
-                  <p>자기소개</p>
-                  <StIntroTextBox
-                    defaultValue={introduction}
-                    onChange={(e) => {
-                      setCHGIntroduction(e.target.value);
-                    }}
-                  />
-                </StWrap2>
+                  </StWrap2>
+                
+              <StModalFooter>
+                <StModalButton onClick={close}>취소하기</StModalButton>
+                {PreNickname === CHGnickname ? (
+                  <StModalButton onClick={handleOnsubmit1Click}>
+                    수정
+                  </StModalButton>
+                ) : (
+                  <StModalButton onClick={handleOnsubmitClick}>
+                    수정
+                  </StModalButton>
+                )}
+              </StModalFooter>
+              </StProfileDetailBox>
               </StModifyBox>
             </StModalMain>
-            <StModalFooter>
-              <StModalButton onClick={close}>취소하기</StModalButton>
-              {PreNickname === CHGnickname ? (
-                <StModalButton onClick={handleOnsubmit1Click}>
-                  수정
-                </StModalButton>
-              ) : (
-                <StModalButton onClick={handleOnsubmitClick}>
-                  수정
-                </StModalButton>
-              )}
-            </StModalFooter>
           </StModalSection>
         ) : null}
       </StModal>
@@ -341,7 +365,7 @@ const StModal = styled.div`
   align-items: center;
   animation: ${modalBgShow} 0.5s;
   position: fixed;
-  top: 0;
+  top: -283px;
   right: 0;
   bottom: 0;
   left: 0;
@@ -350,150 +374,186 @@ const StModal = styled.div`
 `;
 
 const StModalSection = styled.section`
-  width: 90%;
-  max-width: 606px;
-  margin: 0 auto;
-  border-radius: 5px;
-  background-color: #f9b937;
   animation: ${modalShow} 0.3s;
-  overflow: hidden;
+  display: flex;
+  width: 1096px;
+  min-height: 731px;
+  align-items: center;
+  margin: 0px auto;
+  flex-direction: column;
+  border-radius: 30px;
+  border: 1px solid white;
+  background-color: #090909;
+  box-shadow: 11px 13px 4px 0px #0000001a;
 `;
 
 const StModalHeader = styled.div`
   display: flex;
-  text-align: center;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   width: 100%;
-  border-bottom: solid 1px #acacac;
-  margin: 0 auto 32px auto;
-  padding-bottom: 25px;
+  height: 78px;
+  border-bottom: solid 1px #d9d9d9;
   > h2 {
-    font-size: 30px;
-    font-weight: 400;
-    line-height: 45px;
-  }
-  > p {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 30px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 39px;
+    text-align: center;
   }
 `;
 
 const StModalMain = styled.div`
-  width: 386px;
-  height: 500px;
-  margin: 160px auto;
+  display: flex;
 `;
 
 const StModalFooter = styled.div`
-  padding: 12px;
   display: flex;
   justify-content: center;
+  margin-top: 22px;
+  margin-left: 10px;
   gap: 16px;
 `;
 
 const StModalButton = styled.button`
-  width: 184px;
-  height: 50px;
-  background-color: black;
+  width: 169px;
+  height: 43px;
+  background-color: #767676;
   display: flex;
   justify-content: center;
-  text-align: center;
+  align-items: center;
   color: white;
   font-size: 16px;
-  font-weight: 400;
-  line-height: 50px;
-  letter-spacing: 0em;
+  font-weight: 700;
+  line-height: 19px;
   margin-top: 41px;
 `;
 
+const StProfileImgBG = styled.div`
+  width: 610px;
+  height: 560px;
+  background-image: url(${profileBG});
+  background-size: cover;
+  background-position: center;
+`;
+
 const StProfileImg = styled.img`
-  width: 154px;
-  height: 154px;
-  border-radius: 154px;
+  width: 337px;
+  height: 337px;
+  border-radius: 337px;
   display: block;
-  margin: 0px auto;
-  background-color: white;
-  border: 1px solid black;
+  margin: 62px auto 161px 119px;
+  cursor: pointer;
+`;
+
+const StProfileDetailBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
 `;
 
 const StChgProfile = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 30px;
   border: 1px solid gray;
   justify-content: center;
   display: flex;
   align-items: center;
   position: relative;
-  right: -56%;
-  bottom: 30px;
+  right: -60%;
+  bottom: 200px;
+  cursor: pointer;
   background-color: white;
 `;
 
 const StModifyBox = styled.div`
+  width: 480px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 16px;
+  margin-top: 55px;
 `;
 
 const StWrap = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 17px;
+  > img {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 const StInputWrap = styled.div`
+  width: 360px;
+  height: 43px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20.3px;
   display: flex;
-  justify-content: space-between;
-  background-color: white;
-  border-bottom: solid 1px #acacac;
-  width: 272px;
-  height: 50px;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  box-shadow: 0px 4px 4px 0px #f9b93790;
+  color: black;
+  > input {
+    width: 300px;
+    height: 37px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20.3px;
+    padding-left: 10px;
+  }
 `;
 
 const StDupButton = styled.button`
-  width: 96px;
-  height: 34px;
-  color: black;
-  border: 1px solid gray;
-  margin: 8px 8px 8px 0px;
+  width: 60px;
+  height: 43px;
+  color: #767676;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   width: 80px;
+  color: white;
 `;
+
+const StSellect = styled.div``;
 
 const StPointWrap = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   font-size: 14px;
   font-weight: 500;
-  line-height: 20.3px;
+  gap: 10px;
+  > img {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 const StWrap2 = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20.3px;
+  gap: 17px;
+  > img {
+    width: 25px;
+    height: 25px;
+    margin-top: 22px;
+  }
 `;
 
 const StIntroTextBox = styled.textarea`
-  width: 400px;
-  height: 192px;
-  resize: none;
-  border: none;
-  border-bottom: solid 1px #acacac;
+  width: 360px;
+  height: 185px;
   padding: 10px;
-  :focus {
-    outline: none;
-  }
+  margin-top: 22px;
+  border: 1px solid #d9d9d9;
+  box-shadow: 0px 4px 4px 0px #f9b93790;
 `;
 
 export default MyProfileModal;

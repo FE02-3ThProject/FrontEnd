@@ -15,20 +15,19 @@ import Friends2 from "../../images/friends2.png";
 
 // interface Meeting {
 //   title: string;
-//   image: string | null;
+//   image: File | null;
 //   locationId: number;
 //   description: string;
 //   maxMembers: number;
 //   categoryId: number;
 // }
 
-// const createMeeting = async (newMeeting: Meeting) => {
-//   const response = await apiToken.post("/api/groupImg", newMeeting);
-//   return response.data;
-// };
-
-const createMeeting = async (newMeeting: FormData) => {
-  const response = await apiToken.post("/api/image", newMeeting);
+const createMeeting = async (formData: FormData) => {
+  const response = await apiToken.post("/api/image", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 
@@ -68,8 +67,8 @@ const MeetingCreate = () => {
   // };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setImage(event.target.files[0]);
+    if (event.target.files && event.target.files[0]) {
+      setImage(event.target.files[0]); // 이미지 파일을 상태에 바로 저장합니다.
     }
   };
 
@@ -147,15 +146,16 @@ const MeetingCreate = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    // FormData 객체를 생성하고 필드를 추가합니다.
     const formData = new FormData();
-    if (title) formData.append("name", title);
-    if (image) formData.append("file", image);
-    if (location) formData.append("locationId", Number(location).toString());
-    if (description) formData.append("description", description);
-    if (maxMembers)
-      formData.append("maxMembers", Number(maxMembers).toString());
-    if (category) formData.append("categoryId", Number(category).toString());
+    formData.append("name", title);
+    if (image) formData.append("file", image); // 이미지 파일을 formData에 추가합니다.
+    formData.append("locationId", String(location));
+    formData.append("description", description);
+    formData.append("maxMembers", String(maxMembers));
+    formData.append("categoryId", String(category));
 
+    // FormData 객체를 서버에 보냅니다.
     mutation.mutate(formData);
   };
 
