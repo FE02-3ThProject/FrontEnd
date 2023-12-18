@@ -60,9 +60,10 @@ const Search = () => {
     const response = await apiToken.get(url);
 
     if (response.status === 200) {
-      navigate(`/search/${keyword}`, {
+      navigate(`/searchresult/${keyword}`, {
         state: { data: response.data, keyword: keyword },
       });
+      setKeyword("");
     } else {
       console.error(`Search failed: ${response.statusText}`);
     }
