@@ -165,7 +165,9 @@ const UserPage = () => {
               </StPointWrap>
               <StIntroBox>
                 <img src={productionIcon} />
-                <StIntro>{profileData?.data.introduction.selfIntroduction}</StIntro>
+                <StIntro>
+                  {profileData?.data.introduction.selfIntroduction}
+                </StIntro>
               </StIntroBox>
             </StProfileDetailBox>
             <StButtonBox>
@@ -184,7 +186,7 @@ const UserPage = () => {
           </StTextBox>
         </StUser>
         <StVisibleWrap>
-          <StToggleWrap>
+          {/* <StToggleWrap>
             <StToggleButton onClick={JoinMeetingView}>
               가입한모임
             </StToggleButton>
@@ -199,7 +201,7 @@ const UserPage = () => {
               subMeetingData?.data.map((data) => (
                 <SubMeeting key={data.id} data={data} />
               ))}
-          </StToggleWrap>
+          </StToggleWrap> */}
         </StVisibleWrap>
       </StProfileBox>
 

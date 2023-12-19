@@ -182,7 +182,7 @@ const MeetingRoom = () => {
   const deleteMeetingMutation = useMutation(deleteMeeting, {
     onSuccess: () => {
       queryClient.invalidateQueries("meetings");
-      navigate(`/meeting/${meetingId}`);
+      navigate(`/`);
     },
   });
 

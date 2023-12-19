@@ -20,7 +20,7 @@ interface MemberType {
 
 interface MemberActionParams {
   groupId: string;
-  userId: string;
+  userId: number;
 }
 
 //모임 상세정보 조회
@@ -91,7 +91,7 @@ const MeetingMemberPage = () => {
             <StTitle>{meeting && meeting.title}</StTitle>
             <StDesc>{meeting && meeting.description}</StDesc>
             <StProfile>
-              {meeting?.leaderProfilePictrue === !null ? (
+              {meeting?.leaderProfilePicture === !null ? (
                 <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
               ) : (
                 <StProfileImg src={basicImage} />
@@ -113,40 +113,46 @@ const MeetingMemberPage = () => {
           <StMemberContainer>
             {members &&
               members.map((member: MemberType) => (
-                <div key={member.id}>
-                  <div>{member.nickname}</div>
-                  <div>{member.role}</div>
-                  {member && meeting && member.email === meeting.leaderEmail ? (
-                    <>
-                      <button
-                        onClick={() => {
-                          if (groupId) {
-                            kickedMemberMutation.mutate({
-                              groupId: groupId,
-                              userId: member.id.toString(),
-                            });
-                          }
-                        }}
-                      >
-                        추방
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (groupId) {
-                            changeLeaderMutation.mutate({
-                              groupId: groupId,
-                              userId: member.id.toString(),
-                            });
-                          }
-                        }}
-                      >
-                        권한 변경
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </div>
+                <StMemberProfile key={member.id}>
+                  <StMemberName>
+                    <StMemberNameRole>
+                      닉네임 : {member.nickname}
+                    </StMemberNameRole>
+                    <StMemberNameRole>역할 : {member.role}</StMemberNameRole>
+                  </StMemberName>
+                  <StMemberButton>
+                    {member && meeting && member.role === "MEMBER" ? (
+                      <>
+                        <StButton
+                          onClick={() => {
+                            if (groupId) {
+                              kickedMemberMutation.mutate({
+                                groupId: groupId,
+                                userId: 19,
+                              });
+                            }
+                          }}
+                        >
+                          추방
+                        </StButton>
+                        <StButton
+                          onClick={() => {
+                            if (groupId) {
+                              changeLeaderMutation.mutate({
+                                groupId: groupId,
+                                userId: 19,
+                              });
+                            }
+                          }}
+                        >
+                          권한 변경
+                        </StButton>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </StMemberButton>
+                </StMemberProfile>
               ))}
           </StMemberContainer>
           <Link to={`/meeting/${groupId}`}>
@@ -273,8 +279,51 @@ const StMemberContainer = styled.div`
   background-color: #e0e0e0;
   border-radius: 16px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-direction: column;
   overflow: auto;
+`;
+
+const StMemberProfile = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+  height: 30px;
+  margin-left: 10px;
+  margin-top: 10px;
+  color: black;
+  gap: 15px;
+`;
+
+const StMemberName = styled.div`
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  height: 30px;
+`;
+
+const StMemberButton = styled.div`
+  display: flex;
+  gap: 15px;
+`;
+
+const StButton = styled.button`
+  width: 120px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StMemberNameRole = styled.div`
+  height: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
