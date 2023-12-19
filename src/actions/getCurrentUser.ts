@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { apiToken } from "../shared/apis/Apis";
 
 export default function useCurrentUser() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -7,7 +7,7 @@ export default function useCurrentUser() {
   useEffect(() => {
     async function fetchCurrentUser() {
       try {
-        const sessionResponse = await axios.get("/api/auth/session");
+        const sessionResponse = await apiToken.get("/api/auth/session");
         const session = sessionResponse.data;
 
         if (!session?.user?.email) {
@@ -15,7 +15,7 @@ export default function useCurrentUser() {
           return;
         }
 
-        const userResponse = await axios.get(
+        const userResponse = await apiToken.get(
           `/api/user?email=${session.user.email}`
         );
         const user = userResponse.data;
