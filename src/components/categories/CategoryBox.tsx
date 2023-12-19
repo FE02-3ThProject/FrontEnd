@@ -7,17 +7,28 @@ interface CategoryBoxProps {
   icon: IconType;
   label: string;
   path: string;
+  value: number; // value 추가
   selected?: boolean;
+  onSelect: (value: number) => void; // onSelect 함수 prop 추가
 }
 const CategoryBox: React.FC<CategoryBoxProps> = ({
   icon: Icon,
   label,
-  path,
+  value, // value 받아오기
   selected,
+  onSelect, // onSelect 함수 prop 받아오기
 }) => {
+  // 카테고리 선택 핸들러
+  const handleClick = () => {
+    onSelect(value); // 카테고리가 선택되었을 때 onSelect 함수를 호출
+  };
   return (
-    <StLink to={`/?category=${path}`} selected={selected}>
-      {/* <StLink to={`/api/group/category/${path}`} selected={selected}> */}
+    <StLink
+      to={`/?category=${value}`}
+      selected={selected}
+      onClick={handleClick}
+    >
+      {/* <StLink to={`/api/group/category/${value}`} selected={selected}> */}
       <Icon size={26} />
       <StIconLabel>{label}</StIconLabel>
     </StLink>
