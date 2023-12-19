@@ -6,6 +6,9 @@ import { setCookie } from "../../shared/Cookie";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 
+import { useRecoilState } from 'recoil';
+import { profileImageState } from "../../Atoms";
+
 import LoginBg from "../../images/login_bg.png";
 import Naver from "../../images/naver.png";
 
@@ -13,6 +16,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios, { AxiosResponse } from "axios";
 
 const LoginPage = () => {
+  const [, setProfileImage] = useRecoilState(profileImageState);
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -37,7 +42,8 @@ const LoginPage = () => {
       setCookie("profileimage", data?.data.image, 2);
       setCookie("location", data?.data.location, 2);
       setCookie("userRole", data?.data.userRole, 2);
-
+      setProfileImage(data?.data.image)
+      localStorage.setItem("profileImage", data?.data.image);
       navigate("/");
     },
     onError: (error) => {

@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import HeartButton from "../common/HeartButton";
 import SearchImg from "../../images/searchpage_bg.png";
 
 interface Group {
@@ -28,9 +27,6 @@ const MeetingCard = ({ group }: MeetingCardProps) => {
           <StImageArea>
             <StyledImage src={group.image} alt="group" />
           </StImageArea>
-          <StTopRightButton>
-            <HeartButton groupId={group.groupId} userId={group.userId} />
-          </StTopRightButton>
         </StImageContainer>
 
         <StTitle>{group.title}</StTitle>
@@ -88,12 +84,6 @@ const StyledImage = styled.img`
   &:hover {
     transform: scale(1.1);
   }
-`;
-
-const StTopRightButton = styled.div`
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
 `;
 
 const StTitle = styled.div`

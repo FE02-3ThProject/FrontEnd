@@ -3,10 +3,12 @@ import axios from "axios";
 export type TUser = {
   createdAt: string;
   updatedAt: string;
+  email: string;
 };
 
 export type TUserWithChat = TUser & {
   conversations: TConversation[];
+  email: string;
 };
 
 export type TGroup = {

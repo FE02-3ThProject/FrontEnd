@@ -20,34 +20,47 @@ interface Group {
   userId: string;
 }
 
-// fetch groups
-const fetchGroups = async (category: string | null) => {
-  try {
-    const endpoint = category ? `/api/group/${category}` : "/api/group/all";
-    const response = await apiToken.get(endpoint);
-    return response.data;
-  } catch (error) {
-    console.error(`Failed to fetch groups: ${error}`);
-  }
-};
-
 // MainPage component
 const MainPage = () => {
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]); // 그룹 데이터를 저장할 상태
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null); // 선택된 카테고리를 저장할 상태
 
-  const loadGroups = async () => {
-    const data = await fetchGroups(null);
-    if (data) setGroups(data);
+  // 그룹 데이터를 조회하는 함수
+  const fetchGroups = async (categoryId: number | null) => {
+    try {
+      const endpoint = categoryId
+        ? `/api/group/category/${categoryId}`
+        : "/api/group/all";
+      const response = await apiToken.get(endpoint);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      // 에러 처리 로직...
+    }
+  };
+
+  // 카테고리 선택 핸들러
+  const handleCategorySelect = (value: number) => {
+    setSelectedCategory(value);
   };
 
   useEffect(() => {
-    loadGroups();
+    // 첫 렌더링 시에는 모든 그룹 데이터를 조회
+    fetchGroups(null).then(setGroups);
   }, []);
+
+  useEffect(() => {
+    // 카테고리가 선택되었을 때
+    if (selectedCategory !== null) {
+      // 해당 카테고리의 그룹 데이터를 조회
+      fetchGroups(selectedCategory).then(setGroups);
+    }
+  }, [selectedCategory]);
 
   return (
     <StContainer>
       <MainSwiper />
-      <Categories />
+      <Categories onSelect={handleCategorySelect} />
       <StTitle>추천 모임</StTitle>
       <StCardContainer>
         {groups.slice(0, 7).map((group) => (

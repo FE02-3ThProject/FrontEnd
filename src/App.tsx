@@ -17,8 +17,9 @@ import NoticeModificationPage from "./pages/ModificationPage/NoticeModificationP
 import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import MeetingMemberPage from "./pages/MeetingMemberPage/MeetingMemberPage";
+import SearchPageResult from "./pages/SearchPage/SearchPageResult";
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -60,10 +61,11 @@ function App() {
             path="meeting/:meetingId/members"
             element={<MeetingMemberPage />}
           />
+          <Route path="searchresult/:keyword" element={<SearchPageResult />} />
         </Route>
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
