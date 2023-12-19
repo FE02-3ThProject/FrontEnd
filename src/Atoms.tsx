@@ -53,7 +53,7 @@ export const isLoggedInState = atom({
     default: false,
 })
 
-//유저 프로필
+//유저 프로필 사진
 export const profileImageState = atom({
     key: 'profileImageState',
     default: defaultimage,

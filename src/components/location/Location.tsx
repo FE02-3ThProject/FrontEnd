@@ -7,22 +7,22 @@ interface LocationProps {
   width?: string;
   height?: string;
   fontSize?: string;
-  boxShadow?: string;
+  boxshadow?: string;
 }
 interface StInputProps {
   width?: string;
   height?: string;
   fontSize?: string;
-  boxShadow?: string;
+  boxshadow?: string;
 }
 
-export const Location: FC<LocationProps> = ({ value, onChange, width, height, fontSize, boxShadow }) => {
+export const Location: FC<LocationProps> = ({ value, onChange, width, height, fontSize, boxshadow }) => {
   const handleLocationChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value);
   };
 
   return (
-    <StInput width={width} height={height} fontSize={fontSize} boxShadow={boxShadow} value={value} onChange={handleLocationChange} required>
+    <StInput width={width} height={height} fontSize={fontSize} boxshadow={boxshadow} value={value} onChange={handleLocationChange} required>
       <option value="">지역을 선택해 주세요</option>
       <option value="1">서울</option>
       <option value="2">경기도</option>

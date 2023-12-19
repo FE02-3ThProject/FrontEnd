@@ -91,25 +91,25 @@ const UserPage = () => {
     }
   };
 
-  // const getMyJoinedMeeting = async () => {
-  //   const res = await apiToken.get("/api/user-group/joined");
-  //   return res;
-  // };
-  // const { data: joinedMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
-  //   "MY_JOINEDMEETING",
-  //   getMyJoinedMeeting
-  // );
-  // console.log(joinedMeetingData);
+  const getMyJoinedMeeting = async () => {
+    const res = await apiToken.get("/api/user-group/joined");
+    return res;
+  };
+  const { data: joinedMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
+    "MY_JOINEDMEETING",
+    getMyJoinedMeeting
+  );
+  console.log(joinedMeetingData);
 
-  // const getSubMeeting = async () => {
-  //   const res = await apiToken.get(`/api/user-group/bookmark/${email}`);
-  //   return res;
-  // };
-  // const { data: subMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
-  //   "MY_SUBMEETING",
-  //   getSubMeeting
-  // );
-  // console.log(subMeetingData);
+  const getSubMeeting = async () => {
+    const res = await apiToken.get(`/api/user-group/bookmark/${email}`);
+    return res;
+  };
+  const { data: subMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
+    "MY_SUBMEETING",
+    getSubMeeting
+  );
+  console.log(subMeetingData);
 
   const getMyProfile = async () => {
     const res = await apiToken.get(`/api/user/info?email=${email}`);
@@ -119,6 +119,7 @@ const UserPage = () => {
     "MY_PROFILE",
     getMyProfile
   );
+  console.log(profileData)
 
   useEffect(() => {}, [profileData]);
 
@@ -155,15 +156,15 @@ const UserPage = () => {
               </StPointWrap>
               <StPointWrap>
                 <img src={locationIcon} />
-                <StPointBox>{profileData?.data.locationId.name}</StPointBox>
+                <StPointBox>{profileData?.data.location.name}</StPointBox>
               </StPointWrap>
               <StPointWrap>
                 <img src={categoryIcon} />
-                <StPointBox>{profileData?.data.categoryId.name}</StPointBox>
+                <StPointBox>{profileData?.data.category.categoryName}</StPointBox>
               </StPointWrap>
               <StIntroBox>
                 <img src={productionIcon} />
-                <StIntro>{profileData?.data.introduction}</StIntro>
+                <StIntro>{profileData?.data.introduction.selfIntroduction}</StIntro>
               </StIntroBox>
             </StProfileDetailBox>
             <StButtonBox>
@@ -205,10 +206,10 @@ const UserPage = () => {
         <MyProfileModal
           open={isModalOpen}
           close={closeModal}
-          introduction={profileData?.data.introduction}
+          introduction={profileData?.data.introduction.selfIntroduction}
           nickname={profileData?.data.nickname}
-          category={profileData?.data.categoryId.categoryId}
-          location={profileData?.data.locationId.locationId}
+          category={profileData?.data.category.categoryId}
+          location={profileData?.data.location.locationId}
         />
       ) : null}
     </StMyProfileContainer>

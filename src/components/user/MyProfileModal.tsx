@@ -340,7 +340,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                         height="43px"
                         fontSize="14px"
                         background-color="#333"
-                        boxShadow="0px 4px 4px 0px #f9b93790"
+                        boxshadow="0px 4px 4px 0px #f9b93790"
                         value={CHGlocation}
                         onChange={(selectedValue) =>
                           setCHGlocation(selectedValue)
@@ -355,7 +355,7 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
                       height="43px"
                       fontSize="14px"
                       background-color="#333"
-                      boxShadow="0px 4px 4px 0px #f9b93790"
+                      boxshadow="0px 4px 4px 0px #f9b93790"
                       value={CHGcategory}
                       onChange={(selectedValue) =>
                         setCHGcategory(selectedValue)
