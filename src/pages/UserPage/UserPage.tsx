@@ -10,7 +10,7 @@ import { AxiosResponse } from "axios";
 
 import Loading from "../../components/loading/Loading";
 
-import bgImg from "../../images/userInfo/Group 559.png";
+import bgImg from "../../images/meeting/Group-559.png";
 import profileBG from "../../images/userInfo/Group_556.png";
 import userIcon from "../../images/userInfo/nickName.png";
 import categoryIcon from "../../images/userInfo/category.png";

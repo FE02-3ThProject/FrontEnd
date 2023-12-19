@@ -15,6 +15,7 @@ import Trash from "../../images/meeting/trash-2_1.png";
 
 //image import
 import basicImage from "../../images/default_profile.png";
+import Banner from "../../images/meeting/Group-559.png";
 
 //모임 상세조회 불러오기
 const fetchDetails = async (groupId: string | undefined) => {
@@ -315,6 +316,9 @@ const StContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(${Banner});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StForm = styled.div`
@@ -487,6 +491,7 @@ const StFalseJoin = styled.div`
   font-size: 44px;
   font-weight: 700;
   line-height: 55px;
+  color: white;
 `;
 
 const StEmptyNotice = styled.div`

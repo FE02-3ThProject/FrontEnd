@@ -11,7 +11,7 @@ interface StLeftFormProps {
 }
 
 interface MemberType {
-  id: number;
+  userId: number;
   email: string;
   nickname: string;
   image?: string;
@@ -113,7 +113,7 @@ const MeetingMemberPage = () => {
           <StMemberContainer>
             {members &&
               members.map((member: MemberType) => (
-                <StMemberProfile key={member.id}>
+                <StMemberProfile key={member.userId}>
                   <StMemberName>
                     <StMemberNameRole>
                       닉네임 : {member.nickname}
@@ -128,7 +128,7 @@ const MeetingMemberPage = () => {
                             if (groupId) {
                               kickedMemberMutation.mutate({
                                 groupId: groupId,
-                                userId: 19,
+                                userId: member.userId,
                               });
                             }
                           }}
@@ -140,7 +140,7 @@ const MeetingMemberPage = () => {
                             if (groupId) {
                               changeLeaderMutation.mutate({
                                 groupId: groupId,
-                                userId: 19,
+                                userId: member.userId,
                               });
                             }
                           }}
