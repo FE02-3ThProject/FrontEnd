@@ -10,7 +10,7 @@ import { AxiosResponse } from "axios";
 
 import Loading from "../../components/loading/Loading";
 
-import bgImg from "../../images/userInfo/Group 559.png";
+import bgImg from "../../images/meeting/Group-559.png";
 import profileBG from "../../images/userInfo/Group_556.png";
 import userIcon from "../../images/userInfo/nickName.png";
 import categoryIcon from "../../images/userInfo/category.png";
@@ -155,15 +155,19 @@ const UserPage = () => {
               </StPointWrap>
               <StPointWrap>
                 <img src={locationIcon} />
-                <StPointBox>{profileData?.data.locationId.name}</StPointBox>
+                <StPointBox>{profileData?.data.location.name}</StPointBox>
               </StPointWrap>
               <StPointWrap>
                 <img src={categoryIcon} />
-                <StPointBox>{profileData?.data.categoryId.name}</StPointBox>
+                <StPointBox>
+                  {profileData?.data.category.categoryName}
+                </StPointBox>
               </StPointWrap>
               <StIntroBox>
                 <img src={productionIcon} />
-                <StIntro>{profileData?.data.introduction}</StIntro>
+                <StIntro>
+                  {profileData?.data.introduction.selfIntroduction}
+                </StIntro>
               </StIntroBox>
             </StProfileDetailBox>
             <StButtonBox>
@@ -182,7 +186,7 @@ const UserPage = () => {
           </StTextBox>
         </StUser>
         <StVisibleWrap>
-          <StToggleWrap>
+          {/* <StToggleWrap>
             <StToggleButton onClick={JoinMeetingView}>
               가입한모임
             </StToggleButton>
@@ -197,7 +201,7 @@ const UserPage = () => {
               subMeetingData?.data.map((data) => (
                 <SubMeeting key={data.id} data={data} />
               ))}
-          </StToggleWrap>
+          </StToggleWrap> */}
         </StVisibleWrap>
       </StProfileBox>
 
