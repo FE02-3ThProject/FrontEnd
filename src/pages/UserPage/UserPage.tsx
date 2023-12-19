@@ -154,15 +154,17 @@ const UserPage = () => {
               </StPointWrap>
               <StPointWrap>
                 <img src={locationIcon} />
-                <StPointBox>{profileData?.data.locationId.name}</StPointBox>
+                <StPointBox>{profileData?.data.location.name}</StPointBox>
               </StPointWrap>
               <StPointWrap>
                 <img src={categoryIcon} />
-                <StPointBox>{profileData?.data.categoryId.name}</StPointBox>
+                <StPointBox>
+                  {profileData?.data.category.categoryName}
+                </StPointBox>
               </StPointWrap>
               <StIntroBox>
                 <img src={productionIcon} />
-                <StIntro>{profileData?.data.introduction}</StIntro>
+                <StIntro>{profileData?.data.introduction.selfIntroduction}</StIntro>
               </StIntroBox>
             </StProfileDetailBox>
             <StButtonBox>

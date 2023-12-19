@@ -218,19 +218,19 @@ const MeetingRoom = () => {
               {meeting?.leaderEmail === userId && (
                 <StButtonLine>
                   <Link to={`/meeting/${parseInt(groupId)}/modification`}>
-                    <StButton>
+                    <StSmButton>
                       <img src={Pencil} />
-                      모임 수정
-                    </StButton>
+                      수정
+                    </StSmButton>
                   </Link>
-                  <StButton
+                  <StSmButton
                     onClick={() => deleteMeetingMutation.mutate(groupId)}
                   >
                     <img src={Trash} />
-                    모임 삭제
-                  </StButton>
+                    삭제
+                  </StSmButton>
                   <Link to={`/meeting/${parseInt(groupId)}/members`}>
-                    <StButton>맴버 관리</StButton>
+                    <StSmButton>맴버 관리</StSmButton>
                   </Link>
                 </StButtonLine>
               )}
@@ -410,6 +410,16 @@ const StButtonLine = styled.div`
 
 const StButton = styled.button`
   width: 187px;
+  height: 35px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+`;
+
+const StSmButton = styled.button`
+  width: 120px;
   height: 35px;
   border-radius: 30px;
   display: flex;

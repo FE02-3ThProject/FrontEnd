@@ -109,48 +109,50 @@ const MeetingMemberPage = () => {
             </StProfile>
           </StProfileSec>
         </StLeftForm>
-        <section>
-          {members &&
-            members.map((member: MemberType) => (
-              <div key={member.id}>
-                <div>{member.nickname}</div>
-                <div>{member.role}</div>
-                {member && meeting && member.email === meeting.leaderEmail ? (
-                  <>
-                    <button
-                      onClick={() => {
-                        if (groupId) {
-                          kickedMemberMutation.mutate({
-                            groupId: groupId,
-                            userId: member.id.toString(),
-                          });
-                        }
-                      }}
-                    >
-                      추방
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (groupId) {
-                          changeLeaderMutation.mutate({
-                            groupId: groupId,
-                            userId: member.id.toString(),
-                          });
-                        }
-                      }}
-                    >
-                      권한 변경
-                    </button>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-            ))}
+        <StMemberSec>
+          <StMemberContainer>
+            {members &&
+              members.map((member: MemberType) => (
+                <div key={member.id}>
+                  <div>{member.nickname}</div>
+                  <div>{member.role}</div>
+                  {member && meeting && member.email === meeting.leaderEmail ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          if (groupId) {
+                            kickedMemberMutation.mutate({
+                              groupId: groupId,
+                              userId: member.id.toString(),
+                            });
+                          }
+                        }}
+                      >
+                        추방
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (groupId) {
+                            changeLeaderMutation.mutate({
+                              groupId: groupId,
+                              userId: member.id.toString(),
+                            });
+                          }
+                        }}
+                      >
+                        권한 변경
+                      </button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              ))}
+          </StMemberContainer>
           <Link to={`/meeting/${groupId}`}>
-            <button>돌아가기</button>
+            <StBackButton>돌아가기</StBackButton>
           </Link>
-        </section>
+        </StMemberSec>
       </StForm>
     </StContainer>
   );
@@ -241,4 +243,38 @@ const StNickName = styled.p`
 const StProfileDesc = styled.div`
   display: flex;
   gap: 10px;
+`;
+
+const StMemberSec = styled.section`
+  width: 640px;
+  height: 630px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+const StBackButton = styled.button`
+  width: 150px;
+  height: 35px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+`;
+
+const StMemberContainer = styled.div`
+  width: 566px;
+  height: 500px;
+  background-color: #e0e0e0;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
 `;
