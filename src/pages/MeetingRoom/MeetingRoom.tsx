@@ -33,10 +33,15 @@ const addFavorite = async (groupId: string | undefined) => {
 };
 
 //즐겨찾기 목록 불러오기
-const fetchFavorite = async (userId: string | undefined) => {
-  const response = await apiToken.get(`/api/user-group/bookmark/${userId}`);
+const fetchFavorite = async () => {
+  const response = await apiToken.get(`/api/user-group/bookmark`);
   return response.data;
 };
+
+// const fetchFavorite = async () => {
+//   const response = await apiToken.get(`/api/user/bookmarked`);
+//   return response.data;
+// };
 
 //모임 가입
 const joinMeeting = async (groupId: string | undefined) => {
@@ -52,9 +57,7 @@ const leaveMeeting = async (groupId: string | undefined) => {
   if (!groupId) {
     throw new Error("Meeting ID is not provided.");
   }
-  const response = await apiToken.delete(
-    `/api/group/${parseInt(groupId)}/leave`
-  );
+  const response = await apiToken.post(`/api/group/${parseInt(groupId)}/leave`);
   return response.data;
 };
 
@@ -63,6 +66,11 @@ const fetchJoin = async () => {
   const response = await apiToken.get(`/api/user-group/joined`);
   return response.data;
 };
+
+// const fetchJoin = async () => {
+//   const response = await apiToken.get(`/api/user/joined`);
+//   return response.data;
+// };
 
 //개시글 불러오기
 const fetchPost = async (groupId: string | undefined) => {
@@ -111,7 +119,8 @@ interface PostType {
   id: string;
   title: string;
   content: string;
-  createAt: string;
+  postedAt: string;
+  email: string;
 }
 
 interface StLeftFormProps {
@@ -124,6 +133,7 @@ const MeetingRoom = () => {
   const userId = getCookie("email");
   const navigate = useNavigate();
   const groupId = meetingId;
+  console.log(groupId);
 
   const { data: meeting } = useQuery(
     ["meeting", groupId],
@@ -131,7 +141,7 @@ const MeetingRoom = () => {
     { enabled: !!groupId }
   );
   const { data: favoriteMeetings } = useQuery(["favoriteMeetings"], () =>
-    fetchFavorite(userId)
+    fetchFavorite()
   );
   const { data: joinedMeetings } = useQuery(["joinedMeetings"], () =>
     fetchJoin()
@@ -146,7 +156,6 @@ const MeetingRoom = () => {
     () => fetchNotice(groupId),
     { enabled: !!groupId }
   );
-
   const { data: members } = useQuery(
     ["members", groupId],
     () => fetchMembers(groupId),
@@ -187,9 +196,23 @@ const MeetingRoom = () => {
     },
   });
 
-  const isFavorite = favoriteMeetings?.includes(groupId);
-  const isJoined = joinedMeetings?.includes(groupId);
+  const favoriteGroupIdList = favoriteMeetings?.map(
+    (meeting: { groupId: number }) => meeting.groupId
+  );
+  const joinedGroupIdList = joinedMeetings?.map(
+    (meeting: { groupId: number }) => meeting.groupId
+  );
+
+  const isFavorite = favoriteGroupIdList?.includes(Number(groupId));
+  const isJoined = joinedGroupIdList?.includes(Number(groupId));
+
   const MeetingImage = meeting && meeting.image;
+
+  console.log(favoriteGroupIdList);
+  console.log(joinedGroupIdList);
+  console.log(groupId);
+  console.log(isFavorite);
+  console.log(isJoined);
 
   return (
     <StContainer>
@@ -282,7 +305,7 @@ const MeetingRoom = () => {
             {isJoined ? (
               <>
                 <StPost>
-                  {posts?.slice(0, 10).map((post) => (
+                  {posts?.map((post) => (
                     <Link to={`/meeting/${groupId}/${post.postId}/post`}>
                       <Post key={post.id} data={post} />
                     </Link>
@@ -420,6 +443,8 @@ const StButton = styled.button`
   align-items: center;
   justify-content: start;
   gap: 10px;
+  background-color: black;
+  color: white;
 `;
 
 const StSmButton = styled.button`
@@ -430,6 +455,8 @@ const StSmButton = styled.button`
   align-items: center;
   justify-content: start;
   gap: 10px;
+  background-color: black;
+  color: white;
 `;
 
 const StPostButton = styled.button`
@@ -473,12 +500,13 @@ const StNotice = styled.div`
 
 const StPost = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-direction: column;
   width: 90%;
   height: 250px;
   margin-top: 10px;
+  overflow-y: scroll;
 `;
 
 const StFalseJoin = styled.div`

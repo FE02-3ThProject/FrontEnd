@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 
 //image import
 import basicImage from "../../images/default_profile.png";
+import Banner from "../../images/meeting/Group-559.png";
 
 // interface Meeting {
 //   title: string;
@@ -292,6 +293,9 @@ const StContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(${Banner});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StForm = styled.div`
