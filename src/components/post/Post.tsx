@@ -28,10 +28,10 @@ const Post: React.FC<PostProps> = ({ data }) => {
 export default Post;
 
 const StContainer = styled.div`
-  width: 100%;
+  width: 480px;
   height: 30px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   align-items: start;
   margin-top: 10px;
