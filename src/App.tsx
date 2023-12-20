@@ -18,6 +18,7 @@ import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import MeetingMemberPage from "./pages/MeetingMemberPage/MeetingMemberPage";
 import SearchPageResult from "./pages/SearchPage/SearchPageResult";
+import ChatPage from "./pages/Chat/ChatPage";
 
 const App = () => {
   return (
@@ -62,6 +63,7 @@ const App = () => {
             element={<MeetingMemberPage />}
           />
           <Route path="searchresult/:keyword" element={<SearchPageResult />} />
+          <Route path="chatting/:userid" element={<ChatPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
