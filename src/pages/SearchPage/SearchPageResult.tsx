@@ -23,7 +23,11 @@ const SearchPageResult = () => {
     <Stcontainer>
       {/* 검색어를 표시하는 영역 */}
       <StSearchTop>
-        <div>"{keyword}"로 검색하신 결과입니다</div>
+        {searchResults.length > 0 ? (
+          <div>"{keyword}"로 검색하신 결과입니다</div>
+        ) : (
+          <div>입력하신 "{keyword}"로는 결과값이 없습니다.</div>
+        )}
       </StSearchTop>
       <StSearchCon>
         {searchResults &&
