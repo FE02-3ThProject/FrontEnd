@@ -36,3 +36,22 @@ export const profileImageState = atom({
     key: 'profileImageState',
     default: defaultimage,
   });
+
+
+//  채팅방 관련 상태값들  //
+// 채팅 상태값 관리
+interface Message {
+    sender: string;
+    content: string;
+  }
+
+export const messagesState = atom({
+    key: "messagesState",
+    default: [] as Message[],
+  });
+
+//유저 상태값 관리
+export const userEmailState = atom({
+    key: "userEmailState",
+    default: "",
+  });
