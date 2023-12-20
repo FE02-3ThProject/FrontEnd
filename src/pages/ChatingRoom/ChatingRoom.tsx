@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { getCookie } from "../../shared/Cookie";
 import { messagesState } from "../../Atoms";
 import { userEmailState } from "../../Atoms";
+import SockJS from "sockjs-client";
 
 interface Message {
   sender: string;
@@ -22,8 +23,10 @@ const ChantingRoom = () => {
   const userEmail = useRecoilState(userEmailState);
 
   useEffect(() => {
+    const sock = new SockJS("https://api.moim-moim.shop:9090");
     const stompClient = new Client({
-      brokerURL: "ws://localhost:8080/ws",
+      webSocketFactory:() => sock,
+      
       connectHeaders: {
         Authorization: `Bearer ${token}`,
       },
