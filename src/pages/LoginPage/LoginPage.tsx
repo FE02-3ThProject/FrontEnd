@@ -6,7 +6,7 @@ import { setCookie } from "../../shared/Cookie";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 
-import { useRecoilState } from 'recoil';
+import { useRecoilState } from "recoil";
 import { profileImageState } from "../../Atoms";
 
 import LoginBg from "../../images/login_bg.png";
@@ -42,14 +42,22 @@ const LoginPage = () => {
       setCookie("profileimage", data?.data.image, 2);
       setCookie("location", data?.data.location, 2);
       setCookie("userRole", data?.data.userRole, 2);
-      setProfileImage(data?.data.image)
-      localStorage.setItem("profileImage", data?.data.image);
+      setProfileImage(data?.data.image);
+      localStorage.setItem("profileImage", data?.data.image);     
       navigate("/");
+      
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response?.status === 403) {
         Swal.fire({
           text: "아아디, 비밀번호를 확인해주세요.",
+          icon: "warning",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "확인",
+        });
+      } else if(axios.isAxiosError(error) && error.message === "Network Error"){
+        Swal.fire({
+          text: "로그인중 네트워크 오류가 발생하였습니다. \n 잠시후 다시 시도해 주세요",
           icon: "warning",
           confirmButtonColor: "#3085d6",
           confirmButtonText: "확인",

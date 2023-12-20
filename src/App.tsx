@@ -31,7 +31,7 @@ const App = () => {
           <Route path="signup" element={<SignUpPage />} />
           <Route path="additional" element={<MeetingCreate />} />
           <Route path="meeting/:meetingId" element={<MeetingRoom />} />
-          <Route path="chating/:roomId" element={<ChatingRoom />} />
+          <Route path="chating/:meetingId" element={<ChatingRoom />} />
           <Route path="mypage/:id" element={<UserPage />} />
           <Route path="joind/meeting" element={<JoinedMeetingPage />} />
           <Route

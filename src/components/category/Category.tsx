@@ -7,23 +7,23 @@ interface CategoryProps {
   width?: string;
   height?: string;
   fontSize?: string;
-  boxShadow?: string;
+  boxshadow?: string;
 }
 
 interface StInputProps {
   width?: string;
   height?: string;
   fontSize?: string;
-  boxShadow?: string;
+  boxshadow?: string;
 }
 
-export const Category: FC<CategoryProps> = ({ value, onChange, width, height, fontSize, boxShadow }) => {
+export const Category: FC<CategoryProps> = ({ value, onChange, width, height, fontSize, boxshadow }) => {
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value);
   };
 
   return (
-    <StInput width={width} height={height} fontSize={fontSize} boxShadow={boxShadow} value={value} onChange={handleCategoryChange} required>
+    <StInput width={width} height={height} fontSize={fontSize} boxshadow={boxshadow} value={value} onChange={handleCategoryChange} required>
       <option value="">카테고리를 선택해 주세요</option>
       <option value="1">게임</option>
       <option value="2">여행</option>
@@ -45,7 +45,7 @@ const StInput = styled.select<StInputProps>`
   width: ${(props) => props.width || "554px"};
   height: ${(props) => props.height || "61px"};
   font-size: ${(props) => props.fontSize || "26px"};
-  box-shadow: ${(props) => props.boxShadow || "0px 0px 0px 0px #000000"};
+  box-shadow: ${(props) => props.boxshadow || "0px 0px 0px 0px #000000"};
   margin-top: 5px;
   margin-left: 10px;
   border: 1px solid #909090;
