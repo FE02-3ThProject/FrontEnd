@@ -51,7 +51,7 @@ const StInput = styled.select<StInputProps>`
   width: ${(props) => props.width || "554px"};
   height: ${(props) => props.height || "61px"};
   font-size: ${(props) => props.fontSize || "26px"};
-  box-shadow: ${(props) => props.boxShadow};
+  box-shadow: ${(props) => props.boxshadow};
   margin-top: 5px;
   margin-left: 10px;
   border: 1px solid #909090;

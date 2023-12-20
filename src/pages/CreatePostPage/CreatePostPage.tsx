@@ -35,8 +35,8 @@ const addNotice = async (data: data) => {
   return response.data;
 };
 
-const fetchMeeting = async () => {
-  const response = await apiToken.get(`/api/group/all`);
+const fetchDetails = async (groupId: string | undefined) => {
+  const response = await apiToken.get(`/api/group/detail/${groupId}`);
   return response.data;
 };
 
@@ -46,12 +46,11 @@ const CreatePostPage = () => {
   const [postOrNotice, setPostOrNotice] = useState("");
   const navigator = useNavigate();
   const meetingId = useParams().meetingId as string;
-  // const userId = getCookie("email");
+  const userId = getCookie("email");
 
-  const { data: meeting } = useQuery(["meeting"], () => fetchMeeting());
-  console.log(meeting[Number(meetingId) - 1].groupId);
+  const { data: meeting } = useQuery(["meeting"], () => fetchDetails(groupId));
 
-  const groupId = meeting[Number(meetingId) - 1].groupId;
+  const groupId = meetingId;
 
   const mutationPost = useMutation(addPost, {
     onSuccess: () => {
@@ -114,6 +113,7 @@ const CreatePostPage = () => {
     return setPostOrNotice(event.target.value);
   };
   console.log("postOrNotice", postOrNotice);
+  console.log(meeting);
 
   return (
     <StContainer>
@@ -133,28 +133,18 @@ const CreatePostPage = () => {
           onChange={(e) => setContent(e.target.value)}
         />
         <StPostOrNotice>
-          {/* {meeting && meeting.userId === userId && ( 
-          <label>
-            <input
-              type="radio"
-              name="post"
-              value={"notice"}
-              onChange={HandlePostOrNotice}
-              checked={postOrNotice === "notice"}
-            />
-            공지사항
-          </label>
-        )} */}
-          <label>
-            <input
-              type="radio"
-              name="post"
-              value={"notice"}
-              onChange={HandlePostOrNotice}
-              checked={postOrNotice === "notice"}
-            />
-            공지사항
-          </label>
+          {meeting && meeting.leaderEmail === userId && (
+            <label>
+              <input
+                type="radio"
+                name="post"
+                value={"notice"}
+                onChange={HandlePostOrNotice}
+                checked={postOrNotice === "notice"}
+              />
+              공지사항
+            </label>
+          )}
           <label>
             <input
               type="radio"

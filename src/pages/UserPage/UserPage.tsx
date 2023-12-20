@@ -10,7 +10,7 @@ import { AxiosResponse } from "axios";
 
 import Loading from "../../components/loading/Loading";
 
-import bgImg from "../../images/userInfo/Group 559.png";
+import bgImg from "../../images/meeting/Group-559.png";
 import profileBG from "../../images/userInfo/Group_556.png";
 import userIcon from "../../images/userInfo/nickName.png";
 import categoryIcon from "../../images/userInfo/category.png";
@@ -156,15 +156,15 @@ const UserPage = () => {
               </StPointWrap>
               <StPointWrap>
                 <img src={locationIcon} />
-                <StPointBox>{profileData?.data.location.name}</StPointBox>
+                <StPointBox>{profileData?.data.locationId.name}</StPointBox>
               </StPointWrap>
               <StPointWrap>
                 <img src={categoryIcon} />
-                <StPointBox>{profileData?.data.category.categoryName}</StPointBox>
+                <StPointBox>{profileData?.data.categoryId.name}</StPointBox>
               </StPointWrap>
               <StIntroBox>
                 <img src={productionIcon} />
-                <StIntro>{profileData?.data.introduction.selfIntroduction}</StIntro>
+                <StIntro>{profileData?.data.introduction}</StIntro>
               </StIntroBox>
             </StProfileDetailBox>
             <StButtonBox>
@@ -206,10 +206,10 @@ const UserPage = () => {
         <MyProfileModal
           open={isModalOpen}
           close={closeModal}
-          introduction={profileData?.data.introduction.selfIntroduction}
+          introduction={profileData?.data.introduction}
           nickname={profileData?.data.nickname}
-          category={profileData?.data.category.categoryId}
-          location={profileData?.data.location.locationId}
+          category={profileData?.data.categoryId.categoryId}
+          location={profileData?.data.locationId.locationId}
         />
       ) : null}
     </StMyProfileContainer>
@@ -237,6 +237,7 @@ const StProfileBox = styled.div`
   flex-direction: column;
   border-radius: 30px;
   border: 1px solid white;
+  background-color: white;
   box-shadow: 11px 13px 4px 0px #0000001a;
 `;
 
@@ -264,6 +265,7 @@ const StTitle = styled.div`
     font-weight: 700;
     line-height: 39px;
     text-align: center;
+    color: black
   }
 `;
 
@@ -313,7 +315,7 @@ const StPointBox = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid #d9d9d9;
-  box-shadow: 0px 4px 4px 0px #f9b93790;
+  box-shadow: 0px 4px 4px 0px #00000040;
   color: black;
 `;
 
@@ -336,7 +338,7 @@ const StIntro = styled.div`
   padding: 10px;
   margin-top: 22px;
   border: 1px solid #d9d9d9;
-  box-shadow: 0px 4px 4px 0px #f9b93790;
+  box-shadow: 0px 4px 4px 0px #00000040;
 `;
 
 const StProfileButton = styled.button`

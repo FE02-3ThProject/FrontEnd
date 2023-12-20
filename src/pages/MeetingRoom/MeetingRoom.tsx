@@ -15,6 +15,7 @@ import Trash from "../../images/meeting/trash-2_1.png";
 
 //image import
 import basicImage from "../../images/default_profile.png";
+import Banner from "../../images/meeting/Group-559.png";
 
 //모임 상세조회 불러오기
 const fetchDetails = async (groupId: string | undefined) => {
@@ -182,7 +183,7 @@ const MeetingRoom = () => {
   const deleteMeetingMutation = useMutation(deleteMeeting, {
     onSuccess: () => {
       queryClient.invalidateQueries("meetings");
-      navigate(`/meeting/${meetingId}`);
+      navigate(`/`);
     },
   });
 
@@ -218,19 +219,19 @@ const MeetingRoom = () => {
               {meeting?.leaderEmail === userId && (
                 <StButtonLine>
                   <Link to={`/meeting/${parseInt(groupId)}/modification`}>
-                    <StButton>
+                    <StSmButton>
                       <img src={Pencil} />
-                      모임 수정
-                    </StButton>
+                      수정
+                    </StSmButton>
                   </Link>
-                  <StButton
+                  <StSmButton
                     onClick={() => deleteMeetingMutation.mutate(groupId)}
                   >
                     <img src={Trash} />
-                    모임 삭제
-                  </StButton>
+                    삭제
+                  </StSmButton>
                   <Link to={`/meeting/${parseInt(groupId)}/members`}>
-                    <StButton>맴버 관리</StButton>
+                    <StSmButton>맴버 관리</StSmButton>
                   </Link>
                 </StButtonLine>
               )}
@@ -315,6 +316,9 @@ const StContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(${Banner});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StForm = styled.div`
@@ -418,6 +422,16 @@ const StButton = styled.button`
   gap: 10px;
 `;
 
+const StSmButton = styled.button`
+  width: 120px;
+  height: 35px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+`;
+
 const StPostButton = styled.button`
   width: 150px;
   height: 35px;
@@ -477,6 +491,7 @@ const StFalseJoin = styled.div`
   font-size: 44px;
   font-weight: 700;
   line-height: 55px;
+  color: white;
 `;
 
 const StEmptyNotice = styled.div`
