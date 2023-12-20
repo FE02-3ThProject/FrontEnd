@@ -8,6 +8,7 @@ import styled from "styled-components";
 
 import { useRecoilState } from "recoil";
 import { profileImageState } from "../../Atoms";
+import { userEmailState } from "../../Atoms";
 
 import LoginBg from "../../images/login_bg.png";
 import Naver from "../../images/naver.png";
@@ -17,6 +18,7 @@ import axios, { AxiosResponse } from "axios";
 
 const LoginPage = () => {
   const [, setProfileImage] = useRecoilState(profileImageState);
+  const [, setUserEmail] = useRecoilState(userEmailState);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ const LoginPage = () => {
       setCookie("location", data?.data.location, 2);
       setCookie("userRole", data?.data.userRole, 2);
       setProfileImage(data?.data.image);
+      setUserEmail(data?.data.email);
       localStorage.setItem("profileImage", data?.data.image);     
       navigate("/");
       

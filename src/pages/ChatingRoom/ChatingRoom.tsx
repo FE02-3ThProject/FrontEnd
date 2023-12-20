@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Client, IMessage } from "@stomp/stompjs";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
 import { getCookie } from "../../shared/Cookie";
+import { messagesState } from "../../Atoms";
+import { userEmailState } from "../../Atoms";
 
 interface Message {
   sender: string;
   content: string;
 }
-
-const messagesState = atom({
-  key: "messagesState",
-  default: [] as Message[],
-});
 
 const ChantingRoom = () => {
   const [client, setClient] = useState<Client | null>(null);
@@ -22,6 +19,7 @@ const ChantingRoom = () => {
   const meetingId = useParams();
   const roomId = meetingId.meetingId;
   const token = getCookie("token");
+  const userEmail = useRecoilState(userEmailState);
 
   useEffect(() => {
     const stompClient = new Client({
@@ -33,7 +31,7 @@ const ChantingRoom = () => {
         setConnected(true);
         stompClient.subscribe(`/topic/chat/${roomId}`, (message: IMessage) => {
           if (message.body) {
-            let msg: Message = JSON.parse(message.body);
+            const msg: Message = JSON.parse(message.body);
             setMessages((prevMessages) => [...prevMessages, msg]);
           }
         });
@@ -51,7 +49,7 @@ const ChantingRoom = () => {
 
   const sendMessage = () => {
     if (client) {
-      let msg: Message = { sender: "User", content: text };
+      const msg: Message = { sender: "User", content: text };
       client.publish({
         destination: `/app/chat/${roomId}`,
         body: JSON.stringify(msg),
