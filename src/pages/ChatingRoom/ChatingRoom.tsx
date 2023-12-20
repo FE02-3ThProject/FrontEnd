@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Client, IMessage } from "@stomp/stompjs";
 import { atom, useRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
@@ -51,7 +51,7 @@ const ChantingRoom = () => {
 
   const sendMessage = () => {
     if (client) {
-      let msg: Message = { sender: "User", content: text };
+      const msg: Message = { sender: "User", content: text };
       client.publish({
         destination: `/app/chat/${roomId}`,
         body: JSON.stringify(msg),
