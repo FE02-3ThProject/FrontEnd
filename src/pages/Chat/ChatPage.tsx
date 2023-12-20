@@ -26,7 +26,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (currentUser) {
       stompClient = new Client({
-        webSocketFactory: () => new WebSocket("ws://your-websocket-url"),
+        webSocketFactory: () => new WebSocket("/chat/{roomId}"),
         onConnect: () => {
           console.log("Connected to WebSocket server");
         },

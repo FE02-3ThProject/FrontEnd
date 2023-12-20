@@ -63,7 +63,7 @@ const App = () => {
             element={<MeetingMemberPage />}
           />
           <Route path="searchresult/:keyword" element={<SearchPageResult />} />
-          <Route path="chatting/:userid" element={<ChatPage />} />
+          <Route path="chatting/:roomid" element={<ChatPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
