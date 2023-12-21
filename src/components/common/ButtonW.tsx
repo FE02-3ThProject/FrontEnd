@@ -1,6 +1,5 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { IconType } from "react-icons";
-// import { RotatingLines } from "react-loader-spinner";
 
 interface ButtonProps {
   label?: string;
@@ -9,7 +8,6 @@ interface ButtonProps {
   outline?: boolean;
   small?: boolean;
   icon?: IconType;
-  // isLoading?: boolean;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -36,13 +34,6 @@ const Button = styled.button<ButtonProps>`
     border: 2px solid #0f78ee;
     outline: transparent;
   }
-
-  /* ${({ isLoading }) =>
-    isLoading &&
-    css`
-      display: flex;
-      justify-content: center;
-    `} */
 `;
 
 const StButtonW: React.FC<ButtonProps> = ({
@@ -52,37 +43,8 @@ const StButtonW: React.FC<ButtonProps> = ({
   outline,
   small,
   icon: Icon,
-  // isLoading = false,
 }) => {
   return (
-    // <Button
-    //   type="submit"
-    //   disabled={disabled}
-    //   onClick={onClick}
-    //   outline={outline}
-    //   small={small}
-    //   isLoading={isLoading}
-    // >
-    //   {isLoading ? (
-    //     <RotatingLines
-    //       strokeColor="grey"
-    //       strokeWidth="5"
-    //       animationDuration="0.75"
-    //       width="30"
-    //       visible={true}
-    //     />
-    //   ) : (
-    //     <>
-    //       {Icon && (
-    //         <Icon
-    //           size={24}
-    //           style={{ position: "absolute", left: "1rem", top: "0.75rem" }}
-    //         />
-    //       )}
-    //       {label && <span>{label}</span>}
-    //     </>
-    //   )}
-    // </Button>
     <Button
       type="submit"
       disabled={disabled}
