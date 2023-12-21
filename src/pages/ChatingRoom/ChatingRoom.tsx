@@ -23,6 +23,7 @@ const ChantingRoom = () => {
   const userEmail = useRecoilState(userEmailState);
 
   useEffect(() => {
+    const sock = new SockJS("https://api.moim-moim.shop:9090");
     const stompClient = new Client({
       brokerURL: "wss://15.164.234.129:9090/ws",
       connectHeaders: {
