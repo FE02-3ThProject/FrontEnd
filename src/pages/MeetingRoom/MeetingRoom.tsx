@@ -367,6 +367,10 @@ const StLeftForm = styled.div<StLeftFormProps>`
 const StProfileSec = styled.div`
   margin: 0 auto;
   width: 400px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 30px;
+  margin-bottom: 20px;
+  padding-left: 10px;
 `;
 
 const StDescSec = styled.div`
@@ -383,9 +387,10 @@ const StCategory = styled.p`
 
 const StTitle = styled.h2`
   color: #ffffff;
-  font-size: 44px;
+  font-size: 36px;
   font-weight: 700;
   margin-bottom: 50px;
+  margin-top: 25px;
 `;
 
 const StDesc = styled.p`
@@ -396,6 +401,11 @@ const StDesc = styled.p`
   font-weight: 500;
   line-height: 23px;
   margin-bottom: 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
 `;
 
 const StProfile = styled.div`
