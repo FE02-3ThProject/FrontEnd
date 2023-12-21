@@ -123,12 +123,12 @@ const NavItem = () => {
                 <StDropDownList>
                   <StListItem
                     onClick={() => {
-                      navigate("joind/meeting");
+                      navigate(`mymeeting/${userId}`);
                       setIsOpen(false);
                     }}
                   >
                     <img className="icon" src={home} alt="icon" />
-                    <div className="text">가입한모임</div>
+                    <div className="text">개설한모임</div>
                   </StListItem>
                   <StListItem
                     onClick={() => {
