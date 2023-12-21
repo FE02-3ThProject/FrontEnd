@@ -119,7 +119,7 @@ const UserPage = () => {
     "MY_PROFILE",
     getMyProfile
   );
-  console.log(profileData)
+  console.log(profileData);
 
   useEffect(() => {}, [profileData]);
 
@@ -183,17 +183,19 @@ const UserPage = () => {
           </StTextBox>
         </StUser>
         <StVisibleWrap>
-          <StToggleWrap>
+          <StButtonWrap>
             <StToggleButton onClick={JoinMeetingView}>
               가입한모임
             </StToggleButton>
-            {activeView === "join" &&
-              joinedMeetingData?.data.map((data) => (
-                <JoindeMeeting key={data.id} data={data} />
-              ))}
-          </StToggleWrap>
-          <StToggleWrap>
             <StToggleButton onClick={SubMeetingView}>즐겨찾기</StToggleButton>
+          </StButtonWrap>
+          <StToggleWrap>
+            <StToggleCard>
+              {activeView === "join" &&
+                joinedMeetingData?.data.map((data) => (
+                  <JoindeMeeting key={data.id} data={data} />
+                ))}
+            </StToggleCard>
             {activeView === "sub" &&
               subMeetingData?.data.map((data) => (
                 <SubMeeting key={data.id} data={data} />
@@ -224,8 +226,9 @@ const StMyProfileContainer = styled.div`
   align-items: center;
   border: 1px solie red;
   background-image: url(${bgImg});
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: top;
+  background-repeat: no-repeat;
 `;
 
 const StProfileBox = styled.div`
@@ -265,7 +268,7 @@ const StTitle = styled.div`
     font-weight: 700;
     line-height: 39px;
     text-align: center;
-    color: black
+    color: black;
   }
 `;
 
@@ -365,21 +368,38 @@ const StProfileButton = styled.button`
 
 const StVisibleWrap = styled.div`
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid purple;
+  justify-content: center;
+`;
+
+const StButtonWrap = styled.div`
+  display: flex;
   gap: 15px;
+  width: 100%;
 `;
 
 const StToggleWrap = styled.div`
   display: flex;
   flex-direction: column;
+  border: 1px solid red;
 `;
 
 const StToggleButton = styled.button`
+  width: 250px;
+  height: 80px;
   display: flex;
   margin-bottom: 26px;
   font-size: 32px;
   font-weight: 700;
-  text-align: center;
 `;
+
+const StToggleCard = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
 const StButtonBox = styled.div`
   display: flex;
   margin-top: 22px;
