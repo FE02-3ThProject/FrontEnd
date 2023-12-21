@@ -1,53 +1,46 @@
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
 
-interface SubMeetingProps {
+interface Meeting {
   data: {
     groupId: number;
+    locationName: string;
+    categoryName: string;
     title: string;
-    content: string;
-    createAt: string;
-    image: string;
     description: string;
-    maxMembers: number;
-    locationId: {
-      locationId: string;
-      name: string;
-    };
-    categoryId: {
-      categoryId: string;
-      name: string;
-    }
+    image: string;
+    maxMembers: 123;
+    createdAt: string;
+    leaderEmail: string;
+    joinedGroupMembers: number;
   };
 }
 
-const SubMeeting: React.FC<SubMeetingProps> = ({ data }) => {
-
-  const navigator = useNavigate()
-  const meetingId = data.groupId;
-
+const MyMeetingCard: React.FC<Meeting> = ({ data }) => {
   return (
-    <StContainer onClick={()=>{navigator(`/meeting/${meetingId}`)}}>
-      <StTitleImg><img src={data.image} /></StTitleImg>
+    <StContainer>
+      <StTitleImg>
+        <img src={data.image} />
+      </StTitleImg>
       <StContentWrap>
         <StTitle>{data.title}타이틀</StTitle>
         <StMeetInfo>
-          <StContent>지역: {data.locationId.name}</StContent>
-          <StContent>카테고리: {data.categoryId.name}</StContent>
+          <StContent>지역: {data.locationName}</StContent>
+          <StContent>카테고리: {data.categoryName}</StContent>
         </StMeetInfo>
         <StFootText>
           <StContent>최대인원: {data.maxMembers}</StContent>
-          <StContent>개설일: {data.createAt}</StContent>
+          <StContent>개설일: {data.createdAt}</StContent>
         </StFootText>
       </StContentWrap>
     </StContainer>
   );
 };
 
-export default SubMeeting;
+export default MyMeetingCard;
 
 const StContainer = styled.div`
-  width: 450px;
+  width: 1096px;
   height: 200px;
   display: flex;
   justify-content: center;
@@ -56,17 +49,16 @@ const StContainer = styled.div`
   margin-bottom: 5px;
   border-radius: 16px;
   background: #262d34;
-  cursor: pointer;
 `;
 
 const StTitleImg = styled.div`
-  width: 170px;
-  height: 170px;
-  border-radius: 170px;
-  >img {
-    width: 170px;
-    height: 170px;
-    border-radius: 170px;
+  width: 300px;
+  height: 156px;
+  border-radius: 16px;
+  > img {
+    width: 300px;
+    height: 156px;
+    border-radius: 16px;
   }
 `;
 
@@ -109,3 +101,4 @@ const StContent = styled.div`
   text-align: right;
   text-justify: end;
 `;
+
