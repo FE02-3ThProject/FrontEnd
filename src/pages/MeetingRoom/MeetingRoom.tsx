@@ -12,6 +12,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import Pencil from "../../images/meeting/pencil-line_1.png";
 import Trash from "../../images/meeting/trash-2_1.png";
+import Edit from "../../images/meeting/circle-user-round.png";
+import ChatBox from "../../images/meeting/messages-square.png";
 
 //image import
 import basicImage from "../../images/default_profile.png";
@@ -33,15 +35,15 @@ const addFavorite = async (groupId: string | undefined) => {
 };
 
 //즐겨찾기 목록 불러오기
-const fetchFavorite = async () => {
-  const response = await apiToken.get(`/api/user-group/bookmark`);
-  return response.data;
-};
-
 // const fetchFavorite = async () => {
-//   const response = await apiToken.get(`/api/user/bookmarked`);
+//   const response = await apiToken.get(`/api/user-group/bookmark`);
 //   return response.data;
 // };
+
+const fetchFavorite = async () => {
+  const response = await apiToken.get(`/api/user/bookmarked`);
+  return response.data;
+};
 
 //모임 가입
 const joinMeeting = async (groupId: string | undefined) => {
@@ -62,15 +64,15 @@ const leaveMeeting = async (groupId: string | undefined) => {
 };
 
 //가입한 모임 목록 불러오기
-const fetchJoin = async () => {
-  const response = await apiToken.get(`/api/user-group/joined`);
-  return response.data;
-};
-
 // const fetchJoin = async () => {
-//   const response = await apiToken.get(`/api/user/joined`);
+//   const response = await apiToken.get(`/api/user-group/joined`);
 //   return response.data;
 // };
+
+const fetchJoin = async () => {
+  const response = await apiToken.get(`/api/user/joined`);
+  return response.data;
+};
 
 //개시글 불러오기
 const fetchPost = async (groupId: string | undefined) => {
@@ -228,14 +230,29 @@ const MeetingRoom = () => {
                 <StProfileImg src={basicImage} />
               )}
               <StProfileRight>
-                <StNickName>{meeting && meeting?.leaderNickname}</StNickName>
-                <StProfileDesc>
-                  <p>
-                    {meeting && meeting?.joinedGroupMembers}/
-                    {meeting && meeting?.maxMembers}명
-                  </p>
-                  |<p>개설일 {meeting && meeting?.createdAt}</p>
-                </StProfileDesc>
+                <div>
+                  <StNickName>{meeting && meeting?.leaderNickname}</StNickName>
+                  <StProfileDesc>
+                    <p>
+                      {meeting && meeting?.joinedGroupMembers}/
+                      {meeting && meeting?.maxMembers}명
+                    </p>
+                    |<p>개설일 {meeting && meeting?.createdAt}</p>
+                  </StProfileDesc>
+                </div>
+                {isFavorite ? (
+                  <StFavoriteBtn
+                    onClick={() => deleteFavoriteMutation.mutate(groupId)}
+                  >
+                    <FaHeart />
+                  </StFavoriteBtn>
+                ) : (
+                  <StFavoriteBtn
+                    onClick={() => addFavoriteMutation.mutate(groupId)}
+                  >
+                    <FaRegHeart />
+                  </StFavoriteBtn>
+                )}
               </StProfileRight>
             </StProfile>
             <StButtonSec>
@@ -254,33 +271,31 @@ const MeetingRoom = () => {
                     삭제
                   </StSmButton>
                   <Link to={`/meeting/${parseInt(groupId)}/members`}>
-                    <StSmButton>맴버 관리</StSmButton>
+                    <StSmButton>
+                      <img src={Edit} />
+                      맴버
+                    </StSmButton>
                   </Link>
                 </StButtonLine>
               )}
               <StButtonLine>
-                {isFavorite ? (
-                  <StButton
-                    onClick={() => deleteFavoriteMutation.mutate(groupId)}
-                  >
-                    <FaHeart />
-                    즐겨찾기 해제
-                  </StButton>
-                ) : (
-                  <StButton onClick={() => addFavoriteMutation.mutate(groupId)}>
-                    <FaRegHeart />
-                    즐겨찾기
-                  </StButton>
-                )}
                 {isJoined ? (
-                  <StButton
-                    onClick={() => leaveMeetingMutation.mutate(groupId)}
-                  >
-                    <FaHeart /> 탈퇴하기
-                  </StButton>
+                  <>
+                    <StButton
+                      onClick={() => leaveMeetingMutation.mutate(groupId)}
+                    >
+                      <FaHeart /> 탈퇴
+                    </StButton>
+                    <Link to={`/chating/${parseInt(groupId)}`}>
+                      <StButton>
+                        <img src={ChatBox} />
+                        채팅입장
+                      </StButton>
+                    </Link>
+                  </>
                 ) : (
                   <StButton onClick={() => joinMeetingMutation.mutate(groupId)}>
-                    <FaRegHeart /> 참여하기
+                    <FaRegHeart /> 가입
                   </StButton>
                 )}
               </StButtonLine>
@@ -405,9 +420,11 @@ const StProfileImg = styled.img`
 const StProfileRight = styled.div`
   margin-left: 10px;
   display: flex;
-  justify-content: center;
+  height: 50px;
+  justify-content: space-between;
   align-items: start;
-  flex-direction: column;
+  flex-direction: row;
+  width: 80%;
 `;
 
 const StNickName = styled.p`
@@ -502,7 +519,6 @@ const StPost = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  flex-direction: column;
   width: 90%;
   height: 250px;
   margin-top: 10px;
@@ -540,4 +556,16 @@ const StPostButtonSec = styled.div`
   margin-right: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
+`;
+
+const StFavoriteBtn = styled.button`
+  width: auto;
+  height: auto;
+  font-size: 26px;
+  background: none;
+  outline: none;
+  &:hover {
+    outline: none;
+    border: 1px solid none;
+  }
 `;

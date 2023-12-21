@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { getCookie } from "../../shared/Cookie";
 import { messagesState } from "../../Atoms";
 import { userEmailState } from "../../Atoms";
-import SockJS from "sockjs-client";
+import Loading from "../../components/loading/Loading";
 
 interface Message {
   sender: string;
@@ -23,11 +23,10 @@ const ChantingRoom = () => {
   const userEmail = useRecoilState(userEmailState);
 
   useEffect(() => {
-    const sock = new SockJS("https://api.moim-moim.shop:9090");
     const stompClient = new Client({
-      webSocketFactory:() => sock,
-      
+      brokerURL: "wss://www.moim-moim.shop/",
       connectHeaders: {
+        "X-AUTH-TOKEN": token,
         Authorization: `Bearer ${token}`,
       },
       onConnect: () => {
@@ -37,6 +36,10 @@ const ChantingRoom = () => {
             const msg: Message = JSON.parse(message.body);
             setMessages((prevMessages) => [...prevMessages, msg]);
           }
+        });
+        stompClient.publish({
+          destination: `/app/chat/enter/${roomId}`,
+          headers: { Authorization: `Bearer ${token}` },
         });
       },
     });
@@ -62,14 +65,7 @@ const ChantingRoom = () => {
     }
   };
 
-  const enterRoom = () => {
-    if (client) {
-      client.publish({
-        destination: `/app/chat/enter/${roomId}`,
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    }
-  };
+  console.log(connected);
 
   return (
     <div>
@@ -87,10 +83,11 @@ const ChantingRoom = () => {
             onChange={(event) => setText(event.target.value)}
           />
           <button onClick={sendMessage}>Send</button>
-          <button onClick={enterRoom}>Enter Room</button>
         </div>
       ) : (
-        <div>Connecting...</div>
+        <div>
+          <Loading />
+        </div>
       )}
     </div>
   );
