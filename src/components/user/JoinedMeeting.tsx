@@ -23,21 +23,17 @@ interface JoindeMeetingProps {
 const JoindeMeeting: React.FC<JoindeMeetingProps> = ({ data }) => {
   return (
     <StContainer>
-      {/* <StTitle>{data.title}</StTitle>
-      <StContent>{data.image}</StContent>
-      <StContent>{data.description}</StContent>
-      <StContent>{data.maxMembers}</StContent>
-      <StContent>{data.locationId.name}</StContent>
-      <StContent>{data.categoryId.name}</StContent>
-      <StContent>{data.createAt}개설일</StContent> */}
-      <StTitleImg>이미지</StTitleImg>
+      <StTitleImg><img src={data.image} /></StTitleImg>
       <StContentWrap>
-      <StTitle>타이틀</StTitle>
-      <StContent>설명</StContent>
-      <StContent>최대인원</StContent>
-      <StContent>지역</StContent>
-      <StContent>카테고리</StContent>
-      <StContent>개설일</StContent>
+        <StTitle>{data.title}타이틀</StTitle>
+        <StMeetInfo>
+          <StContent>지역: {data.locationId.name}</StContent>
+          <StContent>카테고리: {data.categoryId.name}</StContent>
+        </StMeetInfo>
+        <StFootText>
+          <StContent>최대인원: {data.maxMembers}</StContent>
+          <StContent>개설일: {data.createAt}</StContent>
+        </StFootText>
       </StContentWrap>
     </StContainer>
   );
@@ -54,27 +50,56 @@ const StContainer = styled.div`
   margin-top: 10px;
   margin-bottom: 5px;
   border-radius: 16px;
-  border: 1px solid red;
+  background: #262d34;
 `;
 
 const StTitleImg = styled.div`
-width: 170px;
-height: 170px;
-border-radius: 170px;
-border: 1px solid black;
-`
-
-const StContentWrap = styled.div`
-width: 200px;
-border: 1px solid green;
-`
-
-const StTitle = styled.h3`
-  font-size: 20px;
-  font-weight: 500;
+  width: 170px;
+  height: 170px;
+  border-radius: 170px;
+  >img {
+    width: 170px;
+    height: 170px;
+    border-radius: 170px;
+  }
 `;
 
-const StContent = styled.p`
+const StContentWrap = styled.div`
+  width: 240px;
+  height: 170px;
+`;
+
+const StTitle = styled.h3`
+  min-width: 194px;
+  max-width: 240px;
+  height: 62px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 31px;
+  text-align: right;
+  margin-bottom: 10px;
+`;
+const StMeetInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: end;
+  margin-bottom: 10px;
+`;
+
+const StFootText = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: end;
+`;
+
+const StContent = styled.div`
   font-size: 12px;
-  color: black;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  text-align: right;
+  text-justify: end;
 `;
