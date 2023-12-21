@@ -27,7 +27,7 @@ const ChantingRoom = () => {
       brokerURL: "wss://api.moim-moim.shop:9090/ws",
       connectHeaders: {
         "X-AUTH-TOKEN": token,
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
       },
       onConnect: () => {
         setConnected(true);
@@ -39,7 +39,7 @@ const ChantingRoom = () => {
         });
         stompClient.publish({
           destination: `/app/chat/enter/${roomId}`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `${token}` },
         });
       },
     });
@@ -59,7 +59,7 @@ const ChantingRoom = () => {
       client.publish({
         destination: `/app/chat/${roomId}`,
         body: JSON.stringify(msg),
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `${token}` },
       });
       setText("");
     }

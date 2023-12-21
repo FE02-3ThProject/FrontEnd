@@ -6,8 +6,8 @@ import { getCookie } from "../../shared/Cookie";
 import Loading from "../../components/loading/Loading";
 
 const deleteNotice = async (
-  meetingId: string | undefined,
-  noticeId: string | undefined
+  meetingId: number | undefined,
+  noticeId: number | undefined
 ) => {
   if (!meetingId || !noticeId) {
     throw new Error("Meeting ID or Post ID is not provided.");
@@ -25,7 +25,7 @@ interface Post {
   createAt: string;
 }
 
-const fetchNoticeData = async (meetingId: string, noticeId: string) => {
+const fetchNoticeData = async (meetingId: number, noticeId: number) => {
   const response = await apiToken.get(
     `/api/group/${meetingId}/notice/${noticeId}`
   );
@@ -46,15 +46,15 @@ const NoticePage = () => {
     isError,
     error,
   } = useQuery<Post, Error>(["notice", meetingId, noticeId], () =>
-    fetchNoticeData(meetingId, noticeId)
+    fetchNoticeData(Number(meetingId), Number(noticeId))
   );
 
   const userId = getCookie("email");
 
-  const handleDeletePost = async (meetingId: string, postId: string) => {
+  const handleDeleteNotice = async (meetingId: string, noticeId: string) => {
     try {
-      await deleteNotice(meetingId, postId);
-      navigate(`/meeting/${meetingId}`); // 삭제 성공 후 이전 페이지로 돌아가기
+      await deleteNotice(Number(meetingId), Number(noticeId));
+      navigate(`/meeting/${meetingId}`);
     } catch (error) {
       console.error(error);
     }
@@ -74,9 +74,6 @@ const NoticePage = () => {
 
   const contentArray = notice?.content.split(". ");
 
-  console.log(notice?.email);
-  console.log(userId);
-
   return (
     <StContainer>
       <StForm>
@@ -92,7 +89,7 @@ const NoticePage = () => {
               >
                 <StButton>수정</StButton>
               </Link>
-              <StButton onClick={() => handleDeletePost(meetingId, noticeId)}>
+              <StButton onClick={() => handleDeleteNotice(meetingId, noticeId)}>
                 삭제
               </StButton>
               <StButton onClick={() => navigate(`/meeting/${meetingId}`)}>

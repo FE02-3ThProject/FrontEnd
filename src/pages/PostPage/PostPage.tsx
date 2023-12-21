@@ -6,8 +6,8 @@ import { getCookie } from "../../shared/Cookie";
 import Loading from "../../components/loading/Loading";
 
 const deletePost = async (
-  meetingId: string | undefined,
-  postId: string | undefined
+  meetingId: number | undefined,
+  postId: number | undefined
 ) => {
   if (!meetingId || !postId) {
     throw new Error("Meeting ID or Post ID is not provided.");
@@ -25,7 +25,7 @@ interface Post {
   createAt: string;
 }
 
-const fetchPostData = async (meetingId: string, postId: string) => {
+const fetchPostData = async (meetingId: number, postId: number) => {
   const response = await apiToken.get(`/api/group/${meetingId}/post/${postId}`);
   return response.data;
 };
@@ -44,15 +44,15 @@ const PostPage = () => {
     isError,
     error,
   } = useQuery<Post, Error>(["post", meetingId, postId], () =>
-    fetchPostData(meetingId, postId)
+    fetchPostData(Number(meetingId), Number(postId))
   );
 
   const userId = getCookie("email");
 
   const handleDeletePost = async (meetingId: string, postId: string) => {
     try {
-      await deletePost(meetingId, postId);
-      navigate(-`/meeting/${meetingId}`); // 삭제 성공 후 이전 페이지로 돌아가기
+      await deletePost(Number(meetingId), Number(postId));
+      navigate(`/meeting/${meetingId}`);
     } catch (error) {
       console.error(error);
     }

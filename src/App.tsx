@@ -19,7 +19,6 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import MeetingMemberPage from "./pages/MeetingMemberPage/MeetingMemberPage";
 import SearchPageResult from "./pages/SearchPage/SearchPageResult";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
-import ChatPage from "./pages/Chat/ChatPage";
 
 const App = () => {
   return (
@@ -65,7 +64,6 @@ const App = () => {
           />
           <Route path="searchresult/:keyword" element={<SearchPageResult />} />
           <Route path="*" element={<NotFoundPage />} />
-          <Route path="chatting/:roomid" element={<ChatPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
