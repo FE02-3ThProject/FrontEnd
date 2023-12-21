@@ -1,4 +1,3 @@
-import SearchImg from "../../images/searchpage_bg.png";
 import styled from "styled-components";
 import AvatarImg from "../../images/avatar_default.png";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +5,7 @@ interface SearchResult {
   image: string;
   title: string;
   description: string;
-  memberCount: number;
+  joinedGroupMembers: number;
   maxMembers: number;
   createdAt: string;
   groupId: string;
@@ -26,7 +25,7 @@ const SearchCard = ({ result }: { result: SearchResult }) => {
           <StMeetingInfo>
             <h5>{result.description}</h5>
             <p>
-              {result.memberCount}/{result.maxMembers} | 개설일{" "}
+              {result.joinedGroupMembers}/{result.maxMembers} | 개설일{" "}
               {result.createdAt}
             </p>
           </StMeetingInfo>
@@ -59,7 +58,8 @@ const StSearchCard = styled.div`
 const StMeetingImg = styled.div`
   width: 300px;
   height: 162px;
-  background-image: url(${SearchImg});
+  background-image: url("https://source.unsplash.com/random");
+  border-radius: 20px;
   margin: 18px 22px;
   img {
     width: 300px;
