@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 interface JoindeMeetingProps {
   data: {
     groupId: number;
@@ -20,16 +20,12 @@ interface JoindeMeetingProps {
   };
 }
 
-
-
 const JoindeMeeting: React.FC<JoindeMeetingProps> = ({ data }) => {
-
-  const navigator = useNavigate()
-  const meetingId = data.groupId;
-
   return (
-    <StContainer onClick={()=>{navigator(`/meeting/${meetingId}`)}}>
-      <StTitleImg><img src={data.image} /></StTitleImg>
+    <StContainer>
+      <StTitleImg>
+        <img src={data.image} />
+      </StTitleImg>
       <StContentWrap>
         <StTitle>{data.title}타이틀</StTitle>
         <StMeetInfo>
@@ -57,14 +53,13 @@ const StContainer = styled.div`
   margin-bottom: 5px;
   border-radius: 16px;
   background: #262d34;
-  cursor: pointer;
 `;
 
 const StTitleImg = styled.div`
   width: 170px;
   height: 170px;
   border-radius: 170px;
-  >img {
+  > img {
     width: 170px;
     height: 170px;
     border-radius: 170px;
