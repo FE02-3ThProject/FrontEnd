@@ -1,7 +1,7 @@
 ## 모임?모임! PROJECT
 
 <br />
-<img src="https://sour-process-b08.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F812354cb-4304-4b1b-b07d-f3c2e18143f4%2F54a23f4d-35ca-4d4a-b1ee-2ec15717ee4b%2Fscreencapture-localhost-5173-2023-12-21-14_40_54.png?table=block&id=8fbfeb7d-33f6-4cea-8434-f09af6ae13e8&spaceId=812354cb-4304-4b1b-b07d-f3c2e18143f4&width=2000&userId=&cache=v2"/>
+<img src="https://sour-process-b08.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F812354cb-4304-4b1b-b07d-f3c2e18143f4%2F1f4db277-e283-4949-b497-662640501710%2FUntitled.png?table=block&id=ccc63113-c518-4b96-9637-d7c86d3359aa&spaceId=812354cb-4304-4b1b-b07d-f3c2e18143f4&width=1180&userId=&cache=v2"/>
 
 <br />
 
