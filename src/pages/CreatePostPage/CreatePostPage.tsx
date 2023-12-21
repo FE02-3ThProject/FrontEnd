@@ -114,8 +114,6 @@ const CreatePostPage = () => {
   const HandlePostOrNotice = (event: React.ChangeEvent<HTMLInputElement>) => {
     return setPostOrNotice(event.target.value);
   };
-  console.log("postOrNotice", postOrNotice);
-  console.log(meeting);
 
   return (
     <StContainer>

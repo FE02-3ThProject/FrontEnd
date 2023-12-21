@@ -22,10 +22,23 @@ import JoindeMeeting from "../../components/user/JoinedMeeting";
 import Swal from "sweetalert2";
 
 interface MeetingType {
-  id: string;
-  title: string;
-  content: string;
-  createAt: string;
+  data: {
+    groupId: number;
+    title: string;
+    content: string;
+    createAt: string;
+    image: string;
+    description: string;
+    maxMembers: number;
+    locationId: {
+      locationId: string;
+      name: string;
+    };
+    categoryId: {
+      categoryId: string;
+      name: string;
+    };
+  };
 }
 
 const UserPage = () => {
@@ -119,7 +132,6 @@ const UserPage = () => {
     "MY_PROFILE",
     getMyProfile
   );
-  console.log(profileData);
 
   useEffect(() => {}, [profileData]);
 
@@ -193,13 +205,15 @@ const UserPage = () => {
             <StToggleCard>
               {activeView === "join" &&
                 joinedMeetingData?.data.map((data) => (
-                  <JoindeMeeting key={data.id} data={data} />
+                  <JoindeMeeting key={data?.data.groupId} data={data.data} />
                 ))}
             </StToggleCard>
-            {activeView === "sub" &&
-              subMeetingData?.data.map((data) => (
-                <SubMeeting key={data.id} data={data} />
-              ))}
+            <StToggleCard>
+              {activeView === "sub" &&
+                subMeetingData?.data.map((data) => (
+                  <SubMeeting key={data?.data.groupId} data={data.data} />
+                ))}
+            </StToggleCard>
           </StToggleWrap>
         </StVisibleWrap>
       </StProfileBox>
@@ -220,7 +234,7 @@ const UserPage = () => {
 
 const StMyProfileContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -370,20 +384,22 @@ const StVisibleWrap = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  border: 1px solid purple;
   justify-content: center;
+  align-items: center;
 `;
 
 const StButtonWrap = styled.div`
   display: flex;
   gap: 15px;
-  width: 100%;
+  width: 500px;
 `;
 
 const StToggleWrap = styled.div`
   display: flex;
+  width: 84%;
   flex-direction: column;
-  border: 1px solid red;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StToggleButton = styled.button`
@@ -398,6 +414,7 @@ const StToggleButton = styled.button`
 const StToggleCard = styled.div`
   display: flex;
   flex-wrap: wrap;
+  gap: 15px;
 `;
 
 const StButtonBox = styled.div`

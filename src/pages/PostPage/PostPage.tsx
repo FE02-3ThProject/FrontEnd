@@ -43,8 +43,10 @@ const PostPage = () => {
     isLoading,
     isError,
     error,
-  } = useQuery<Post, Error>(["post", meetingId, postId], () =>
-    fetchPostData(Number(meetingId), Number(postId))
+  } = useQuery<Post, Error>(
+    ["post", meetingId, postId],
+    () => fetchPostData(Number(meetingId), Number(postId)),
+    { enabled: !!meetingId && !!postId }
   );
 
   const userId = getCookie("email");
