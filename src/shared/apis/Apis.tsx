@@ -33,7 +33,6 @@ apiToken.interceptors.response.use(
   async (error: AxiosError) => {
     
 
-    console.log(error);
     if (error.response?.status === 401) {
       if (retryCount >= 3) {
         // 재시도 횟수가 3회 이상이면 에러를 반환합니다.
@@ -52,7 +51,6 @@ apiToken.interceptors.response.use(
         deleteCookie("token");
         setCookie("token", newToken, 2);
       } catch (err) {
-        console.error(err);
         return Promise.reject(err);
       }
     }

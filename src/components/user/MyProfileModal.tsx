@@ -76,7 +76,6 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   const { mutate: dupnick } = useMutation(getNickCheck, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      console.log(data);
       if (data === null) {
         Swal.fire({
           text: "닉네임 형식을 지켜주세요.",
@@ -181,7 +180,6 @@ const MyProfileModal: React.FC<MyProfileModalProps> = ({
   const { mutate: onsubmit } = useMutation(useProfile, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      console.log(data);
       deleteCookie("nickname");
       deleteCookie("profileimage");
       deleteCookie("location");

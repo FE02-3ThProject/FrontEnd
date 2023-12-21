@@ -80,7 +80,12 @@ const UserPage = () => {
         }
       });
     } catch (error) {
-      console.error("회원 탈퇴 오류:", error);
+      Swal.fire({
+        icon: "warning",
+        text: `회원탈퇴 도중 오류가 발생하였습니다!`,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      })
     }
   };
 
@@ -112,8 +117,6 @@ const UserPage = () => {
     "MY_JOINEDMEETING",
     getMyJoinedMeeting
   );
-  console.log(joinedMeetingData);
-
   const getSubMeeting = async () => {
     const res = await apiToken.get("/api/user/bookmarked");
     return res;
@@ -122,7 +125,6 @@ const UserPage = () => {
     "MY_SUBMEETING",
     getSubMeeting
   );
-  console.log(subMeetingData);
 
   const getMyProfile = async () => {
     const res = await apiToken.get(`/api/user/info?email=${email}`);
