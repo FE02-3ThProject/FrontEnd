@@ -189,7 +189,9 @@ const MeetingRoom = () => {
             <StDescSec>
               <StDesc>{meeting && meeting.description}</StDesc>
               <StCategory>
-                {meeting && meeting.categoryName}/
+                {meeting && meeting.categoryName}
+                <br />
+                <br />
                 {meeting && meeting.locationName}
               </StCategory>
             </StDescSec>
