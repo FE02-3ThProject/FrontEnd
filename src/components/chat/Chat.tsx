@@ -11,7 +11,7 @@ interface IChatProps {
     receiverName: string;
     receiverImage: string;
   };
-  currentUser: TUserWithChat;
+  currentUser: TUserWithChat | null; // currentUser가 undefined가 될 수 있으므로 null을 추가
   setLayout: (layout: boolean) => void;
 }
 
@@ -31,7 +31,7 @@ const Chat = ({ currentUser, receiver, setLayout }: IChatProps) => {
 
   useEffect(() => {
     scrollToBottom();
-  });
+  }, []); // useEffect에 dependency array를 추가
 
   if (!receiver.receiverName || !currentUser)
     return <StNoChatWrapper></StNoChatWrapper>;
@@ -44,8 +44,14 @@ const Chat = ({ currentUser, receiver, setLayout }: IChatProps) => {
         receiverImage={receiver.receiverImage}
         lastMessageTime={
           conversation?.messages
-            .filter((message) => message.receiverId === currentUser.id)
+            .filter((message) => message.receiverId === currentUser?.id) // currentUser가 null일 수 있으므로 optional chaining 사용
             .slice(-1)[0]?.createdAt
+            ? new Date(
+                conversation?.messages
+                  .filter((message) => message.receiverId === currentUser?.id) // currentUser가 null일 수 있으므로 optional chaining 사용
+                  .slice(-1)[0]?.createdAt
+              )
+            : undefined // createdAt이 없을 경우를 대비해 기본값 undefined 설정
         }
       />
       <StMessagesWrapper>
@@ -54,13 +60,17 @@ const Chat = ({ currentUser, receiver, setLayout }: IChatProps) => {
             return (
               <Message
                 key={message.id}
-                isSender={message.senderId === currentUser.id}
+                isSender={message.senderId === currentUser?.id} // currentUser가 null일 수 있으므로 optional chaining 사용
                 messageText={message.text}
                 messageImage={message.image}
                 receiverName={receiver.receiverName}
                 receiverImage={receiver.receiverImage}
-                senderImage={currentUser?.image}
-                time={message.createdAt}
+                senderImage={currentUser?.image || ""} // image가 없을 경우를 대비해 기본값 '' 설정
+                time={
+                  isNaN(Date.parse(message.createdAt))
+                    ? new Date()
+                    : new Date(message.createdAt)
+                } // createdAt이 없을 경우를 대비해 기본값 undefined 설정
               />
             );
           })}
@@ -68,8 +78,8 @@ const Chat = ({ currentUser, receiver, setLayout }: IChatProps) => {
       </StMessagesWrapper>
       <StInputWrapper>
         <Input
-          receiverId={receiver?.receiverId}
-          currentUserId={currentUser?.id}
+          receiverId={receiver?.receiverId || ""} // receiverId가 없을 경우를 대비해 기본값 '' 설정
+          currentUserId={currentUser?.id || ""} // currentUser가 null일 수 있으므로 optional chaining 사용하고, id가 없을 경우를 대비해 기본값 '' 설정
         />
       </StInputWrapper>
     </StChatWrapper>
