@@ -5,37 +5,67 @@ import MainPage from "./pages/MainPage/MainPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import MeetingCreate from "./pages/MeetingCreatePage/MeetingCreate";
-import MeetingPage from "./pages/MeetingRoom/MeetingRoom";
-import ChatingRoom from "./pages/ChatingRoom/ChatingRoom";
-import MeetingDetail from "./pages/MeetingDetail/MeetingDetail";
 import UserPage from "./pages/UserPage/UserPage";
-import ModificationPage from "./pages/ModificationPage/ModificationPage";
+import PostPage from "./pages/PostPage/PostPage";
+import CreatePostPage from "./pages/CreatePostPage/CreatePostPage";
+import MyCreatedMeeting from "./pages/MyCreatedMeetingPage/MyCreatedMeeting";
+import MeetingModificationPage from "./pages/MeetingModificationPage/MeetingModificationPage";
+import NoticePage from "./pages/NoticePage/NoticePage";
+import PostModificationPage from "./pages/ModificationPage/PostModificationPage";
+import NoticeModificationPage from "./pages/ModificationPage/NoticeModificationPage";
+import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
+import SearchPage from "./pages/SearchPage/SearchPage";
+import MeetingMemberPage from "./pages/MeetingMemberPage/MeetingMemberPage";
+import SearchPageResult from "./pages/SearchPage/SearchPageResult";
+import NotFoundPage from "./pages/NotFound/NotFoundPage";
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LayOut />}>
           <Route index element={<MainPage />} />
-          <Route path="login" element={<LoginPage />} /> {/* 로그인 */}
-          <Route path="signup" element={<SignUpPage />} /> {/* 회원가입 */}
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignUpPage />} />
           <Route path="additional" element={<MeetingCreate />} />
-          {/* 모임생성 */}
-          <Route path="meeting/:id" element={<MeetingPage />} /> {/* 모임방 */}
-          <Route path="chating/:roomId" element={<ChatingRoom />} />
-          {/* 채팅방 */}
-          <Route path="meeting/:roomId" element={<MeetingDetail />} />
-          {/* 모임 개시판 */}
-          <Route path="mypage/:id" element={<UserPage />} /> {/* 마이페이지 */}
+          <Route path="meeting/:meetingId" element={<MeetingRoom />} />
+          <Route path="mypage/:id" element={<UserPage />} />
+          <Route path="mymeeting/:id" element={<MyCreatedMeeting />} />
           <Route
-            path="mypage/:id/modification"
-            element={<ModificationPage />}
+            path="meeting/:meetingId/:postId/post/modification"
+            element={<PostModificationPage />}
           />
-          {/* 개인정보 수정 */}
+          <Route
+            path="meeting/:meetingId/:noticeId/notice/modification"
+            element={<NoticeModificationPage />}
+          />
+          <Route
+            path="meeting/:meetingId/:postId/post"
+            element={<PostPage />}
+          />
+          <Route
+            path="meeting/:meetingId/:noticeId/notice"
+            element={<NoticePage />}
+          />
+          <Route
+            path="meeting/:meetingId/createpost"
+            element={<CreatePostPage />}
+          />
+          <Route
+            path="meeting/:meetingId/modification"
+            element={<MeetingModificationPage />}
+          />
+          <Route path="search/:keyword" element={<SearchPage />} />
+          <Route
+            path="meeting/:meetingId/members"
+            element={<MeetingMemberPage />}
+          />
+          <Route path="searchresult/:keyword" element={<SearchPageResult />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
