@@ -11,9 +11,9 @@ import { profileImageState } from "../../Atoms";
 import { userEmailState } from "../../Atoms";
 
 import LoginBg from "../../images/login_bg.png";
-import Naver from "../../images/naver.png";
+// import Naver from "../../images/naver.png";
 
-import { useGoogleLogin } from "@react-oauth/google";
+// import { useGoogleLogin } from "@react-oauth/google";
 import axios, { AxiosResponse } from "axios";
 
 const LoginPage = () => {
@@ -36,11 +36,9 @@ const LoginPage = () => {
   const { mutate: onsubmit } = useMutation(postLogin, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      console.log(data);
 
       const token = data?.headers.authorization.split(" ")[1];
       const refreshToken = data?.headers.refreshtoken;
-      console.log(data?.headers.refreshtoken);
       setCookie("token", token, 2);      
       setCookie("refreshToken", refreshToken, 2);
       setCookie("nickname", data?.data.nickname, 2);
@@ -75,23 +73,22 @@ const LoginPage = () => {
     },
   });
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: async (res) => {
-      console.log(res.access_token);
-      await api
-        .post(
-          "/oauth2/authorization/google",
-          {},
-          {
-            headers: { Authorization: `Bearer ${res.access_token}` },
-          }
-        )
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((e) => console.log(e));
-    },
-  });
+  // const googleLogin = useGoogleLogin({
+  //   onSuccess: async (res) => {
+  //     await api
+  //       .post(
+  //         "/oauth2/authorization/google",
+  //         {},
+  //         {
+  //           headers: { Authorization: `Bearer ${res.access_token}` },
+  //         }
+  //       )
+  //       .then((res) => {
+  //         console.log(res);
+  //       })
+  //       .catch((e) => console.log(e));
+  //   },
+  // });
 
   return (
     <StLoginContainer>
@@ -118,9 +115,9 @@ const LoginPage = () => {
           />
         </StInputBox>
         <StLoginButton onClick={() => onsubmit()}>Login</StLoginButton>
-        <StSoCialTitle>Login with Google</StSoCialTitle>
+        {/* <StSoCialTitle>Login with Google</StSoCialTitle> */}
         <StSocailBtnBox>
-          <StSocialLoginBtnGoogle onClick={() => googleLogin()} />
+          {/* <StSocialLoginBtnGoogle onClick={() => googleLogin()} /> */}
         </StSocailBtnBox>
         <StSingup>
           Don’t have account?
@@ -199,25 +196,25 @@ const StLoginButton = styled.button`
   margin-top: 46px;
 `;
 
-const StSoCialTitle = styled.div`
-  width: 159px;
-  height: 31px;
-  font-size: 18px;
-  font-weight: 400;
-  text-align: center;
-  margin: 20px;
-`;
+// const StSoCialTitle = styled.div`
+//   width: 159px;
+//   height: 31px;
+//   font-size: 18px;
+//   font-weight: 400;
+//   text-align: center;
+//   margin: 20px;
+// `;
 
 const StSocailBtnBox = styled.div`
   display: flex;
   gap: 51px;
 `;
 
-const StSocialLoginBtnGoogle = styled.button`
-  background-image: url(${Naver});
-  width: 165px;
-  height: 42px;
-`;
+// const StSocialLoginBtnGoogle = styled.button`
+//   background-image: url(${Naver});
+//   width: 165px;
+//   height: 42px;
+// `;
 
 const StSingup = styled.div`
   margin-top: 27px;
