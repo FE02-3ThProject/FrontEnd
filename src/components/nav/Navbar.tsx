@@ -46,21 +46,6 @@ const StTop = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0 /* 20px */;
-
-  /*
-  @media (min-width: 640px) {
-    .sm\:mx-10 {
-      margin-left: 2.5rem ;
-      margin-right: 2.5rem;
-    }
-  }
-  @media (min-width: 1024px) {
-    .lg\:mx-20 {
-      margin-left: 5rem ;
-      margin-right: 5rem;
-    }
-  }
-  */
 `;
 const StTopSection = styled.div`
   display: flex;
@@ -91,6 +76,5 @@ const StLogo = styled.div`
 const StSearch = styled.div`
   display: flex;
   height: 30px;
-  /* margin-top: 20px; */
   align-items: center;
 `;
