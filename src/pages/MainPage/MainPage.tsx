@@ -15,6 +15,7 @@ interface Group {
   title: string;
   description: string;
   image: string;
+  joinedGroupMembers: number;
   maxMembers: number;
   createdAt: string;
   userId: string;
