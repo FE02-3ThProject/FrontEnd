@@ -37,8 +37,12 @@ const LoginPage = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
       console.log(data);
+
       const token = data?.headers.authorization.split(" ")[1];
-      setCookie("token", token, 2);
+      const refreshToken = data?.headers.refreshtoken;
+      console.log(data?.headers.refreshtoken);
+      setCookie("token", token, 2);      
+      setCookie("refreshToken", refreshToken, 2);
       setCookie("nickname", data?.data.nickname, 2);
       setCookie("email", data?.data.email, 2);
       setCookie("profileimage", data?.data.image, 2);
@@ -46,9 +50,8 @@ const LoginPage = () => {
       setCookie("userRole", data?.data.userRole, 2);
       setProfileImage(data?.data.image);
       setUserEmail(data?.data.email);
-      localStorage.setItem("profileImage", data?.data.image);     
+      localStorage.setItem("profileImage", data?.data.image);
       navigate("/");
-      
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response?.status === 403) {
@@ -58,7 +61,10 @@ const LoginPage = () => {
           confirmButtonColor: "#3085d6",
           confirmButtonText: "확인",
         });
-      } else if(axios.isAxiosError(error) && error.message === "Network Error"){
+      } else if (
+        axios.isAxiosError(error) &&
+        error.message === "Network Error"
+      ) {
         Swal.fire({
           text: "로그인중 네트워크 오류가 발생하였습니다. \n 잠시후 다시 시도해 주세요",
           icon: "warning",

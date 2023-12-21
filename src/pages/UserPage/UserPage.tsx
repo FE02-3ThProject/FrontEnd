@@ -92,7 +92,7 @@ const UserPage = () => {
   };
 
   const getMyJoinedMeeting = async () => {
-    const res = await apiToken.get("/api/user-group/joined");
+    const res = await apiToken.get("/api/user/joined");
     return res;
   };
   const { data: joinedMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
@@ -102,7 +102,7 @@ const UserPage = () => {
   console.log(joinedMeetingData);
 
   const getSubMeeting = async () => {
-    const res = await apiToken.get(`/api/user-group/bookmark/${email}`);
+    const res = await apiToken.get("/api/user/bookmarked");
     return res;
   };
   const { data: subMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
