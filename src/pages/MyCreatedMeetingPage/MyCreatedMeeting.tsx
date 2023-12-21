@@ -3,8 +3,11 @@ import Loading from "../../components/loading/Loading";
 import { getCookie } from "../../shared/Cookie";
 import { apiToken } from "../../shared/apis/Apis";
 import { useQuery } from "react-query";
-import MyMeetingCard from "../../components/MyMeeting/MyMeetingCard";
 import styled from "styled-components";
+
+import bgImg from "../../images/meeting/Group-559.png";
+
+import MyMeetingCard from "../../components/MyMeeting/MyMeetingCard";
 
 interface Meeting {
   groupId: number;
@@ -57,6 +60,11 @@ const StMeetingCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   gap: 20px;
+  background-image: url(${bgImg});
+  background-size: 100% auto;
+  background-position: top;
+  background-repeat: no-repeat;
 `;

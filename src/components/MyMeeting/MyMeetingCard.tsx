@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 interface Meeting {
@@ -9,7 +10,7 @@ interface Meeting {
     title: string;
     description: string;
     image: string;
-    maxMembers: 123;
+    maxMembers: number;
     createdAt: string;
     leaderEmail: string;
     joinedGroupMembers: number;
@@ -17,22 +18,32 @@ interface Meeting {
 }
 
 const MyMeetingCard: React.FC<Meeting> = ({ data }) => {
+  const navigator = useNavigate();
+  const meetingId = data.groupId;
+
   return (
-    <StContainer>
-      <StTitleImg>
-        <img src={data.image} />
-      </StTitleImg>
-      <StContentWrap>
-        <StTitle>{data.title}타이틀</StTitle>
-        <StMeetInfo>
-          <StContent>지역: {data.locationName}</StContent>
-          <StContent>카테고리: {data.categoryName}</StContent>
-        </StMeetInfo>
-        <StFootText>
-          <StContent>최대인원: {data.maxMembers}</StContent>
+    <StContainer
+      onClick={() => {
+        navigator(`/meeting/${meetingId}`);
+      }}
+    >
+      <StWrap>
+        <StTitleImg>
+          <img src={data.image} />
+        </StTitleImg>
+        <StContentWrap>
+          <StTitle>{data.title}타이틀</StTitle>
+          <StMeetInfo>
+            <StContent>지역: {data.locationName}</StContent>
+            <StContent>카테고리: {data.categoryName}</StContent>
+          </StMeetInfo>
+          <StFootText>
+            <StContent>현재인원: {data.joinedGroupMembers}</StContent>
+            <StContent>최대인원: {data.maxMembers}</StContent>
+          </StFootText>
           <StContent>개설일: {data.createdAt}</StContent>
-        </StFootText>
-      </StContentWrap>
+        </StContentWrap>
+      </StWrap>
     </StContainer>
   );
 };
@@ -43,18 +54,29 @@ const StContainer = styled.div`
   width: 1096px;
   height: 200px;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   margin-top: 10px;
   margin-bottom: 5px;
   border-radius: 16px;
   background: #262d34;
+  cursor: pointer;
+`;
+
+const StWrap = styled.div`
+  width: 96%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 20px;
 `;
 
 const StTitleImg = styled.div`
   width: 300px;
-  height: 156px;
+  height: 160px;
   border-radius: 16px;
+  border: 1px solid #d9d9d9;
   > img {
     width: 300px;
     height: 156px;
@@ -63,33 +85,33 @@ const StTitleImg = styled.div`
 `;
 
 const StContentWrap = styled.div`
-  width: 240px;
+  width: 69%;
   height: 170px;
 `;
 
 const StTitle = styled.h3`
-  min-width: 194px;
-  max-width: 240px;
+  min-width: 300px;
+  max-width: 350px;
   height: 62px;
   font-size: 24px;
   font-weight: 700;
   line-height: 31px;
-  text-align: right;
+  text-align: left;
   margin-bottom: 10px;
 `;
 const StMeetInfo = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: end;
-  justify-content: end;
-  margin-bottom: 10px;
+  justify-content: left;
+  margin-bottom: 15px;
+  gap: 39px;
 `;
 
 const StFootText = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: end;
-  justify-content: end;
+  justify-content: left;
+  gap: 30px;
 `;
 
 const StContent = styled.div`
@@ -101,4 +123,3 @@ const StContent = styled.div`
   text-align: right;
   text-justify: end;
 `;
-

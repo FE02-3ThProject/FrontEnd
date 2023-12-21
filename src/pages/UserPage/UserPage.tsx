@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { AxiosResponse } from "axios";
 
-import Loading from "../../components/loading/Loading";
-
 import bgImg from "../../images/meeting/Group-559.png";
 import profileBG from "../../images/userInfo/Group_556.png";
 import userIcon from "../../images/userInfo/nickName.png";
@@ -17,6 +15,9 @@ import categoryIcon from "../../images/userInfo/category.png";
 import locationIcon from "../../images/userInfo/location.png";
 import productionIcon from "../../images/userInfo/production.png";
 import modificationIcon from "../../images/userInfo/image 20.png";
+import deleteuserIcon from "../../images/userInfo/deleteUser.png";
+
+import Loading from "../../components/loading/Loading";
 import SubMeeting from "../../components/user/SubMeeting";
 import JoindeMeeting from "../../components/user/JoinedMeeting";
 import Swal from "sweetalert2";
@@ -180,9 +181,10 @@ const UserPage = () => {
               </StIntroBox>
             </StProfileDetailBox>
             <StButtonBox>
-              <StDeleteAccountButton onClick={deleteUser}>
+              <StProfileButton onClick={deleteUser}>
+                <img src={deleteuserIcon} />
                 회원 탈퇴
-              </StDeleteAccountButton>
+              </StProfileButton>
               <StProfileButton
                 onClick={() => {
                   setIsModalOpen(true);
@@ -326,14 +328,14 @@ const StPointBox = styled.div`
   width: 360px;
   height: 43px;
   padding-left: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20.3px;
+  color: black;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 19px;
   display: flex;
   align-items: center;
   border: 1px solid #d9d9d9;
   box-shadow: 0px 4px 4px 0px #00000040;
-  color: black;
 `;
 
 const StIntroBox = styled.div`
@@ -354,6 +356,10 @@ const StIntro = styled.div`
   height: 185px;
   padding: 10px;
   margin-top: 22px;
+  color: black;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 19px;
   border: 1px solid #d9d9d9;
   box-shadow: 0px 4px 4px 0px #00000040;
 `;
@@ -406,6 +412,8 @@ const StToggleButton = styled.button`
   width: 250px;
   height: 80px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 26px;
   font-size: 32px;
   font-weight: 700;
@@ -422,22 +430,6 @@ const StButtonBox = styled.div`
   margin-top: 22px;
   margin-left: 70px;
   gap: 16px;
-`;
-
-const StDeleteAccountButton = styled.button`
-  width: 169px;
-  height: 43px;
-  background-color: #767676;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  padding: 0px;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 19px;
-  letter-spacing: 0em;
-  text-align: left;
 `;
 
 export default UserPage;
