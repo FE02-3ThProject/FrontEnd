@@ -13,15 +13,6 @@ import Friends from "../..//images/friends.png";
 import Vector from "../../images/pngegg.png";
 import Friends2 from "../../images/friends2.png";
 
-// interface Meeting {
-//   title: string;
-//   image: File | null;
-//   locationId: number;
-//   description: string;
-//   maxMembers: number;
-//   categoryId: number;
-// }
-
 const createMeeting = async (formData: FormData) => {
   const response = await apiToken.post("/api/group/create", formData, {
     headers: {
@@ -52,20 +43,6 @@ const MeetingCreate = () => {
       setter(value as unknown as T);
     };
 
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.files && event.target.files[0]) {
-  //     const file = event.target.files[0];
-
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       if (reader.result) {
-  //         setImage(reader.result.toString());
-  //       }
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImage(event.target.files[0]);
@@ -94,18 +71,6 @@ const MeetingCreate = () => {
     },
   });
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   mutation.mutate({
-  //     title: title,
-  //     image: image,
-  //     locationId: Number(location),
-  //     description: description,
-  //     maxMembers: Number(maxMembers),
-  //     categoryId: Number(category),
-  //   });
-  // };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -121,8 +86,6 @@ const MeetingCreate = () => {
     // FormData 객체를 서버에 보냅니다.
     mutation.mutate(formData);
   };
-
-  console.log(image);
 
   return (
     <StForm>
