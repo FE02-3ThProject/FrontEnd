@@ -109,7 +109,7 @@ const MeetingMemberPage = () => {
         </StLeftForm>
         <StMemberSec>
           <StMemberContainer>
-          {members &&
+            {members &&
               members
                 .sort((_: MemberType, b: MemberType) =>
                   b.role === "LEADER" ? 1 : -1
@@ -173,8 +173,9 @@ const StContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-image: url(${Banner});
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: top;
+  background-repeat: no-repeat;
 `;
 
 const StForm = styled.div`
@@ -304,7 +305,9 @@ const StMemberName = styled.div`
   display: flex;
   gap: 15px;
   align-items: center;
+  justify-content: space-between;
   height: 30px;
+  width: 220px;
 `;
 
 const StMemberButton = styled.div`

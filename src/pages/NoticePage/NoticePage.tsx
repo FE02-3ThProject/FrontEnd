@@ -45,8 +45,10 @@ const NoticePage = () => {
     isLoading,
     isError,
     error,
-  } = useQuery<Post, Error>(["notice", meetingId, noticeId], () =>
-    fetchNoticeData(Number(meetingId), Number(noticeId))
+  } = useQuery<Post, Error>(
+    ["notice", meetingId, noticeId],
+    () => fetchNoticeData(Number(meetingId), Number(noticeId)),
+    { enabled: !!meetingId && !!noticeId }
   );
 
   const userId = getCookie("email");

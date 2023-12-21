@@ -37,10 +37,9 @@ interface MeetingType {
     categoryId: {
       categoryId: string;
       name: string;
-    }
+    };
   };
 }
-
 
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -206,13 +205,13 @@ const UserPage = () => {
             <StToggleCard>
               {activeView === "join" &&
                 joinedMeetingData?.data.map((data) => (
-                  <JoindeMeeting key={data.groupId} data={data} />
+                  <JoindeMeeting key={data?.data.groupId} data={data.data} />
                 ))}
             </StToggleCard>
             <StToggleCard>
               {activeView === "sub" &&
                 subMeetingData?.data.map((data) => (
-                  <SubMeeting key={data.groupId} data={data} />
+                  <SubMeeting key={data?.data.groupId} data={data.data} />
                 ))}
             </StToggleCard>
           </StToggleWrap>
