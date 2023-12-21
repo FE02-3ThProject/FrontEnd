@@ -171,8 +171,9 @@ const StContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-image: url(${Banner});
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: top;
+  background-repeat: no-repeat;
 `;
 
 const StForm = styled.div`
