@@ -33,6 +33,7 @@ const StContainer = styled.div`
   align-items: start;
   border-radius: 10px;
   color: black;
+  margin-top: 20px;
 `;
 
 const StTitle = styled.h3`

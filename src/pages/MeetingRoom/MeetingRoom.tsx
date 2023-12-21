@@ -313,7 +313,7 @@ const MeetingRoom = () => {
               </>
             ) : (
               <StFalseJoin>
-                <p>게시판 및 채팅방</p>
+                <p>게시판</p>
                 <p>이용은 가입 후</p>
                 <p>사용가능합니다</p>
               </StFalseJoin>
@@ -400,9 +400,8 @@ const StProfileImg = styled.img`
 const StProfileRight = styled.div`
   margin-left: 10px;
   display: flex;
-  height: 50px;
   justify-content: space-between;
-  align-items: start;
+  align-items: center;
   flex-direction: row;
   width: 80%;
 `;
@@ -476,7 +475,7 @@ const StRightForm = styled.div`
 
 const StRightContainer = styled.div`
   width: 566px;
-  height: 544px;
+  height: auto;
   background-color: #e0e0e0;
   border-radius: 16px;
   display: flex;
@@ -500,9 +499,11 @@ const StPost = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   width: 90%;
-  height: 250px;
+  height: 185px;
   margin-top: 10px;
   overflow-y: scroll;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const StFalseJoin = styled.div`
@@ -536,20 +537,4 @@ const StPostButtonSec = styled.div`
   margin-right: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
-`;
-
-const StFavoriteBtn = styled.button`
-  width: auto;
-  height: auto;
-  font-size: 26px;
-  background: none;
-  outline: none;
-  &:hover {
-    outline: none;
-    border: none;
-  }
-  &:focus {
-    outline: none;
-    border: none;
-  }
 `;

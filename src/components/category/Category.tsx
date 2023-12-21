@@ -17,13 +17,28 @@ interface StInputProps {
   boxshadow?: string;
 }
 
-export const Category: FC<CategoryProps> = ({ value, onChange, width, height, fontSize, boxshadow }) => {
+export const Category: FC<CategoryProps> = ({
+  value,
+  onChange,
+  width,
+  height,
+  fontSize,
+  boxshadow,
+}) => {
   const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value);
   };
 
   return (
-    <StInput width={width} height={height} fontSize={fontSize} boxshadow={boxshadow} value={value} onChange={handleCategoryChange} required>
+    <StInput
+      width={width}
+      height={height}
+      fontSize={fontSize}
+      boxshadow={boxshadow}
+      value={value}
+      onChange={handleCategoryChange}
+      required
+    >
       <option value="">카테고리를 선택해 주세요</option>
       <option value="1">게임</option>
       <option value="2">여행</option>
@@ -51,6 +66,7 @@ const StInput = styled.select<StInputProps>`
   border: 1px solid #909090;
   outline: none;
   text-indent: 15px;
+  color: #a1a1a1;
   &:focus {
     border: 1px solid #1981f9;
   }
