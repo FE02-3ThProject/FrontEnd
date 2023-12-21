@@ -33,12 +33,6 @@ const addFavorite = async (groupId: number | undefined) => {
   return response.data;
 };
 
-//즐겨찾기 목록 불러오기
-// const fetchFavorite = async () => {
-//   const response = await apiToken.get(`/api/user-group/bookmark`);
-//   return response.data;
-// };
-
 const fetchFavorite = async () => {
   const response = await apiToken.get(`/api/user/bookmarked`);
   return response.data;
@@ -522,7 +516,7 @@ const StPost = styled.div`
   margin-top: 10px;
   overflow-y: scroll;
   flex-direction: column;
-  gap: 10px;
+  gap: 30px;
 `;
 
 const StFalseJoin = styled.div`
