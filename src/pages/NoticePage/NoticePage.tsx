@@ -32,13 +32,25 @@ const fetchNoticeData = async (meetingId: number, noticeId: number) => {
   return response.data;
 };
 
+const fetchDetails = async (groupId: number | undefined) => {
+  const response = await apiToken.get(`/api/group/detail/${groupId}`);
+  return response.data;
+};
+
 const NoticePage = () => {
   const { meetingId, noticeId } = useParams();
   const navigate = useNavigate();
+  const groupId = meetingId;
 
   if (!meetingId || !noticeId) {
     return <div>Meeting ID or Post ID is not provided.</div>;
   }
+
+  const { data: meeting } = useQuery(
+    ["meeting", groupId],
+    () => fetchDetails(Number(groupId)),
+    { enabled: !!groupId }
+  );
 
   const {
     data: notice,
@@ -84,7 +96,7 @@ const NoticePage = () => {
           <StContent key={index}>{content}</StContent>
         ))}
         <StButtonForm>
-          {notice && notice.email === userId ? (
+          {notice && meeting && meeting.leaderEmail === userId ? (
             <>
               <Link
                 to={`/meeting/${meetingId}/${noticeId}/notice/modification`}
