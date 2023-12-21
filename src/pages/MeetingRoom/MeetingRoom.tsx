@@ -6,6 +6,7 @@ import Notice from "../../components/post/Notice";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getCookie } from "../../shared/Cookie";
+import Swal from "sweetalert2";
 
 //Icons Import
 import { FaRegHeart } from "react-icons/fa";
@@ -13,7 +14,6 @@ import { FaHeart } from "react-icons/fa";
 import Pencil from "../../images/meeting/pencil-line_1.png";
 import Trash from "../../images/meeting/trash-2_1.png";
 import Edit from "../../images/meeting/circle-user-round.png";
-import ChatBox from "../../images/meeting/messages-square.png";
 
 //image import
 import Banner from "../../images/meeting/Group-559.png";
@@ -97,9 +97,7 @@ const deleteMeeting = async (groupId: number | undefined) => {
   if (!groupId) {
     throw new Error("Meeting ID is not provided");
   }
-  const response = await apiToken.delete(
-    `/api/group/delete/${groupId}`
-  );
+  const response = await apiToken.delete(`/api/group/delete/${groupId}`);
   return response.data;
 };
 
@@ -125,8 +123,7 @@ const MeetingRoom = () => {
 
   const { data: meeting } = useQuery(
     ["meeting", groupId],
-    () => fetchDetails(Number(
-      groupId)),
+    () => fetchDetails(Number(groupId)),
     { enabled: !!groupId }
   );
   const { data: favoriteMeetings } = useQuery(["favoriteMeetings"], () =>
@@ -194,7 +191,13 @@ const MeetingRoom = () => {
       <StForm>
         <StLeftForm MeetingImage={MeetingImage}>
           <StProfileSec>
-            <StTitle>{meeting && meeting.title}</StTitle>
+            <StTitleSec>
+              <StTitle>{meeting && meeting.title}</StTitle>
+              <StCategory>
+                {meeting && meeting.categoryName}/
+                {meeting && meeting.locationName}
+              </StCategory>
+            </StTitleSec>
             <StDesc>{meeting && meeting.description}</StDesc>
             <StProfile>
               <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
@@ -209,19 +212,6 @@ const MeetingRoom = () => {
                     |<p>개설일 {meeting && meeting?.createdAt}</p>
                   </StProfileDesc>
                 </div>
-                {isFavorite ? (
-                  <StFavoriteBtn
-                    onClick={() => deleteFavoriteMutation.mutate(Number(groupId))}
-                  >
-                    <FaHeart />
-                  </StFavoriteBtn>
-                ) : (
-                  <StFavoriteBtn
-                    onClick={() => addFavoriteMutation.mutate(Number(groupId))}
-                  >
-                    <FaRegHeart />
-                  </StFavoriteBtn>
-                )}
               </StProfileRight>
             </StProfile>
             <StButtonSec>
@@ -234,7 +224,9 @@ const MeetingRoom = () => {
                     </StSmButton>
                   </Link>
                   <StSmButton
-                    onClick={() => deleteMeetingMutation.mutate(Number(groupId))}
+                    onClick={() =>
+                      deleteMeetingMutation.mutate(Number(groupId))
+                    }
                   >
                     <img src={Trash} />
                     삭제
@@ -251,20 +243,44 @@ const MeetingRoom = () => {
                 {isJoined ? (
                   <>
                     <StButton
-                      onClick={() => leaveMeetingMutation.mutate(Number(groupId))}
+                      onClick={() => {
+                        if (userId === meeting.leaderEmail) {
+                          Swal.fire({
+                            text: "리더는 탈퇴할 수 없습니다.",
+                            icon: "error",
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "확인",
+                          });
+                        } else {
+                          leaveMeetingMutation.mutate(Number(groupId));
+                        }
+                      }}
                     >
                       <FaHeart /> 탈퇴
                     </StButton>
-                    <Link to={`/chating/${parseInt(groupId)}`}>
-                      <StButton>
-                        <img src={ChatBox} />
-                        채팅입장
-                      </StButton>
-                    </Link>
                   </>
                 ) : (
-                  <StButton onClick={() => joinMeetingMutation.mutate(Number(groupId))}>
+                  <StButton
+                    onClick={() => joinMeetingMutation.mutate(Number(groupId))}
+                  >
                     <FaRegHeart /> 가입
+                  </StButton>
+                )}
+                {isFavorite ? (
+                  <StButton
+                    onClick={() =>
+                      deleteFavoriteMutation.mutate(Number(groupId))
+                    }
+                  >
+                    <FaHeart />
+                    즐겨찾기 해제
+                  </StButton>
+                ) : (
+                  <StButton
+                    onClick={() => addFavoriteMutation.mutate(Number(groupId))}
+                  >
+                    <FaRegHeart />
+                    즐겨찾기
                   </StButton>
                 )}
               </StButtonLine>
@@ -303,7 +319,7 @@ const MeetingRoom = () => {
               </>
             ) : (
               <StFalseJoin>
-                <p>게시판 및 채팅방</p>
+                <p>게시판</p>
                 <p>이용은 가입 후</p>
                 <p>사용가능합니다</p>
               </StFalseJoin>
@@ -324,8 +340,9 @@ const StContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-image: url(${Banner});
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: top;
+  background-repeat: no-repeat;
 `;
 
 const StForm = styled.div`
@@ -355,6 +372,17 @@ const StLeftForm = styled.div<StLeftFormProps>`
 
 const StProfileSec = styled.div`
   margin: 0 auto;
+`;
+
+const StTitleSec = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const StCategory = styled.p`
+  color: #ffffff;
+  font-size: 20px;
 `;
 
 const StTitle = styled.h2`
@@ -389,9 +417,8 @@ const StProfileImg = styled.img`
 const StProfileRight = styled.div`
   margin-left: 10px;
   display: flex;
-  height: 50px;
   justify-content: space-between;
-  align-items: start;
+  align-items: center;
   flex-direction: row;
   width: 80%;
 `;
@@ -465,7 +492,7 @@ const StRightForm = styled.div`
 
 const StRightContainer = styled.div`
   width: 566px;
-  height: 544px;
+  height: auto;
   background-color: #e0e0e0;
   border-radius: 16px;
   display: flex;
@@ -489,9 +516,11 @@ const StPost = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   width: 90%;
-  height: 250px;
+  height: 185px;
   margin-top: 10px;
   overflow-y: scroll;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const StFalseJoin = styled.div`
@@ -525,20 +554,4 @@ const StPostButtonSec = styled.div`
   margin-right: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
-`;
-
-const StFavoriteBtn = styled.button`
-  width: auto;
-  height: auto;
-  font-size: 26px;
-  background: none;
-  outline: none;
-  &:hover {
-    outline: none;
-    border: none;
-  }
-  &:focus {
-    outline: none;
-    border: none;
-  }
 `;

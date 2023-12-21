@@ -37,10 +37,9 @@ interface MeetingType {
     categoryId: {
       categoryId: string;
       name: string;
-    }
+    };
   };
 }
-
 
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { apiToken } from "../../shared/apis/Apis";
 import { useMutation, useQuery } from "react-query";
 import styled from "styled-components";
@@ -22,11 +22,15 @@ const updateMeeting = async ({
   formData: FormData;
   meetingId: number;
 }) => {
-  const response = await apiToken.put(`/api/group/${meetingId}`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await apiToken.put(
+    `/api/group/update/${meetingId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return response.data;
 };
 
@@ -99,7 +103,7 @@ const MeetingModificationPage = () => {
     e.preventDefault();
     const formData = new FormData();
 
-    formData.append("name", title);
+    formData.append("title", title);
     if (image) {
       formData.append("file", image);
     }
@@ -198,6 +202,9 @@ const MeetingModificationPage = () => {
           </StInputSec>
           <StPostButtonSec>
             <StPostButton>모임정보수정</StPostButton>
+            <Link to={`/meeting/${meetingId}`}>
+              <StPostButton>돌아가기</StPostButton>
+            </Link>
           </StPostButtonSec>
         </StRightForm>
       </StForm>
@@ -214,8 +221,9 @@ const StContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-image: url(${Banner});
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: top;
+  background-repeat: no-repeat;
 `;
 
 const StForm = styled.div`
@@ -395,4 +403,5 @@ const StPostButtonSec = styled.div`
   justify-content: end;
   margin-right: 50px;
   margin-top: 10px;
+  gap: 10px;
 `;

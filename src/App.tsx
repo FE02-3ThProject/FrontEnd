@@ -5,7 +5,6 @@ import MainPage from "./pages/MainPage/MainPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import MeetingCreate from "./pages/MeetingCreatePage/MeetingCreate";
-import ChatingRoom from "./pages/ChatingRoom/ChatingRoom";
 import UserPage from "./pages/UserPage/UserPage";
 import PostPage from "./pages/PostPage/PostPage";
 import CreatePostPage from "./pages/CreatePostPage/CreatePostPage";
@@ -30,7 +29,6 @@ const App = () => {
           <Route path="signup" element={<SignUpPage />} />
           <Route path="additional" element={<MeetingCreate />} />
           <Route path="meeting/:meetingId" element={<MeetingRoom />} />
-          <Route path="chating/:meetingId" element={<ChatingRoom />} />
           <Route path="mypage/:id" element={<UserPage />} />
           <Route path="joind/meeting" element={<JoinedMeetingPage />} />
           <Route
