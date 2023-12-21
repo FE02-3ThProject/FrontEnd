@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { IconType } from "react-icons";
-import { RotatingLines } from "react-loader-spinner";
+// import { RotatingLines } from "react-loader-spinner";
 
 interface ButtonProps {
   label?: string;

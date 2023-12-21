@@ -24,14 +24,10 @@ const ChantingRoom = () => {
 
   useEffect(() => {
     const stompClient = new Client({
-<<<<<<< HEAD
-      brokerURL: "wss://www.moim-moim.shop/",
-=======
       brokerURL: "wss://api.moim-moim.shop:9090/ws",
->>>>>>> f2f6339ded4d816e2eb9578653f3131b05bdc380
       connectHeaders: {
         "X-AUTH-TOKEN": token,
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
       },
       onConnect: () => {
         setConnected(true);
@@ -43,7 +39,7 @@ const ChantingRoom = () => {
         });
         stompClient.publish({
           destination: `/app/chat/enter/${roomId}`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `${token}` },
         });
       },
     });
@@ -63,7 +59,7 @@ const ChantingRoom = () => {
       client.publish({
         destination: `/app/chat/${roomId}`,
         body: JSON.stringify(msg),
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `${token}` },
       });
       setText("");
     }

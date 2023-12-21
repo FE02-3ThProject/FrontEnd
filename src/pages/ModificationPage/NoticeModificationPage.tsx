@@ -5,8 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const modificationPost = async (
-  meetingId: string | undefined,
-  noticeId: string | undefined,
+  meetingId: number | undefined,
+  noticeId: number | undefined,
   title: string,
   content: string
 ) => {
@@ -14,7 +14,7 @@ const modificationPost = async (
     throw new Error("Meeting ID or Notice ID is not provided.");
   }
   const response = await apiToken.put(
-    `/api/group/${parseInt(meetingId)}/notice/${parseInt(noticeId)}`,
+    `/api/group/${meetingId}/notice/${noticeId}`,
     { title, content }
   );
   return response.data;
@@ -37,14 +37,19 @@ const NoticeModificationPage = () => {
       return;
     }
     try {
-      await modificationPost(meetingId, noticeId, title, content);
+      await modificationPost(
+        Number(meetingId),
+        Number(noticeId),
+        title,
+        content
+      );
       Swal.fire({
         text: "공지사항이 성공적으로 수정되었습니다.",
         icon: "success",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       });
-      navigator(-2);
+      navigator(`/meeting/${meetingId}/${noticeId}/notice`);
     } catch (error) {
       Swal.fire({
         text: "공지사항 수정에 실패했습니다.",
