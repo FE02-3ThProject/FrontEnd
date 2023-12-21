@@ -22,22 +22,20 @@ import JoindeMeeting from "../../components/user/JoinedMeeting";
 import Swal from "sweetalert2";
 
 interface MeetingType {
-  data: {
-    groupId: number;
-    title: string;
-    content: string;
-    createAt: string;
-    image: string;
-    description: string;
-    maxMembers: number;
-    locationId: {
-      locationId: string;
-      name: string;
-    };
-    categoryId: {
-      categoryId: string;
-      name: string;
-    };
+  groupId: number;
+  title: string;
+  content: string;
+  createAt: string;
+  image: string;
+  description: string;
+  maxMembers: number;
+  locationId: {
+    locationId: string;
+    name: string;
+  };
+  categoryId: {
+    categoryId: string;
+    name: string;
   };
 }
 
@@ -207,13 +205,13 @@ const UserPage = () => {
             <StToggleCard>
               {activeView === "join" &&
                 joinedMeetingData?.data.map((data) => (
-                  <JoindeMeeting key={data?.groupId} data={data} />
+                  <JoindeMeeting key={data.groupId} data={data} />
                 ))}
             </StToggleCard>
             <StToggleCard>
               {activeView === "sub" &&
                 subMeetingData?.data.map((data) => (
-                  <SubMeeting key={data?.groupId} data={data} />
+                  <SubMeeting key={data.groupId} data={data} />
                 ))}
             </StToggleCard>
           </StToggleWrap>
