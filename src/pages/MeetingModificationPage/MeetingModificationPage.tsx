@@ -9,61 +9,29 @@ import { useRef, useState } from "react";
 import Swal from "sweetalert2";
 
 //image import
-import basicImage from "../../images/default_profile.png";
-
-// interface Meeting {
-//   title: string;
-//   image: string;
-//   locationId: number;
-//   description: string;
-//   maxMembers: number;
-//   categoryId: number;
-// }
+import Banner from "../../images/meeting/Group-559.png";
 
 interface StLeftFormProps {
   MeetingImage?: string;
 }
-
-// const updateMeeting = async ({
-//   newMeeting,
-//   meetingId,
-// }: {
-//   newMeeting: Meeting;
-//   meetingId: string;
-// }) => {
-//   const response = await apiToken.put(
-//     `/api/group/update/${parseInt(meetingId)}`,
-//     JSON.stringify(newMeeting),
-//     {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     }
-//   );
-//   return response.data;
-// };
 
 const updateMeeting = async ({
   formData,
   meetingId,
 }: {
   formData: FormData;
-  meetingId: string;
+  meetingId: number;
 }) => {
-  const response = await apiToken.put(
-    `/api/group/${parseInt(meetingId)}`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  const response = await apiToken.put(`/api/group/${meetingId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };
 
 //모임 상세조회 불러오기
-const fetchDetails = async (groupId: string | undefined) => {
+const fetchDetails = async (groupId: number | undefined) => {
   const response = await apiToken.get(`/api/group/detail/${groupId}`);
   return response.data;
 };
@@ -79,7 +47,9 @@ const MeetingModificationPage = () => {
   const meetingId = useParams().meetingId;
   const groupId = meetingId;
   const navigate = useNavigate();
-  const { data: meeting } = useQuery(["meeting"], () => fetchDetails(groupId));
+  const { data: meeting } = useQuery(["meeting"], () =>
+    fetchDetails(Number(groupId))
+  );
   const MeetingImage = meeting && meeting.image;
   console.log(meeting);
 
@@ -98,37 +68,10 @@ const MeetingModificationPage = () => {
     }
   };
 
-  // const mutation = useMutation<
-  //   { newMeeting: Meeting; meetingId: string },
-  //   unknown,
-  //   { newMeeting: Meeting; meetingId: string },
-  //   unknown
-  // >(({ newMeeting, meetingId }) => updateMeeting({ newMeeting, meetingId }), {
-  //   onSuccess: () => {
-  //     setTitle("");
-  //     setImage(null);
-  //     setLocation("");
-  //     setDescription("");
-  //     setMaxMembers(1);
-  //     setCategory("");
-  //     if (fileInput.current) {
-  //       fileInput.current.value = "";
-  //     }
-  //     Swal.fire({
-  //       text: "수정이 완료되었습니다.",
-  //       icon: "success",
-  //       confirmButtonColor: "#3085d6",
-  //       confirmButtonText: "확인",
-  //     }).then(() => {
-  //       navigate(-1);
-  //     });
-  //   },
-  // });
-
   const mutation = useMutation<
-    { formData: FormData; meetingId: string },
+    { formData: FormData; meetingId: number },
     unknown,
-    { formData: FormData; meetingId: string },
+    { formData: FormData; meetingId: number },
     unknown
   >(({ formData, meetingId }) => updateMeeting({ formData, meetingId }), {
     onSuccess: () => {
@@ -147,28 +90,10 @@ const MeetingModificationPage = () => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
       }).then(() => {
-        navigate(-1);
+        navigate(`/meeting/${meetingId}`);
       });
     },
   });
-
-  // const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   if (!meetingId) {
-  //     throw new Error("Meeting ID is not provided.");
-  //   }
-  //   mutation.mutate({
-  //     newMeeting: {
-  //       title: title,
-  //       image: "image",
-  //       locationId: Number(location),
-  //       description: description,
-  //       maxMembers: Number(maxMembers),
-  //       categoryId: Number(category),
-  //     },
-  //     meetingId: meetingId,
-  //   });
-  // };
 
   const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -188,7 +113,7 @@ const MeetingModificationPage = () => {
     }
     mutation.mutate({
       formData: formData,
-      meetingId: meetingId,
+      meetingId: Number(meetingId),
     });
   };
   return (
@@ -199,11 +124,7 @@ const MeetingModificationPage = () => {
             <StTitle>{meeting && meeting.title}</StTitle>
             <StDesc>{meeting && meeting.description}</StDesc>
             <StProfile>
-              {meeting?.leaderProfilePictrue === !null ? (
-                <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
-              ) : (
-                <StProfileImg src={basicImage} />
-              )}
+              <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
               <StProfileRight>
                 <StNickName>{meeting && meeting.leaderNickname}</StNickName>
                 <StProfileDesc>
@@ -292,6 +213,9 @@ const StContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(${Banner});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StForm = styled.div`

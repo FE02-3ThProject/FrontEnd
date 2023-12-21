@@ -91,25 +91,25 @@ const UserPage = () => {
     }
   };
 
-  // const getMyJoinedMeeting = async () => {
-  //   const res = await apiToken.get("/api/user-group/joined");
-  //   return res;
-  // };
-  // const { data: joinedMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
-  //   "MY_JOINEDMEETING",
-  //   getMyJoinedMeeting
-  // );
-  // console.log(joinedMeetingData);
+  const getMyJoinedMeeting = async () => {
+    const res = await apiToken.get("/api/user/joined");
+    return res;
+  };
+  const { data: joinedMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
+    "MY_JOINEDMEETING",
+    getMyJoinedMeeting
+  );
+  console.log(joinedMeetingData);
 
-  // const getSubMeeting = async () => {
-  //   const res = await apiToken.get(`/api/user-group/bookmark/${email}`);
-  //   return res;
-  // };
-  // const { data: subMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
-  //   "MY_SUBMEETING",
-  //   getSubMeeting
-  // );
-  // console.log(subMeetingData);
+  const getSubMeeting = async () => {
+    const res = await apiToken.get("/api/user/bookmarked");
+    return res;
+  };
+  const { data: subMeetingData } = useQuery<AxiosResponse<MeetingType[]>>(
+    "MY_SUBMEETING",
+    getSubMeeting
+  );
+  console.log(subMeetingData);
 
   const getMyProfile = async () => {
     const res = await apiToken.get(`/api/user/info?email=${email}`);
@@ -119,6 +119,7 @@ const UserPage = () => {
     "MY_PROFILE",
     getMyProfile
   );
+  console.log(profileData)
 
   useEffect(() => {}, [profileData]);
 
@@ -155,19 +156,15 @@ const UserPage = () => {
               </StPointWrap>
               <StPointWrap>
                 <img src={locationIcon} />
-                <StPointBox>{profileData?.data.location.name}</StPointBox>
+                <StPointBox>{profileData?.data.locationId.name}</StPointBox>
               </StPointWrap>
               <StPointWrap>
                 <img src={categoryIcon} />
-                <StPointBox>
-                  {profileData?.data.category.categoryName}
-                </StPointBox>
+                <StPointBox>{profileData?.data.categoryId.name}</StPointBox>
               </StPointWrap>
               <StIntroBox>
                 <img src={productionIcon} />
-                <StIntro>
-                  {profileData?.data.introduction.selfIntroduction}
-                </StIntro>
+                <StIntro>{profileData?.data.introduction}</StIntro>
               </StIntroBox>
             </StProfileDetailBox>
             <StButtonBox>
@@ -186,7 +183,7 @@ const UserPage = () => {
           </StTextBox>
         </StUser>
         <StVisibleWrap>
-          {/* <StToggleWrap>
+          <StToggleWrap>
             <StToggleButton onClick={JoinMeetingView}>
               가입한모임
             </StToggleButton>
@@ -201,7 +198,7 @@ const UserPage = () => {
               subMeetingData?.data.map((data) => (
                 <SubMeeting key={data.id} data={data} />
               ))}
-          </StToggleWrap> */}
+          </StToggleWrap>
         </StVisibleWrap>
       </StProfileBox>
 
@@ -240,6 +237,7 @@ const StProfileBox = styled.div`
   flex-direction: column;
   border-radius: 30px;
   border: 1px solid white;
+  background-color: white;
   box-shadow: 11px 13px 4px 0px #0000001a;
 `;
 
@@ -267,6 +265,7 @@ const StTitle = styled.div`
     font-weight: 700;
     line-height: 39px;
     text-align: center;
+    color: black
   }
 `;
 
@@ -316,7 +315,7 @@ const StPointBox = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid #d9d9d9;
-  box-shadow: 0px 4px 4px 0px #f9b93790;
+  box-shadow: 0px 4px 4px 0px #00000040;
   color: black;
 `;
 
@@ -339,7 +338,7 @@ const StIntro = styled.div`
   padding: 10px;
   margin-top: 22px;
   border: 1px solid #d9d9d9;
-  box-shadow: 0px 4px 4px 0px #f9b93790;
+  box-shadow: 0px 4px 4px 0px #00000040;
 `;
 
 const StProfileButton = styled.button`

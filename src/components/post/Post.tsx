@@ -5,15 +5,22 @@ interface PostProps {
     id: string;
     title: string;
     content: string;
-    createAt: string;
+    postedAt: string;
+    email: string;
   };
 }
 
 const Post: React.FC<PostProps> = ({ data }) => {
   return (
     <StContainer>
-      <StTitle>{data.title}</StTitle>
-      <StContent>{data.content}</StContent>
+      <div>
+        <StTitle>{data.title}</StTitle>
+        <StContent>{data.content}</StContent>
+      </div>
+      <div>
+        <StDate>작성일 : {data.postedAt}</StDate>
+        <StName>작성자 : {data.email}</StName>
+      </div>
     </StContainer>
   );
 };
@@ -21,12 +28,11 @@ const Post: React.FC<PostProps> = ({ data }) => {
 export default Post;
 
 const StContainer = styled.div`
-  width: 600px;
+  width: 480px;
   height: 30px;
-  text-indent: 15px;
   display: flex;
-  flex-direction: column;
-  justify-content: start;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: start;
   margin-top: 10px;
   margin-bottom: 5px;
@@ -34,10 +40,25 @@ const StContainer = styled.div`
 `;
 
 const StTitle = styled.h3`
+  width: 100%;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 const StContent = styled.p`
   font-size: 12px;
+  margin-top: 10px;
+  font-weight: 500;
+`;
+
+const StDate = styled.p`
+  font-size: 12px;
+  margin-top: 10px;
+  font-weight: 500;
+`;
+
+const StName = styled.p`
+  font-size: 12px;
+  margin-top: 10px;
+  font-weight: 500;
 `;

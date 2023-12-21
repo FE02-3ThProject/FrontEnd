@@ -18,6 +18,7 @@ import MeetingRoom from "./pages/MeetingRoom/MeetingRoom";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import MeetingMemberPage from "./pages/MeetingMemberPage/MeetingMemberPage";
 import SearchPageResult from "./pages/SearchPage/SearchPageResult";
+import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import ChatPage from "./pages/Chat/ChatPage";
 
 const App = () => {
@@ -30,7 +31,7 @@ const App = () => {
           <Route path="signup" element={<SignUpPage />} />
           <Route path="additional" element={<MeetingCreate />} />
           <Route path="meeting/:meetingId" element={<MeetingRoom />} />
-          <Route path="chating/:roomId" element={<ChatingRoom />} />
+          <Route path="chating/:meetingId" element={<ChatingRoom />} />
           <Route path="mypage/:id" element={<UserPage />} />
           <Route path="joind/meeting" element={<JoinedMeetingPage />} />
           <Route
@@ -63,6 +64,7 @@ const App = () => {
             element={<MeetingMemberPage />}
           />
           <Route path="searchresult/:keyword" element={<SearchPageResult />} />
+          <Route path="*" element={<NotFoundPage />} />
           <Route path="chatting/:roomid" element={<ChatPage />} />
         </Route>
       </Routes>

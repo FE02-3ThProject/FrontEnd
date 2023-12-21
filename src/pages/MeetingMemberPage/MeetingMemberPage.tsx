@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import styled from "styled-components";
 
 //image import
-import basicImage from "../../images/default_profile.png";
+import Banner from "../../images/meeting/Group-559.png";
 
 interface StLeftFormProps {
   meetingImage?: string;
@@ -24,13 +24,13 @@ interface MemberActionParams {
 }
 
 //모임 상세정보 조회
-const fetchDetails = async (groupId: string | undefined) => {
+const fetchDetails = async (groupId: number | undefined) => {
   const response = await apiToken.get(`/api/group/detail/${groupId}`);
   return response.data;
 };
 
 //모임 맴버 조회
-const fetchMembers = async (groupId: string | undefined) => {
+const fetchMembers = async (groupId: number | undefined) => {
   const response = await apiToken.get(`api/group/groupMembers/${groupId}`);
   return response.data;
 };
@@ -43,7 +43,7 @@ const kickedMember = async ({ groupId, userId }: MemberActionParams) => {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 };
 
@@ -55,7 +55,7 @@ const changeLeader = async ({ groupId, userId }: MemberActionParams) => {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 };
 
@@ -64,8 +64,12 @@ const MeetingMemberPage = () => {
   const groupId = meetingId;
   const queryClient = useQueryClient();
 
-  const { data: meeting } = useQuery(["meeting"], () => fetchDetails(groupId));
-  const { data: members } = useQuery(["members"], () => fetchMembers(groupId));
+  const { data: meeting } = useQuery(["meeting"], () =>
+    fetchDetails(Number(groupId))
+  );
+  const { data: members } = useQuery(["members"], () =>
+    fetchMembers(Number(groupId))
+  );
 
   const kickedMemberMutation = useMutation(kickedMember, {
     onSuccess: () => {
@@ -81,8 +85,6 @@ const MeetingMemberPage = () => {
 
   const MeetingImage = meeting && meeting.image;
 
-  console.log(meeting);
-  console.log(members);
   return (
     <StContainer>
       <StForm>
@@ -91,11 +93,7 @@ const MeetingMemberPage = () => {
             <StTitle>{meeting && meeting.title}</StTitle>
             <StDesc>{meeting && meeting.description}</StDesc>
             <StProfile>
-              {meeting?.leaderProfilePicture === !null ? (
-                <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
-              ) : (
-                <StProfileImg src={basicImage} />
-              )}
+              <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
               <StProfileRight>
                 <StNickName>{meeting && meeting.leaderNickname}</StNickName>
                 <StProfileDesc>
@@ -172,6 +170,9 @@ const StContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(${Banner});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StForm = styled.div`

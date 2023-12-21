@@ -35,7 +35,7 @@ const addNotice = async (data: data) => {
   return response.data;
 };
 
-const fetchDetails = async (groupId: string | undefined) => {
+const fetchDetails = async (groupId: number | undefined) => {
   const response = await apiToken.get(`/api/group/detail/${groupId}`);
   return response.data;
 };
@@ -48,7 +48,9 @@ const CreatePostPage = () => {
   const meetingId = useParams().meetingId as string;
   const userId = getCookie("email");
 
-  const { data: meeting } = useQuery(["meeting"], () => fetchDetails(groupId));
+  const { data: meeting } = useQuery(["meeting"], () =>
+    fetchDetails(Number(groupId))
+  );
 
   const groupId = meetingId;
 
