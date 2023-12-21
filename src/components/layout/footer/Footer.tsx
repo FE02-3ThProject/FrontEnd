@@ -35,7 +35,7 @@ const Footer = () => {
         </span>
         <span>
           <Link
-            to="https://github.com/FE02-3ThProject/FrontEnd/tree/develop"
+            to="https://github.com/orgs/FE02-3ThProject/repositories"
             style={{ textDecoration: "none", color: "white" }}
             target="_blank"
           >
