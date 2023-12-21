@@ -17,7 +17,6 @@ const Footer = () => {
             Home
           </Link>
         </span>
-        <span>About</span>
         <span>
           <Link
             to="additional"
@@ -34,7 +33,15 @@ const Footer = () => {
             내정보
           </Link>
         </span>
-        <span>Contanct US</span>
+        <span>
+          <Link
+            to="https://github.com/FE02-3ThProject/FrontEnd/tree/develop"
+            style={{ textDecoration: "none", color: "white" }}
+            target="_blank"
+          >
+            Contanct US
+          </Link>
+        </span>
       </StContent>
       <StIcons>
         <Link
