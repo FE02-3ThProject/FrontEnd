@@ -2,10 +2,21 @@ import styled from "styled-components";
 
 interface JoindeMeetingProps {
   data: {
-    id: string;
+    groupId: number;
     title: string;
     content: string;
     createAt: string;
+    image: string;
+    description: string;
+    maxMembers: number;
+    locationId: {
+      locationId: string;
+      name: string;
+    };
+    categoryId: {
+      categoryId: string;
+      name: string;
+    }
   };
 }
 
@@ -13,7 +24,11 @@ const JoindeMeeting: React.FC<JoindeMeetingProps> = ({ data }) => {
   return (
     <StContainer>
       <StTitle>{data.title}</StTitle>
-      <StContent>{data.content}</StContent>
+      <StContent>{data.image}</StContent>
+      <StContent>{data.description}</StContent>
+      <StContent>{data.maxMembers}</StContent>
+      <StContent>{data.locationId.name}</StContent>
+      <StContent>{data.categoryId.name}</StContent>
     </StContainer>
   );
 };

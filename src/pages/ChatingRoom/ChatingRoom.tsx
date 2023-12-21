@@ -23,9 +23,12 @@ const ChantingRoom = () => {
   const userEmail = useRecoilState(userEmailState);
 
   useEffect(() => {
-    const sock = new SockJS("https://api.moim-moim.shop:9090");
     const stompClient = new Client({
+<<<<<<< HEAD
+      brokerURL: "wss://www.moim-moim.shop/",
+=======
       brokerURL: "wss://api.moim-moim.shop:9090/ws",
+>>>>>>> f2f6339ded4d816e2eb9578653f3131b05bdc380
       connectHeaders: {
         "X-AUTH-TOKEN": token,
         Authorization: `Bearer ${token}`,
