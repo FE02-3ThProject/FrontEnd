@@ -191,7 +191,13 @@ const MeetingRoom = () => {
       <StForm>
         <StLeftForm MeetingImage={MeetingImage}>
           <StProfileSec>
-            <StTitle>{meeting && meeting.title}</StTitle>
+            <StTitleSec>
+              <StTitle>{meeting && meeting.title}</StTitle>
+              <StCategory>
+                {meeting && meeting.categoryName}/
+                {meeting && meeting.locationName}
+              </StCategory>
+            </StTitleSec>
             <StDesc>{meeting && meeting.description}</StDesc>
             <StProfile>
               <StProfileImg src={meeting && meeting?.leaderProfilePicture} />
@@ -366,6 +372,17 @@ const StLeftForm = styled.div<StLeftFormProps>`
 
 const StProfileSec = styled.div`
   margin: 0 auto;
+`;
+
+const StTitleSec = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const StCategory = styled.p`
+  color: #ffffff;
+  font-size: 20px;
 `;
 
 const StTitle = styled.h2`

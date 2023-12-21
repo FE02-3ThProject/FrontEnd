@@ -6,7 +6,7 @@ import { useMutation, useQuery } from "react-query";
 import { apiToken } from "../../shared/apis/Apis";
 import { getCookie } from "../../shared/Cookie";
 interface data {
-  groupId: string;
+  groupId: number;
   title: string;
   content: string;
 }
@@ -28,10 +28,10 @@ const addNotice = async (data: data) => {
   if (!groupId) {
     throw new Error("Meeting ID is not provided.");
   }
-  const response = await apiToken.post(
-    `/api/group/${parseInt(groupId)}/notice`,
-    { title, content }
-  );
+  const response = await apiToken.post(`/api/group/${groupId}/notice`, {
+    title,
+    content,
+  });
   return response.data;
 };
 
@@ -105,9 +105,9 @@ const CreatePostPage = () => {
       return;
     }
     if (postOrNotice === "post") {
-      mutationPost.mutate({ groupId, title, content });
+      mutationPost.mutate({ groupId: parseInt(groupId), title, content });
     } else if (postOrNotice === "notice") {
-      mutationNotice.mutate({ groupId, title, content });
+      mutationNotice.mutate({ groupId: parseInt(groupId), title, content });
     }
   };
 
