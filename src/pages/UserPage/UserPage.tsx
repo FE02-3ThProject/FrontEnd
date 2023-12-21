@@ -22,22 +22,20 @@ import JoindeMeeting from "../../components/user/JoinedMeeting";
 import Swal from "sweetalert2";
 
 interface MeetingType {
-  data: {
-    groupId: number;
-    title: string;
-    content: string;
-    createAt: string;
-    image: string;
-    description: string;
-    maxMembers: number;
-    locationId: {
-      locationId: string;
-      name: string;
-    };
-    categoryId: {
-      categoryId: string;
-      name: string;
-    };
+  groupId: number;
+  title: string;
+  content: string;
+  createAt: string;
+  image: string;
+  description: string;
+  maxMembers: number;
+  locationId: {
+    locationId: string;
+    name: string;
+  };
+  categoryId: {
+    categoryId: string;
+    name: string;
   };
 }
 
@@ -85,7 +83,7 @@ const UserPage = () => {
         text: `회원탈퇴 도중 오류가 발생하였습니다!`,
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
-      })
+      });
     }
   };
 
@@ -207,13 +205,13 @@ const UserPage = () => {
             <StToggleCard>
               {activeView === "join" &&
                 joinedMeetingData?.data.map((data) => (
-                  <JoindeMeeting key={data?.data.groupId} data={data.data} />
+                  <JoindeMeeting key={data.groupId} data={data} />
                 ))}
             </StToggleCard>
             <StToggleCard>
               {activeView === "sub" &&
                 subMeetingData?.data.map((data) => (
-                  <SubMeeting key={data?.data.groupId} data={data.data} />
+                  <SubMeeting key={data.groupId} data={data} />
                 ))}
             </StToggleCard>
           </StToggleWrap>
