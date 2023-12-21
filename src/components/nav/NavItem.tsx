@@ -39,8 +39,12 @@ const NavItem = () => {
     try {
       await apiToken.post("/api/user/logout");
     } catch (error) {
-      console.error("logOut Error", error);
-      throw error;
+      Swal.fire({
+        icon: "warning",
+        text: `로그 아웃 도중 오류가 발생하였습니다!`,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      })
     }
   };
 

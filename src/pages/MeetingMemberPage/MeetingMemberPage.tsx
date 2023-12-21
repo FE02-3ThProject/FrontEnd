@@ -110,48 +110,50 @@ const MeetingMemberPage = () => {
         <StMemberSec>
           <StMemberContainer>
             {members &&
-              members.map((member: MemberType) => (
-                <StMemberProfile key={member.userId}>
-                  <StMemberName>
-                    <StMemberNameRole>
-                      닉네임 : {member.nickname}
-                    </StMemberNameRole>
-                    <StMemberNameRole>역할 : {member.role}</StMemberNameRole>
-                  </StMemberName>
-                  <StMemberButton>
-                    {member && meeting && member.role === "MEMBER" ? (
-                      <>
-                        <StButton
-                          onClick={() => {
-                            if (groupId) {
-                              kickedMemberMutation.mutate({
-                                groupId: groupId,
-                                userId: member.userId,
-                              });
-                            }
-                          }}
-                        >
-                          추방
-                        </StButton>
-                        <StButton
-                          onClick={() => {
-                            if (groupId) {
-                              changeLeaderMutation.mutate({
-                                groupId: groupId,
-                                userId: member.userId,
-                              });
-                            }
-                          }}
-                        >
-                          권한 변경
-                        </StButton>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </StMemberButton>
-                </StMemberProfile>
-              ))}
+              members
+                .sort((_: MemberType, b: MemberType) =>
+                  b.role === "LEADER" ? 1 : -1
+                )
+                .map((member: MemberType) => (
+                  <StMemberProfile key={member.userId}>
+                    <StMemberName>
+                      <StMemberNameRole>{member.nickname}</StMemberNameRole>
+                      <StMemberNameRole>역할 : {member.role}</StMemberNameRole>
+                    </StMemberName>
+                    <StMemberButton>
+                      {member && meeting && member.role === "MEMBER" ? (
+                        <>
+                          <StButton
+                            onClick={() => {
+                              if (groupId) {
+                                kickedMemberMutation.mutate({
+                                  groupId: groupId,
+                                  userId: member.userId,
+                                });
+                              }
+                            }}
+                          >
+                            추방
+                          </StButton>
+                          <StButton
+                            onClick={() => {
+                              if (groupId) {
+                                changeLeaderMutation.mutate({
+                                  groupId: groupId,
+                                  userId: member.userId,
+                                });
+                              }
+                            }}
+                          >
+                            권한 변경
+                          </StButton>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </StMemberButton>
+                  </StMemberProfile>
+                ))}
           </StMemberContainer>
           <Link to={`/meeting/${groupId}`}>
             <StBackButton>돌아가기</StBackButton>
@@ -171,8 +173,9 @@ const StContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-image: url(${Banner});
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: top;
+  background-repeat: no-repeat;
 `;
 
 const StForm = styled.div`
@@ -302,7 +305,9 @@ const StMemberName = styled.div`
   display: flex;
   gap: 15px;
   align-items: center;
+  justify-content: space-between;
   height: 30px;
+  width: 220px;
 `;
 
 const StMemberButton = styled.div`

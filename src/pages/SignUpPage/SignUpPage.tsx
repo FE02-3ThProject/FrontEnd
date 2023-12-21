@@ -154,7 +154,6 @@ const SignUpPage = () => {
   const { mutate: onsubmit } = useMutation(postSignUp, {
     onSuccess: (data) => {
       queryClient.invalidateQueries();
-      console.log(data);
       if (data?.request.status === 200) {
         Swal.fire({
           text: "가입이 완료되었습니다.",

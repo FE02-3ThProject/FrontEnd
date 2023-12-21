@@ -22,10 +22,23 @@ import JoindeMeeting from "../../components/user/JoinedMeeting";
 import Swal from "sweetalert2";
 
 interface MeetingType {
-  id: string;
-  title: string;
-  content: string;
-  createAt: string;
+  data: {
+    groupId: number;
+    title: string;
+    content: string;
+    createAt: string;
+    image: string;
+    description: string;
+    maxMembers: number;
+    locationId: {
+      locationId: string;
+      name: string;
+    };
+    categoryId: {
+      categoryId: string;
+      name: string;
+    };
+  };
 }
 
 const UserPage = () => {
@@ -67,7 +80,12 @@ const UserPage = () => {
         }
       });
     } catch (error) {
-      console.error("회원 탈퇴 오류:", error);
+      Swal.fire({
+        icon: "warning",
+        text: `회원탈퇴 도중 오류가 발생하였습니다!`,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "확인",
+      })
     }
   };
 
@@ -99,8 +117,6 @@ const UserPage = () => {
     "MY_JOINEDMEETING",
     getMyJoinedMeeting
   );
-  console.log(joinedMeetingData);
-
   const getSubMeeting = async () => {
     const res = await apiToken.get("/api/user/bookmarked");
     return res;
@@ -109,7 +125,6 @@ const UserPage = () => {
     "MY_SUBMEETING",
     getSubMeeting
   );
-  console.log(subMeetingData);
 
   const getMyProfile = async () => {
     const res = await apiToken.get(`/api/user/info?email=${email}`);
@@ -119,7 +134,6 @@ const UserPage = () => {
     "MY_PROFILE",
     getMyProfile
   );
-  console.log(profileData);
 
   useEffect(() => {}, [profileData]);
 
@@ -193,13 +207,15 @@ const UserPage = () => {
             <StToggleCard>
               {activeView === "join" &&
                 joinedMeetingData?.data.map((data) => (
-                  <JoindeMeeting key={data.id} data={data} />
+                  <JoindeMeeting key={data?.data.groupId} data={data.data} />
                 ))}
             </StToggleCard>
-            {activeView === "sub" &&
-              subMeetingData?.data.map((data) => (
-                <SubMeeting key={data.id} data={data} />
-              ))}
+            <StToggleCard>
+              {activeView === "sub" &&
+                subMeetingData?.data.map((data) => (
+                  <SubMeeting key={data?.data.groupId} data={data.data} />
+                ))}
+            </StToggleCard>
           </StToggleWrap>
         </StVisibleWrap>
       </StProfileBox>
@@ -220,7 +236,7 @@ const UserPage = () => {
 
 const StMyProfileContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -370,20 +386,22 @@ const StVisibleWrap = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  border: 1px solid purple;
   justify-content: center;
+  align-items: center;
 `;
 
 const StButtonWrap = styled.div`
   display: flex;
   gap: 15px;
-  width: 100%;
+  width: 500px;
 `;
 
 const StToggleWrap = styled.div`
   display: flex;
+  width: 84%;
   flex-direction: column;
-  border: 1px solid red;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StToggleButton = styled.button`
@@ -398,6 +416,7 @@ const StToggleButton = styled.button`
 const StToggleCard = styled.div`
   display: flex;
   flex-wrap: wrap;
+  gap: 15px;
 `;
 
 const StButtonBox = styled.div`
