@@ -1,7 +1,7 @@
 ## 모임?모임! PROJECT
 
 <br />
-<img src="https://sour-process-b08.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F812354cb-4304-4b1b-b07d-f3c2e18143f4%2F523f4b31-7e81-4d8c-93f1-33f94ef5dde6%2Fmain_(1).jpg?table=block&id=826ce8a5-6b05-4982-8518-4011a18a98ac&spaceId=812354cb-4304-4b1b-b07d-f3c2e18143f4&width=1660&userId=&cache=v2"/>
+<img src="https://sour-process-b08.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F812354cb-4304-4b1b-b07d-f3c2e18143f4%2F69593339-4808-4ca2-9825-cec84c074a61%2Fscreencapture-localhost-5173-2023-12-22-01_47_37.png?table=block&id=9c7e82fa-60c3-4a0a-afaa-e1f43760d53c&spaceId=812354cb-4304-4b1b-b07d-f3c2e18143f4&width=1660&userId=&cache=v2"/>
 
 <br />
 <br />
@@ -76,6 +76,14 @@
   - 리액트 쿼리 적용을 안하고 코드를 작성했습니다.
 - **`해결방안`**<br/>
   - 모든 비동기 통신을 axios를 사용해서 하다가 리액트 쿼리를 사용하여 관리했습니다.
+- **`문제점`** <br/>
+  - 서버로 부터 AccessToken과 RefreshToken을 함께 받아서 클라이언트에서 쿠키에 저장하고 AccessToken이 만료 되면 가지고 있는 RefreshToken을 사용해서 다시 AccessToken을 재발급 받으려 하였지만 AccessToken을 다시 재발급 받지를 못하였다.
+- **`해결방안`**<br/>
+  - 쿠키에 새롭게 저장되는 값을 찾아보니 NaN이 뜨고 있길래 대체 무슨 소린가 했더니 자바 스크립트의 농간이었던 것으로 결국 모든 삽질이 해결되었다. 서버로 부터 받는 토큰이름에 - 가 들어가는거 때문에 숫자로 인식해버린 것이었다!
+- **`문제점`** <br/>
+  - 통신을 통해 받은 데이터를 map매소드를 이용해서 카드 형식으로 나열하려고 하였지만 이때 interface로 타입을 지정해 둔것과 카드에 주는 키값과 data값이 제대로 매칭이 안되는 오류가 발생 하였다
+- **`해결방안`**<br/>
+  - interface에 타입 설정시 data로 묶어서 설정한게 문제가 발생하였었다. 그래서 키값으로 groupId를 받아오려고 해도 data의 data안에 groupId를 찾아야 됫고 ​또한 MeetingType의 정의에 따르면 data 필드 내에 각 회의 정보가 담겨야 하지만, 실제로는 MeetingType[]의 형태로 배열이 반환되어 각 회의 정보에 직접 접근할 수 없게 되었습니다.
 
 <br /><br/>
 
