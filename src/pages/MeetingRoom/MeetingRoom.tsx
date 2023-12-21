@@ -566,6 +566,10 @@ const StFavoriteBtn = styled.button`
   outline: none;
   &:hover {
     outline: none;
-    border: 1px solid none;
+    border: none;
+  }
+  &:focus {
+    outline: none;
+    border: none;
   }
 `;

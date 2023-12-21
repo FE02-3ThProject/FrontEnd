@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import FloatingButton from "../../components/common/FloatingButton";
 import MainSwiper from "../../components/Swiper/MainSwiper";
-import Categories from "../../components/categories/Categories_before";
+import Categories from "../../components/categories/Categories";
 import styled from "styled-components";
 import Mainbanner from "../../components/banner/Mainbanner";
 import MainBottomBanner from "../../components/banner/MainBottomBanner";

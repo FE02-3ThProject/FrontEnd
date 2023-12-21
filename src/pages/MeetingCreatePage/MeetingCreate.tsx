@@ -23,7 +23,7 @@ import Friends2 from "../../images/friends2.png";
 // }
 
 const createMeeting = async (formData: FormData) => {
-  const response = await apiToken.post("/api/group", formData, {
+  const response = await apiToken.post("/api/group/create", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -111,7 +111,7 @@ const MeetingCreate = () => {
 
     // FormData 객체를 생성하고 필드를 추가합니다.
     const formData = new FormData();
-    formData.append("name", title);
+    formData.append("title", title);
     if (image) formData.append("file", image); // 이미지 파일을 formData에 추가합니다.
     formData.append("locationId", String(location));
     formData.append("description", description);
