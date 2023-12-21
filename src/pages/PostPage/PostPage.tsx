@@ -30,13 +30,25 @@ const fetchPostData = async (meetingId: number, postId: number) => {
   return response.data;
 };
 
+const fetchDetails = async (groupId: number | undefined) => {
+  const response = await apiToken.get(`/api/group/detail/${groupId}`);
+  return response.data;
+};
+
 const PostPage = () => {
   const { meetingId, postId } = useParams();
   const navigate = useNavigate();
+  const groupId = meetingId;
 
   if (!meetingId || !postId) {
     return <div>Meeting ID or Post ID is not provided.</div>;
   }
+
+  const { data: meeting } = useQuery(
+    ["meeting", groupId],
+    () => fetchDetails(Number(groupId)),
+    { enabled: !!groupId }
+  );
 
   const {
     data: post,
@@ -78,7 +90,8 @@ const PostPage = () => {
         <StTitle>{post?.title}</StTitle>
         <StContent>{post?.content}</StContent>
         <StButtonForm>
-          {post && post.email === userId ? (
+          {(post && post.email === userId) ||
+          (meeting && meeting.leaderEmail === userId) ? (
             <>
               <Link to={`/meeting/${meetingId}/${postId}/post/modification`}>
                 <StButton>수정</StButton>

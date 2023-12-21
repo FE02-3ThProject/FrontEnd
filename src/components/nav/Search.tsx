@@ -118,7 +118,7 @@ const StSearchIcon = styled.div`
   color: #fff;
   font-size: 20px;
   font-weight: bold;
-  top: 18px;
+  top: 19px;
   left: 480px;
   cursor: pointer;
 `;

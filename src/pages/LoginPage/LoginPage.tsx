@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 
 import { useRecoilState } from "recoil";
-import { profileImageState } from "../../Atoms";
+import { cookieState, profileImageState } from "../../Atoms";
 import { userEmailState } from "../../Atoms";
 
 import LoginBg from "../../images/login_bg.png";
@@ -19,6 +19,7 @@ import axios, { AxiosResponse } from "axios";
 const LoginPage = () => {
   const [, setProfileImage] = useRecoilState(profileImageState);
   const [, setUserEmail] = useRecoilState(userEmailState);
+  const [, setReCookie] = useRecoilState(cookieState);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ const LoginPage = () => {
       setCookie("userRole", data?.data.userRole, 2);
       setProfileImage(data?.data.image);
       setUserEmail(data?.data.email);
+      setReCookie(true);
       localStorage.setItem("profileImage", data?.data.image);
       navigate("/");
     },
