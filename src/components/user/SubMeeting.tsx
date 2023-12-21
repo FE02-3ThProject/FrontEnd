@@ -23,12 +23,20 @@ interface SubMeetingProps {
 const SubMeeting: React.FC<SubMeetingProps> = ({ data }) => {
   return (
     <StContainer>
-      <StTitle>{data.title}</StTitle>
-      <StContent>{data.image}</StContent>
-      <StContent>{data.description}</StContent>
-      <StContent>{data.maxMembers}</StContent>
-      <StContent>{data.locationId.name}</StContent>
-      <StContent>{data.categoryId.name}</StContent>
+      {/* <StTitle>{data.title}타이틀</StTitle>
+      <StContent>{data.image}이미지</StContent>
+      <StContent>{data.description}내용</StContent>
+      <StContent>{data.maxMembers}최대인원</StContent>
+      <StContent>{data.locationId.name}지역</StContent>
+      <StContent>{data.categoryId.name}카테고리</StContent>
+      <StContent>{data.createAt}개설일</StContent> */}
+      <StTitle>타이틀</StTitle>
+      <StContent>이미지</StContent>
+      <StContent>내용</StContent>
+      <StContent>최대인원</StContent>
+      <StContent>지역</StContent>
+      <StContent>카테고리</StContent>
+      <StContent>개설일</StContent>
     </StContainer>
   );
 };
