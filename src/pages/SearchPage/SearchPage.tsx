@@ -9,7 +9,7 @@ interface SearchResult {
   image: string;
   title: string;
   description: string;
-  memberCount: number;
+  joinedGroupMembers: number;
   maxMembers: number;
   createdAt: string;
   groupId: string;

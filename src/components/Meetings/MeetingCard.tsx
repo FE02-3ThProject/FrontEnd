@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import SearchImg from "../../images/searchpage_bg.png";
 
 interface Group {
   groupId: string;
@@ -9,6 +8,7 @@ interface Group {
   title: string;
   description: string;
   image: string;
+  joinedGroupMembers: number;
   maxMembers: number;
   createdAt: string;
   userId: string;
@@ -33,7 +33,7 @@ const MeetingCard = ({ group }: MeetingCardProps) => {
         <StCategory>{group.categoryName}</StCategory>
         <div>
           <div>
-            {group.maxMembers}{" "}
+            {group.joinedGroupMembers}/{group.maxMembers}{" "}
             <span className="font-light ">명 | {group.createdAt}</span>
           </div>
           <div></div>
@@ -65,7 +65,7 @@ const StImageArea = styled.div`
   width: 200px;
   height: 200px;
   background-color: #999;
-  background-image: url(${SearchImg});
+  background-image: url("https://source.unsplash.com/random");
 `;
 
 const StImageContainer = styled.div`
