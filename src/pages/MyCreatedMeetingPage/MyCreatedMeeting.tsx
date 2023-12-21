@@ -41,14 +41,11 @@ const MyCreatedMeeting = () => {
   return (
     <>
       <StMeetingCard>
-        {/* {meetingData?.data
+        {meetingData?.data
           .filter((data) => data.leaderEmail === userEmail) // leaderEmail과 userEmail이 같은 데이터만 선택
           .map((data) => (
             <MyMeetingCard key={data.groupId} data={data} />
-          ))}    */}
-        {meetingData?.data.map((data) => (
-          <MyMeetingCard key={data.groupId} data={data} />
-        ))}
+          ))}
       </StMeetingCard>
     </>
   );

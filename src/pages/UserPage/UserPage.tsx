@@ -21,6 +21,8 @@ import Loading from "../../components/loading/Loading";
 import SubMeeting from "../../components/user/SubMeeting";
 import JoindeMeeting from "../../components/user/JoinedMeeting";
 import Swal from "sweetalert2";
+import { useRecoilState } from "recoil";
+import { cookieState } from "../../Atoms";
 
 interface MeetingType {
   groupId: number;
@@ -43,8 +45,9 @@ interface MeetingType {
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeView, setActiveView] = useState("none");
+  const [, setReCookie] = useRecoilState(cookieState);
 
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   const email = getCookie("email");
 
@@ -69,13 +72,16 @@ const UserPage = () => {
           deleteCookie("profileimage");
           deleteCookie("location");
           deleteCookie("userRole");
+          setReCookie(false);
+          localStorage.removeItem("profileImage");
           Swal.fire({
             title: "삭제 되었습니다!",
             text: "당신의 계정이 정상적으로 삭제 되었습니다.",
             icon: "success",
+          }).then(() => {
+            navigate("/");
           });
           return response;
-          navigator("/");
         }
       });
     } catch (error) {

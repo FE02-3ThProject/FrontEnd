@@ -9,7 +9,7 @@ import { apiToken } from "../../shared/apis/Apis";
 import { useMutation, useQueryClient } from "react-query";
 
 import { useRecoilState } from "recoil";
-import { profileImageState } from "../../Atoms";
+import { cookieState, profileImageState } from "../../Atoms";
 
 import defaultUserImage from "../../images/default_profile.png";
 import home from "../../images/Home.png";
@@ -19,21 +19,13 @@ import exit from "../../images/Exit to app.png";
 
 const NavItem = () => {
   const [profileImage, setProfileImage] = useRecoilState(profileImageState);
-
-  useEffect(() => {
-    const savedProfileImage = localStorage.getItem("profileImage");
-    if (savedProfileImage) {
-      setProfileImage(savedProfileImage);
-    }
-  }, []);
+  const [isReCookie, setReCookie] = useRecoilState(cookieState);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const cookie = getCookie("token");
   const userId = getCookie("email");
   const nickname = getCookie("nickname");
-  const [is_cookie, setCookie] = useState(false);
 
   const Logout = async () => {
     try {
@@ -44,7 +36,7 @@ const NavItem = () => {
         text: `로그 아웃 도중 오류가 발생하였습니다!`,
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
-      })
+      });
     }
   };
 
@@ -57,7 +49,7 @@ const NavItem = () => {
       deleteCookie("profileimage");
       deleteCookie("location");
       deleteCookie("userRole");
-      setCookie(false);
+      setReCookie(false);
       localStorage.removeItem("profileImage");
 
       Swal.fire({
@@ -98,10 +90,13 @@ const NavItem = () => {
   }, [el]);
 
   useEffect(() => {
+    const cookie = getCookie("token");
     if (cookie !== undefined || null) {
-      return setCookie(true);
+      setReCookie(true);
+    } else {
+      setReCookie(false);
     }
-  }, [cookie]);
+  }, []);
   useEffect(() => {
     const savedProfileImage = localStorage.getItem("profileImage");
     if (savedProfileImage) {
@@ -111,7 +106,7 @@ const NavItem = () => {
 
   return (
     <StMenuList>
-      {is_cookie ? (
+      {isReCookie ? (
         <>
           <StDropDownContainer ref={el}>
             <StProfileImgBox
