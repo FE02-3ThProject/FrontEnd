@@ -4,16 +4,19 @@
 <img src="https://sour-process-b08.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F812354cb-4304-4b1b-b07d-f3c2e18143f4%2F523f4b31-7e81-4d8c-93f1-33f94ef5dde6%2Fmain_(1).jpg?table=block&id=826ce8a5-6b05-4982-8518-4011a18a98ac&spaceId=812354cb-4304-4b1b-b07d-f3c2e18143f4&width=1660&userId=&cache=v2"/>
 
 <br />
-
-## 깃 주소 Link. (https://github.com/FE02-3ThProject/FrontEnd/tree/develop)
-
 <br />
-
-## 배포 주소 Link. (https://www.moim-moim.shop)
 
 ## 📆 프로젝트 기간
 
 - 2023.11.27 - 2023.12.22
+
+<br />
+
+## 깃 주소 Link. https://github.com/FE02-3ThProject/FrontEnd/tree/develop
+
+<br />
+
+## 배포 주소 Link. https://www.moim-moim.shop
 
 <br />
 <br />
@@ -25,6 +28,11 @@
 ### 2. react-query를 사용하여 데이터 Fetching, Caching, 동기화, 서버데이터 업데이트 등을 쉽게 관리.
 
 ### 3. TypeScript를 사용하여 정적 타입을 지원하므로 컴파일 단계에서 오류를 포착할 수 있는 장점이 있으며 명시적인 정적 타입 지정은 개발자의 의도를 명확하게 코드로 기술할 수 있습니다.
+
+<br />
+<br />
+
+<img src="https://sour-process-b08.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F812354cb-4304-4b1b-b07d-f3c2e18143f4%2F587fc5f4-5bc9-47f4-bba9-5f6c439fdf5c%2F%25EC%258B%259C%25EC%258A%25A4%25ED%2585%259C%25EC%2595%2584%25ED%2582%25A4%25ED%2585%258D%25EC%25B2%2598.jpg?table=block&id=3b86af03-b4cb-4e4b-99fd-ccc06ed828dc&spaceId=812354cb-4304-4b1b-b07d-f3c2e18143f4&width=2000&userId=&cache=v2"/>
 
 <br />
 <br />
