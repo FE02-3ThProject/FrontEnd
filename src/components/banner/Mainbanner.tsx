@@ -37,7 +37,6 @@ const StMainBannerContainer = styled.div`
 const StMainBannerLeft = styled.div`
   width: 833px;
   height: 433px;
-  background-image: url(/assets/mainbanner01.png);
 `;
 
 const StMainBannerRight = styled.div`
