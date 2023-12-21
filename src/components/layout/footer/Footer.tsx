@@ -35,12 +35,10 @@ const Footer = () => {
         </span>
         <span>
           <Link
-            to="https://github.com/orgs/FE02-3ThProject/repositories"
-            style={{ textDecoration: "none", color: "white" }}
-            target="_blank"
-          >
-            Contanct US
-          </Link>
+          to="https://github.com/FE02-3ThProject"
+          style={{ textDecoration: "none", color: "white" }}
+          target="_blank"
+          >Contanct US</Link>
         </span>
       </StContent>
       <StIcons>
