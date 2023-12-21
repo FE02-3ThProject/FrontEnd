@@ -1,11 +1,15 @@
 ## 모임?모임! PROJECT
 
 <br />
-<img src="https://sour-process-b08.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F812354cb-4304-4b1b-b07d-f3c2e18143f4%2F780554b1-5ff9-4ec0-bcb2-bd1141156f96%2Fmain.jpg?table=block&id=ae88cf0a-49cf-4d78-a6cf-577dfe1661ef&spaceId=812354cb-4304-4b1b-b07d-f3c2e18143f4&width=1660&userId=&cache=v2"/>
+<img src="https://sour-process-b08.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F812354cb-4304-4b1b-b07d-f3c2e18143f4%2F523f4b31-7e81-4d8c-93f1-33f94ef5dde6%2Fmain_(1).jpg?table=block&id=826ce8a5-6b05-4982-8518-4011a18a98ac&spaceId=812354cb-4304-4b1b-b07d-f3c2e18143f4&width=1660&userId=&cache=v2"/>
 
 <br />
 
 ## 깃 주소 Link. (https://github.com/FE02-3ThProject/FrontEnd/tree/develop)
+
+<br />
+
+## 배포 주소 Link. (https://www.moim-moim.shop)
 
 ## 📆 프로젝트 기간
 
@@ -53,17 +57,17 @@
 
 ## 🔥 트러블 슈팅
 
-<summary>➡️ CORS(Cross-Origin Resource Sharing) 에러</summary> 
+<summary>➡️ 데이터 형식 오류 에러</summary> 
   <br/>
 
 - **`문제점`** <br/>
-  백엔드 배포 후 보안 상의 이유로 끊임없는 CORS 에러 발생하였습니다.
+  - 모임 생성시 서버에 JSON형식으로 데이터를 넘기려고 하니 오류가 발생했습니다.
 - **`해결방안`**<br/>
-  - 1.  Controller에 @CrossOrigin(origins = "\*") 추가 → 다시 CORS 에러 발생
-  - 2.  CorsConfig 생성
-        SecurityConfig에 .cors().and(), .addFilter(corsCofig.corsFilter()) 추가
-- **`결과`**<br/>
-  CORS(Cross-Origin Resource Sharing) 에러가 해결되었습니다.
+  - 폼데이터형식으로 변경 후 요청을 보내니 성공했습니다.
+- **`문제점`** <br/>
+  - 리액트 쿼리 적용을 안하고 코드를 작성했습니다.
+- **`해결방안`**<br/>
+  - 모든 비동기 통신을 axios를 사용해서 하다가 리액트 쿼리를 사용하여 관리했습니다.
 
 <br /><br/>
 
