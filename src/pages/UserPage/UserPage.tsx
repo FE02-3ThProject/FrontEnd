@@ -85,7 +85,7 @@ const UserPage = () => {
         text: `회원탈퇴 도중 오류가 발생하였습니다!`,
         confirmButtonColor: "#3085d6",
         confirmButtonText: "확인",
-      })
+      });
     }
   };
 
@@ -207,13 +207,13 @@ const UserPage = () => {
             <StToggleCard>
               {activeView === "join" &&
                 joinedMeetingData?.data.map((data) => (
-                  <JoindeMeeting key={data?.data.groupId} data={data.data} />
+                  <JoindeMeeting key={data?.groupId} data={data} />
                 ))}
             </StToggleCard>
             <StToggleCard>
               {activeView === "sub" &&
                 subMeetingData?.data.map((data) => (
-                  <SubMeeting key={data?.data.groupId} data={data.data} />
+                  <SubMeeting key={data?.groupId} data={data} />
                 ))}
             </StToggleCard>
           </StToggleWrap>
