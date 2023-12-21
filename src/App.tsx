@@ -8,7 +8,7 @@ import MeetingCreate from "./pages/MeetingCreatePage/MeetingCreate";
 import UserPage from "./pages/UserPage/UserPage";
 import PostPage from "./pages/PostPage/PostPage";
 import CreatePostPage from "./pages/CreatePostPage/CreatePostPage";
-import JoinedMeetingPage from "./pages/JoinedMeetingPage/JoinedMeetingPage";
+import MyCreatedMeeting from "./pages/MyCreatedMeetingPage/MyCreatedMeeting";
 import MeetingModificationPage from "./pages/MeetingModificationPage/MeetingModificationPage";
 import NoticePage from "./pages/NoticePage/NoticePage";
 import PostModificationPage from "./pages/ModificationPage/PostModificationPage";
@@ -30,7 +30,7 @@ const App = () => {
           <Route path="additional" element={<MeetingCreate />} />
           <Route path="meeting/:meetingId" element={<MeetingRoom />} />
           <Route path="mypage/:id" element={<UserPage />} />
-          <Route path="joind/meeting" element={<JoinedMeetingPage />} />
+          <Route path="mymeeting/:id" element={<MyCreatedMeeting />} />
           <Route
             path="meeting/:meetingId/:postId/post/modification"
             element={<PostModificationPage />}
